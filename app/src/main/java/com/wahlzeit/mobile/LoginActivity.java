@@ -31,9 +31,6 @@ import java.io.IOException;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
     private static final int REQUEST_READ_CONTACTS = 0;
 
     private GoogleAccountCredential credential;
@@ -72,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        credential = GoogleAccountCredential.usingAudience(this,"server:client_id:326325117092-mpckcvum5182l7udgu6sq5du1ivmeo6a.apps.googleusercontent.com");
+        credential = GoogleAccountCredential.usingAudience(this,CommunicationManager.manager.WEB_CLIENT);
         chooseAccount();
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);

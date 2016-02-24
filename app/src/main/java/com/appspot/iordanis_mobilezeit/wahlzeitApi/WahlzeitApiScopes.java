@@ -25,8 +25,8 @@ package com.appspot.iordanis_mobilezeit.wahlzeitApi;
  */
 public class WahlzeitApiScopes {
 
-  /** View your email address. */
-  public static final String USERINFO_EMAIL = "https://www.googleapis.com/auth/userinfo.email";
+  /** View your myEmail address. */
+  public static final String USERINFO_EMAIL = "https://www.googleapis.com/auth/userinfo.myEmail";
 
   /** View your basic profile info. */
   public static final String USERINFO_PROFILE = "https://www.googleapis.com/auth/userinfo.profile";

@@ -1,4 +1,4 @@
-package com.wahlzeit.mobile;
+package com.wahlzeit.mobile.activities;
 
 import android.accounts.AccountManager;
 import android.animation.Animator;
@@ -23,11 +23,15 @@ import android.widget.Toast;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.About;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.wahlzeit.mobile.CommunicationManager;
+import com.wahlzeit.mobile.Oauth2LoginTask;
+import com.wahlzeit.mobile.R;
+import com.wahlzeit.mobile.WahlzeitModel;
 
 import java.io.IOException;
 
 /**
- * A login screen that offers login via email/password.
+ * A login screen that offers login via myEmail/password.
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -54,8 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.myEmail);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -69,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        credential = GoogleAccountCredential.usingAudience(this,CommunicationManager.manager.WEB_CLIENT);
+        credential = GoogleAccountCredential.usingAudience(this, CommunicationManager.manager.WEB_CLIENT);
         chooseAccount();
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
@@ -146,14 +149,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    private Oauth2LoginTask getOauth2LoginTask(LoginActivity loginActivity, String email, String scope) {
+        return new Oauth2LoginTask(loginActivity, email, scope);
+    }
+
     /**
      * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
+     * If there are form errors (invalid myEmail, missing fields, etc.), the
      * errors are presented and no actual login attempt is made
 
      */
     private void attemptLogin() {
 
+        if(CommunicationManager.manager.isNetworkAvailable(this)) {
+            String userAccount = WahlzeitModel.model.getAccountName();
+            if(userAccount != null && userAccount.length() > 0) {
+                getOauth2LoginTask(LoginActivity.this, userAccount, CommunicationManager.manager.SCOPE_LOGIN).execute();
+            } else {
+                makeToast("No google account selected");
+            }
+        } else {
+            makeToast("No network service");
+        }
 
 //        if (mAuthTask != null) {
 //            return;
@@ -164,7 +181,7 @@ public class LoginActivity extends AppCompatActivity {
 //        mPasswordView.setError(null);
 //
 //        // Store values at the time of the login attempt.
-//        String email = mEmailView.getText().toString();
+//        String myEmail = mEmailView.getText().toString();
 //        String password = mPasswordView.getText().toString();
 //
 //        boolean cancel = false;
@@ -177,12 +194,12 @@ public class LoginActivity extends AppCompatActivity {
 //            cancel = true;
 //        }
 //
-//        // Check for a valid email address.
-//        if (TextUtils.isEmpty(email)) {
+//        // Check for a valid myEmail address.
+//        if (TextUtils.isEmpty(myEmail)) {
 //            mEmailView.setError(getString(R.string.error_field_required));
 //            focusView = mEmailView;
 //            cancel = true;
-//        } else if (!isEmailValid(email)) {
+//        } else if (!isEmailValid(myEmail)) {
 //            mEmailView.setError(getString(R.string.error_invalid_email));
 //            focusView = mEmailView;
 //            cancel = true;
@@ -196,7 +213,7 @@ public class LoginActivity extends AppCompatActivity {
 //            // Show a progress spinner, and kick off a background task to
 //            // perform the user login attempt.
 //            showProgress(true);
-//            mAuthTask = new UserLoginTask(email, password);
+//            mAuthTask = new UserLoginTask(myEmail, password);
 //            mAuthTask.execute((Void) null);
 //        }
     }

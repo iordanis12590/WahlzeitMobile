@@ -21,7 +21,7 @@ public class CommunicationManager {
     private static final HttpTransport HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport();
     public static final String LOCAL_APP_ENGINE_SERVER_URL_FOR_ANDROID = "http://10.0.2.2:9999/_ah/api/";
     public static final String WEB_CLIENT = "server:client_id:326325117092-mpckcvum5182l7udgu6sq5du1ivmeo6a.apps.googleusercontent.com";
-
+    public static final String SCOPE_LOGIN = "oauth2:https://www.googleapis.com/auth/userinfo.profile";
     public static CommunicationManager manager = new CommunicationManager();
 
     public WahlzeitApi getApiServiceHandler(@Nullable GoogleAccountCredential credential) {
@@ -36,11 +36,11 @@ public class CommunicationManager {
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         if(networkInfo != null && networkInfo.isConnected()) {
-            Log.e("Network Testing", "Available");
+            Log.d("Network Testing", "Available");
             return true;
         }
 
-        Log.e("Network Testing", "Not Available");
+        Log.d("Network Testing", "Not Available");
         return false;
     }
 

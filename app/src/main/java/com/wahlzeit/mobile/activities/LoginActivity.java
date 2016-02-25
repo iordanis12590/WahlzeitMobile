@@ -3,7 +3,6 @@ package com.wahlzeit.mobile.activities;
 import android.accounts.AccountManager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -158,10 +157,6 @@ public class LoginActivity extends AppCompatActivity {
             if(userAccount != null && userAccount.length() > 0) {
                 showProgress(true);
                 getOauth2LoginTask(LoginActivity.this, userAccount, CommunicationManager.manager.SCOPE_LOGIN).execute();
-                showProgress(false);
-                Intent intent = new Intent(this, MainActivity.class);
-                this.startActivity(intent);
-                this.finish();
             } else {
                 makeToast("Please choose a valid google account and try again");
             }
@@ -182,8 +177,8 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Shows the progress UI and hides the login form.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    protected void showProgress(final boolean show) {
+//    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.

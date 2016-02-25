@@ -1,5 +1,6 @@
 package com.wahlzeit.mobile;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -7,6 +8,7 @@ import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.wahlzeit.mobile.activities.LoginActivity;
+import com.wahlzeit.mobile.activities.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,7 +56,10 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-
+        Intent intent = new Intent(myLoginActivity, MainActivity.class);
+        myLoginActivity.startActivity(intent);
+        myLoginActivity.showProgress(false);
+        myLoginActivity.finish();
     }
 
     private void fetchNameFromProfileServer() throws IOException, JSONException {
@@ -80,6 +85,7 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
             return;
         }
     }
+
 
 
     protected String fetchToken() throws IOException {

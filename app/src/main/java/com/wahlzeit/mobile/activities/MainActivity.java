@@ -61,10 +61,11 @@ public class MainActivity extends AppCompatActivity {
         navMenuIcons.recycle();
 
         setDrawerListActions();
-//        if (savedInstanceState == null) {
-//            // on first time display view for first nav item
-//            displayView(0);
-//        }
+
+        if (savedInstanceState == null) {
+            // on first time display view for first nav item
+            displayView(2);
+        }
     }
 
     @Override

@@ -1,13 +1,11 @@
 package com.wahlzeit.mobile;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
-import com.wahlzeit.mobile.activities.DashboardActivity;
 import com.wahlzeit.mobile.activities.LoginActivity;
 
 import org.json.JSONException;
@@ -51,6 +49,11 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
         }
         return null;
 
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
 
     }
 
@@ -67,9 +70,6 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
             is.close();
             JSONObject profileData = new JSONObject(GOOGLE_USER_DATA);
             WahlzeitModel.model.setProfileData(profileData);
-            Intent intent = new Intent(myLoginActivity, DashboardActivity.class);
-            myLoginActivity.startActivity(intent);
-            myLoginActivity.finish();
             return;
         } else if(sc == 401) {
             GoogleAuthUtil.invalidateToken(myLoginActivity, token);

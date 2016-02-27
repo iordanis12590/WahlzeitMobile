@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Administrator;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.User;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -29,14 +31,15 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
     protected String myEmail;
     protected String myScope;
     protected int myRequest;
+    protected Boolean performUserLogin;
 
     public static String GOOGLE_USER_DATA = "";
 
-    public Oauth2LoginTask(LoginActivity loginActivity, String email, String scope) {
+    public Oauth2LoginTask(LoginActivity loginActivity, String email, String scope, Boolean performUserLogin) {
         this.myLoginActivity = loginActivity;
         this.myEmail = email;
         this.myScope = scope;
-
+        this.performUserLogin = performUserLogin;
     }
 
     @Override
@@ -117,18 +120,28 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
             JSONObject profileData = WahlzeitModel.model.getProfileData();
             String userId = "";
             String userName = "";
-            String userEmail = "";
             if(profileData.has("id")) {
                 userId = profileData.getString("id");
             }
             if(profileData.has("name")) {
                 userName = profileData.getString("name");
             }
-            if(profileData.has("email")) {
-                userEmail = profileData.getString("email");
+            if(performUserLogin) {
+                User user = new User();
+                user.setId(userId);
+                user.setNickName(userName);
+                WahlzeitApi.Clients.Users postUserCommand = wahlzeitServiceHandle.clients().users(user);
+                User responseUser = null;
+                responseUser = postUserCommand.execute();
+            } else {
+                // perform admin login
+                Administrator admin = new Administrator();
+                admin.setId(userId);
+                admin.setNickName(userName);
+                WahlzeitApi.Clients.Administrators postAdminCommand = wahlzeitServiceHandle.clients().administrators(admin);
+                Administrator responseAdmin = postAdminCommand.execute();
             }
-//            WahlzeitApi.User postUserCommand = wahlzeitServiceHandle.user(userId, userName, userEmail);
-//            User user = postUserCommand.execute();
+
 
     }
 

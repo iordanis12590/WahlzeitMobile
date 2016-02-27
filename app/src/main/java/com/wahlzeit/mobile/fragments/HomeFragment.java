@@ -52,25 +52,25 @@ public class HomeFragment extends Fragment {
     private void populateTextAndImage() {
         try {
             JSONObject profileData = WahlzeitModel.model.getProfileData(); //new JSONObject(AbstractGetNameTask.GOOGLE_USER_DATA);
+            if(profileData != null) {
+                if (profileData.has("picture")) {
+                    userImageUrl = profileData.getString("picture");
+                    new GetImageFromUrl().execute(userImageUrl);
+                }
+                if (profileData.has("name")) {
+                    textName = profileData.getString("name");
+                    textViewName.setText(textName);
+                }
+                if (profileData.has("gender")) {
+                    textGender = profileData.getString("gender");
+                    textViewGender.setText(textGender);
+                }
 
-            if(profileData.has("picture")) {
-                userImageUrl = profileData.getString("picture");
-                new GetImageFromUrl().execute(userImageUrl);
+                if (profileData.has("id")) {
+                    String id = profileData.getString("id");
+                    Log.d("User id: ", profileData.getString("id"));
+                }
             }
-            if(profileData.has("name")) {
-                textName = profileData.getString("name");
-                textViewName.setText(textName);
-            }
-            if(profileData.has("gender")) {
-                textGender = profileData.getString("gender");
-                textViewGender.setText(textGender);
-            }
-
-            if(profileData.has("id") ) {
-                String id = profileData.getString("id");
-                Log.d("User id: ", profileData.getString("id"));
-            }
-
         } catch(JSONException e) {
             e.printStackTrace();
         }

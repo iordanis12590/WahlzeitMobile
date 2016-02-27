@@ -16,17 +16,14 @@ import android.widget.Toast;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.About;
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.User;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.wahlzeit.mobile.CommunicationManager;
+import com.wahlzeit.mobile.GuestLoginTask;
 import com.wahlzeit.mobile.Oauth2LoginTask;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * A login screen that offers login via myEmail/password.
@@ -45,10 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         settings = getSharedPreferences(getResources().getString(R.string.app_name), 0);
         credential = GoogleAccountCredential.usingAudience(this, CommunicationManager.manager.WEB_CLIENT);
-
         getAccountName();
         setupLoginButtons();
         mLoginFormView = findViewById(R.id.login_form);
@@ -64,13 +59,6 @@ public class LoginActivity extends AppCompatActivity {
             credential.setSelectedAccountName(accountName);
             WahlzeitModel.model.setCredential(credential);
         }
-    }
-
-    // setSelectedAccountName definition
-    private void saveAccountName(String accountName) {
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(PREF_ACCOUNT_NAME, accountName);
-        editor.commit();
     }
 
     @Override
@@ -93,19 +81,25 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void saveAccountName(String accountName) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(PREF_ACCOUNT_NAME, accountName);
+        editor.commit();
+    }
+
     private void setupLoginButtons() {
         Button UserSigninButton = (Button) findViewById(R.id.button_signin_user);
         UserSigninButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptOauth2Login();
+                attemptOauth2Login(true);
             }
         });
         Button AdminSigningButton = (Button) findViewById(R.id.button_signin_administrator);
         AdminSigningButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptAdminLogin();
+                attemptOauth2Login(false);
             }
         });
 
@@ -121,39 +115,6 @@ public class LoginActivity extends AppCompatActivity {
     void chooseAccount() {
         startActivityForResult(credential.newChooseAccountIntent(),
                 REQUEST_ACCOUNT_PICKER);
-    }
-
-    public void onClickGetPhotosButton(View view) {
-        AsyncTask<Void, Void, Void> getPhotosTask = new AsyncTask<Void,Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(credential);
-                try {
-                    WahlzeitApi.Photos.List getPhotosCommand = wahlzeitServiceHandle.photos().list();
-                    PhotoCollection list = getPhotosCommand.execute();
-                    List<Photo> photo = list.getItems();
-
-                    User user = new User();
-                    user.setId("234123412421123412341234");
-                    user.setNickName("ainte");
-                    WahlzeitApi.Clients.Users postUserCommand = wahlzeitServiceHandle.clients().users(user);
-
-                    User responseUser = null;
-                    responseUser = postUserCommand.execute();
-
-                    String randomPhotoId = photo.get(0).getIdAsString();
-                    WahlzeitApi.Photos.Delete deletePhotoCommand = wahlzeitServiceHandle.photos().delete(randomPhotoId);
-                    Photo deletedPhoto = deletePhotoCommand.execute();
-                    Log.d("Deleted Photo: ", deletedPhoto.getStatus().toString());
-
-                } catch (IOException e) {
-                    Log.e("Login", "" , e);
-                }
-                return null;
-            }
-        };
-        getPhotosTask.execute();
     }
 
     public void onClickGetAboutButton(View view) {
@@ -191,14 +152,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private Oauth2LoginTask getOauth2LoginTask(LoginActivity loginActivity, String email, String scope) {
-        return new Oauth2LoginTask(loginActivity, email, scope);
+    private Oauth2LoginTask getOauth2LoginTask(LoginActivity loginActivity, String email, String scope, Boolean performUserLogin) {
+        return new Oauth2LoginTask(loginActivity, email, scope, performUserLogin);
     }
 
+    private GuestLoginTask getGuestLoginTask(LoginActivity loginActivity) {
+        return new GuestLoginTask(loginActivity);
+    }
     /**
      * Attempts to retrieve authentication token and profile data from server.
      */
-    private void attemptOauth2Login() {
+    private void attemptOauth2Login(Boolean performUserLogin) {
 
         if(WahlzeitModel.model.getCredential().getSelectedAccountName() == null) {
             chooseAccount();
@@ -208,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
             String userAccount = WahlzeitModel.model.getAccountName();
             if(userAccount != null && userAccount.length() > 0) {
                 showProgress(true);
-                getOauth2LoginTask(LoginActivity.this, userAccount, CommunicationManager.manager.SCOPE_LOGIN).execute();
+                getOauth2LoginTask(LoginActivity.this, userAccount, CommunicationManager.manager.SCOPE_LOGIN, performUserLogin).execute();
             } else {
                 makeToast("Please choose a valid google account and try again");
             }
@@ -217,11 +181,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void attemptAdminLogin() {
-
-    }
-
     private void attemptGuestLogin() {
+        if(CommunicationManager.manager.isNetworkAvailable(this)) {
+            showProgress(true);
+            getGuestLoginTask(LoginActivity.this).execute();
+        } else {
+            makeToast("Please choose a valid google account and try again");
+        }
     }
 
     /**
@@ -259,5 +225,40 @@ public class LoginActivity extends AppCompatActivity {
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
+
+//    public void onClickGetPhotosButton(View view) {
+//        AsyncTask<Void, Void, Void> getPhotosTask = new AsyncTask<Void,Void, Void>() {
+//
+//            @Override
+//            protected Void doInBackground(Void... params) {
+//                WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(credential);
+//                try {
+//                    WahlzeitApi.Photos.List getPhotosCommand = wahlzeitServiceHandle.photos().list();
+//                    PhotoCollection list = getPhotosCommand.execute();
+//                    List<Photo> photo = list.getItems();
+//
+//                    User user = new User();
+//                    user.setId("234123412421123412341234");
+//                    user.setNickName("ainte");
+//                    WahlzeitApi.Clients.Users postUserCommand = wahlzeitServiceHandle.clients().users(user);
+//
+//                    User responseUser = null;
+//                    responseUser = postUserCommand.execute();
+//
+//                    String randomPhotoId = photo.get(0).getIdAsString();
+//                    WahlzeitApi.Photos.Delete deletePhotoCommand = wahlzeitServiceHandle.photos().delete(randomPhotoId);
+//                    Photo deletedPhoto = deletePhotoCommand.execute();
+//                    Log.d("Deleted Photo: ", deletedPhoto.getStatus().toString());
+//
+//                } catch (IOException e) {
+//                    Log.e("Login", "" , e);
+//                }
+//                return null;
+//            }
+//        };
+//        getPhotosTask.execute();
+//    }
 }
+
+
 

@@ -4,6 +4,7 @@ import android.accounts.AccountManager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,17 +38,39 @@ public class LoginActivity extends AppCompatActivity {
 
     private View mProgressView;
     private View mLoginFormView;
+    private SharedPreferences settings;
+    private static String PREF_ACCOUNT_NAME = "ACCOUNT_NAME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        settings = getSharedPreferences(getResources().getString(R.string.app_name), 0);
         credential = GoogleAccountCredential.usingAudience(this, CommunicationManager.manager.WEB_CLIENT);
 
+        getAccountName();
         setupLoginButtons();
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private void getAccountName() {
+        String accountName = settings.getString(PREF_ACCOUNT_NAME, null);
+        if(accountName == null || accountName.contentEquals("")) {
+            chooseAccount();
+        } else {
+            WahlzeitModel.model.setAccountName(accountName);
+            credential.setSelectedAccountName(accountName);
+            WahlzeitModel.model.setCredential(credential);
+        }
+    }
+
+    // setSelectedAccountName definition
+    private void saveAccountName(String accountName) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(PREF_ACCOUNT_NAME, accountName);
+        editor.commit();
     }
 
     @Override
@@ -59,10 +82,11 @@ public class LoginActivity extends AppCompatActivity {
                     String accountName = data.getExtras().getString(
                             AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
-                        credential.setSelectedAccountName(accountName);
                         // User is authorized.
-                        WahlzeitModel.model.setCredential(credential);
+                        credential.setSelectedAccountName(accountName);
                         WahlzeitModel.model.setAccountName(accountName);
+                        saveAccountName(accountName);
+                        WahlzeitModel.model.setCredential(credential);
                     }
                 }
                 break;
@@ -176,7 +200,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void attemptOauth2Login() {
 
-        if(WahlzeitModel.model.getCredential() == null) {
+        if(WahlzeitModel.model.getCredential().getSelectedAccountName() == null) {
             chooseAccount();
         }
 

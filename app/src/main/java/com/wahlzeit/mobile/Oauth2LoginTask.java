@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -42,6 +43,7 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
     protected Void doInBackground(Void... params) {
         try {
             fetchNameFromProfileServer();
+            createWahlzeitUser();
         } catch (IOException ex) {
             onError("Following Error occured, please try again. "
                     + ex.getMessage(), ex);
@@ -86,8 +88,6 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
         }
     }
 
-
-
     protected String fetchToken() throws IOException {
         try {
             return GoogleAuthUtil.getToken(myLoginActivity, myEmail, myScope);
@@ -109,6 +109,27 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
         }
 
         return new String(bos.toByteArray(), "UTF-8");
+    }
+
+    private void createWahlzeitUser() throws IOException, JSONException {
+        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
+
+            JSONObject profileData = WahlzeitModel.model.getProfileData();
+            String userId = "";
+            String userName = "";
+            String userEmail = "";
+            if(profileData.has("id")) {
+                userId = profileData.getString("id");
+            }
+            if(profileData.has("name")) {
+                userName = profileData.getString("name");
+            }
+            if(profileData.has("email")) {
+                userEmail = profileData.getString("email");
+            }
+//            WahlzeitApi.User postUserCommand = wahlzeitServiceHandle.user(userId, userName, userEmail);
+//            User user = postUserCommand.execute();
+
     }
 
     protected void onError(String msg, Exception e) {

@@ -9,18 +9,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.About;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.User;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.Oauth2LoginTask;
@@ -28,6 +25,7 @@ import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A login screen that offers login via myEmail/password.
@@ -37,9 +35,6 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleAccountCredential credential;
     static final int REQUEST_ACCOUNT_PICKER = 2;
 
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -47,43 +42,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-//            attemptLoginmptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
 
         credential = GoogleAccountCredential.usingAudience(this, CommunicationManager.manager.WEB_CLIENT);
 
-
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
-
-
+        setupLoginButtons();
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
-
-    void chooseAccount() {
-        startActivityForResult(credential.newChooseAccountIntent(),
-                REQUEST_ACCOUNT_PICKER);
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -102,6 +67,69 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    private void setupLoginButtons() {
+        Button UserSigninButton = (Button) findViewById(R.id.button_signin_user);
+        UserSigninButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptOauth2Login();
+            }
+        });
+        Button AdminSigningButton = (Button) findViewById(R.id.button_signin_administrator);
+        AdminSigningButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptAdminLogin();
+            }
+        });
+
+        Button GuestSigningButton = (Button) findViewById(R.id.button_signin_guest);
+        GuestSigningButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptGuestLogin();
+            }
+        });
+    }
+
+    void chooseAccount() {
+        startActivityForResult(credential.newChooseAccountIntent(),
+                REQUEST_ACCOUNT_PICKER);
+    }
+
+    public void onClickGetPhotosButton(View view) {
+        AsyncTask<Void, Void, Void> getPhotosTask = new AsyncTask<Void,Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(credential);
+                try {
+                    WahlzeitApi.Photos.List getPhotosCommand = wahlzeitServiceHandle.photos().list();
+                    PhotoCollection list = getPhotosCommand.execute();
+                    List<Photo> photo = list.getItems();
+
+                    User user = new User();
+                    user.setId("234123412421123412341234");
+                    user.setNickName("ainte");
+                    WahlzeitApi.Clients.Users postUserCommand = wahlzeitServiceHandle.clients().users(user);
+
+                    User responseUser = null;
+                    responseUser = postUserCommand.execute();
+
+                    String randomPhotoId = photo.get(0).getIdAsString();
+                    WahlzeitApi.Photos.Delete deletePhotoCommand = wahlzeitServiceHandle.photos().delete(randomPhotoId);
+                    Photo deletedPhoto = deletePhotoCommand.execute();
+                    Log.d("Deleted Photo: ", deletedPhoto.getStatus().toString());
+
+                } catch (IOException e) {
+                    Log.e("Login", "" , e);
+                }
+                return null;
+            }
+        };
+        getPhotosTask.execute();
     }
 
     public void onClickGetAboutButton(View view) {
@@ -146,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Attempts to retrieve authentication token and profile data from server.
      */
-    private void attemptLogin() {
+    private void attemptOauth2Login() {
 
         if(WahlzeitModel.model.getCredential() == null) {
             chooseAccount();
@@ -164,14 +192,12 @@ public class LoginActivity extends AppCompatActivity {
             makeToast("No network service");
         }
     }
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+
+    private void attemptAdminLogin() {
+
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+    private void attemptGuestLogin() {
     }
 
     /**

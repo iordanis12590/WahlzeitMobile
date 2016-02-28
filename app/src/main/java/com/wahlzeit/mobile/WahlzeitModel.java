@@ -1,9 +1,9 @@
 package com.wahlzeit.mobile;
 
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Guest;
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.User;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Client;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -16,16 +16,14 @@ public class WahlzeitModel {
     GoogleAccountCredential credential;
     String accountName;
     JSONObject profileData;
-    // merge in to some superclass
-    User currentUser;
-    Guest currentGuest;
+    Client currentClient;
 
-    public Guest getCurrentGuest() {
-        return currentGuest;
+    public Client getCurrentClient() {
+        return currentClient;
     }
 
-    public void setCurrentGuest(Guest currentGuest) {
-        this.currentGuest = currentGuest;
+    public void setCurrentClient(Client currentClient) {
+        this.currentClient = currentClient;
     }
 
     public String getAccountName() {
@@ -52,4 +50,14 @@ public class WahlzeitModel {
     public void setProfileData(JSONObject profileData) {
         this.profileData = profileData;
     }
+
+    public String getGoogleUserValue(String key) throws JSONException {
+        if (profileData != null) {
+            if(profileData.has(key)) {
+                return profileData.getString(key);
+            }
+        }
+        return "";
+    }
+
 }

@@ -18,8 +18,8 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.About;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.wahlzeit.mobile.CommunicationManager;
-import com.wahlzeit.mobile.GuestLoginTask;
-import com.wahlzeit.mobile.Oauth2LoginTask;
+import com.wahlzeit.mobile.asyncTasks.GuestLoginTask;
+import com.wahlzeit.mobile.asyncTasks.Oauth2LoginTask;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
 

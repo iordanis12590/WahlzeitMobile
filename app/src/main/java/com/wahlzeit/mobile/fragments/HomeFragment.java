@@ -2,15 +2,16 @@ package com.wahlzeit.mobile.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
 
 import org.json.JSONException;
 
@@ -29,7 +30,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
+        Log.d("Home frame title: ", this.getActivity().getTitle().toString());
         textViewName = (TextView) rootView.findViewById(R.id.textViewNameValue);
         textViewEmail = (TextView) rootView.findViewById(R.id.textViewEmailValue);
         textViewGender = (TextView) rootView.findViewById(R.id.textViewGenderValue);

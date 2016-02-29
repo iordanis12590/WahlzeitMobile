@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Client;
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Guest;
 import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.activities.LoginActivity;
@@ -46,14 +45,12 @@ public class GuestLoginTask extends AsyncTask<Void, Void, Void> {
     }
 
     private void postGuestUser() throws IOException {
-        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
+        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(null);
         // have to send an initialized Guest instance to avoid EOFE Exception
         // Library bug!
-        Guest guest = new Guest();
-        WahlzeitApi.Clients.Guests postGuestCommand = wahlzeitServiceHandle.clients().guests(guest);
+        Client guest = new Client();
+        WahlzeitApi.Clients.Create postGuestCommand = wahlzeitServiceHandle.clients().create(guest);
         Client responseGuest = postGuestCommand.execute();
-        if(guest != null) {
-            Log.d("guest: ", responseGuest.getId());
-        }
+        WahlzeitModel.model.setCurrentClient(responseGuest);
     }
 }

@@ -1,22 +1,46 @@
 package com.wahlzeit.mobile;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Client;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.ImageCollection;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Map;
 
 /**
  * Created by iordanis on 24/02/16.
  */
 public class WahlzeitModel {
 
+    // Singleton
     public static WahlzeitModel model = new WahlzeitModel();
 
     GoogleAccountCredential credential;
     String accountName;
     JSONObject profileData;
     Client currentClient;
+    PhotoCollection photoCache;
+    Map<String, ImageCollection> images;
+
+
+    public Map<String, ImageCollection> getImages() {
+        return images;
+    }
+
+    public void setImages(Map<String, ImageCollection> images) {
+        this.images = images;
+    }
+
+    public PhotoCollection getPhotoCache() {
+        return photoCache;
+    }
+
+    public void setPhotoCache(PhotoCollection photoCache) {
+        this.photoCache = photoCache;
+    }
 
     public Client getCurrentClient() {
         return currentClient;

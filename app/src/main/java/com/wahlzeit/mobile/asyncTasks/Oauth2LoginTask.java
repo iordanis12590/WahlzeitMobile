@@ -5,9 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Administrator;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Client;
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.User;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -23,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 /**
@@ -117,25 +116,20 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
         return new String(bos.toByteArray(), "UTF-8");
     }
 
-    private void createWahlzeitUser() throws IOException, JSONException {
+    private void createWahlzeitUser() throws IOException, JSONException, SocketTimeoutException {
         WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
-        Client responseClient;
+
+        Client client = new Client();
+        client.setId("12341234123412");
+        client.setNickName("Iordaniskos");
         if(performUserLogin) {
-            User user = new User();
-            user.setId(WahlzeitModel.model.getGoogleUserValue("id"));
-            user.setNickName(WahlzeitModel.model.getGoogleUserValue("name"));
-            WahlzeitApi.Clients.Users postUserCommand = wahlzeitServiceHandle.clients().users(user);
-            responseClient = postUserCommand.execute();
-            Log.d("User: ", responseClient.getNickName());
+            client.setAccessRights("USER");
         } else {
-            // perform admin login
-            Administrator admin = new Administrator();
-            admin.setId(WahlzeitModel.model.getGoogleUserValue("id"));
-            admin.setNickName(WahlzeitModel.model.getGoogleUserValue("name"));
-            WahlzeitApi.Clients.Administrators postAdminCommand = wahlzeitServiceHandle.clients().administrators(admin);
-            responseClient = postAdminCommand.execute();
-            Log.d("Admin: ", responseClient.getNickName());
+            client.setAccessRights("ADMINISTRATOR");
         }
+        WahlzeitApi.Clients.Create postClientCommand = wahlzeitServiceHandle.clients().create(client);
+        Client responseClient = postClientCommand.execute();
+        Log.d("Client admin: ", responseClient.getNickName() + " access rights: " + responseClient.getAccessRights());
         WahlzeitModel.model.setCurrentClient(responseClient);
 
     }

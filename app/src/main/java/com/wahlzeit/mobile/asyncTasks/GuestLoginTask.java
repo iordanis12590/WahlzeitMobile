@@ -52,5 +52,7 @@ public class GuestLoginTask extends AsyncTask<Void, Void, Void> {
         WahlzeitApi.Clients.Create postGuestCommand = wahlzeitServiceHandle.clients().create(guest);
         Client responseGuest = postGuestCommand.execute();
         WahlzeitModel.model.setCurrentClient(responseGuest);
+        Log.d("User logged in: ", responseGuest.getNickName() + " access rights: " + responseGuest.getAccessRights());
+
     }
 }

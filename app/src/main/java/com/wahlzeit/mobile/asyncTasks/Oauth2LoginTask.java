@@ -120,8 +120,8 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
         WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
 
         Client client = new Client();
-        client.setId("12341234123412");
-        client.setNickName("Iordaniskos");
+        client.setId(WahlzeitModel.model.getGoogleUserValue("id"));
+        client.setNickName(WahlzeitModel.model.getGoogleUserValue("name"));
         if(performUserLogin) {
             client.setAccessRights("USER");
         } else {
@@ -129,7 +129,7 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
         }
         WahlzeitApi.Clients.Create postClientCommand = wahlzeitServiceHandle.clients().create(client);
         Client responseClient = postClientCommand.execute();
-        Log.d("Client admin: ", responseClient.getNickName() + " access rights: " + responseClient.getAccessRights());
+        Log.d("User logged in: ", responseClient.getNickName() + " access rights: " + responseClient.getAccessRights());
         WahlzeitModel.model.setCurrentClient(responseClient);
 
     }

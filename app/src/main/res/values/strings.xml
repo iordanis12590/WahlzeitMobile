@@ -28,14 +28,14 @@
     </string-array>
 
     <array name="nav_drawer_icons">
-        <item>@drawable/ic_photo_library_black_24dp</item>
-        <item>@drawable/ic_share_black_24dp</item>
-        <item>@drawable/ic_home_black_24dp</item>
-        <item>@drawable/ic_account_circle_black_24dp</item>
-        <item>@drawable/ic_add_a_photo_black_24dp</item>
-        <item>@drawable/ic_exit_to_app_black_24dp</item>
-        <item>@drawable/ic_assignment_black_24dp</item>
-        <item>@drawable/ic_build_black_24dp</item>
+        <item>@drawable/ic_show</item>
+        <item>@drawable/ic_tell</item>
+        <item>@drawable/ic_home</item>
+        <item>@drawable/ic_profile</item>
+        <item>@drawable/ic_upload</item>
+        <item>@drawable/ic_logout</item>
+        <item>@drawable/ic_moderate</item>
+        <item>@drawable/ic_administer</item>
 
     </array>
 

@@ -5,14 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.BaseAdapter;
 
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.asyncTasks.ListAllPhotosTask;
 
 public class ShowFragment extends Fragment {
 
-    ImageView randomImage;
     View rootView;
 
     public ShowFragment() {
@@ -24,15 +23,21 @@ public class ShowFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_show, container, false);
 
-        randomImage = (ImageView) rootView.findViewById(R.id.random_image);
-        getListAllPhotosTask(randomImage).execute();
+//        randomImage = (ImageView) rootView.findViewById(R.id.random_image);
+//        getListAllPhotosTask(randomImage).execute();
+
+
+
+//        adapter.add(new CardModel("Title1", "Description", resources.getDrawable(R.drawable.picture1)));
+//
+//        mCardContainer.setAdapter(adapter);
 
         return rootView;
     }
 
-    public ListAllPhotosTask getListAllPhotosTask(ImageView randomImage) {
-        return new ListAllPhotosTask(randomImage);
+    private ListAllPhotosTask getListAllPhotosTask(BaseAdapter adapter) {
+//        return new ListAllPhotosTask(adapter, container);
+        return null;
     }
-
 
 }

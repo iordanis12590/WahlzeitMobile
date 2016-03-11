@@ -18,12 +18,15 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.About;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.wahlzeit.mobile.CommunicationManager;
-import com.wahlzeit.mobile.asyncTasks.GuestLoginTask;
-import com.wahlzeit.mobile.asyncTasks.Oauth2LoginTask;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.asyncTasks.GuestLoginTask;
+import com.wahlzeit.mobile.asyncTasks.Oauth2LoginTask;
 
 import java.io.IOException;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * A login screen that offers login via myEmail/password.
@@ -33,8 +36,11 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleAccountCredential credential;
     static final int REQUEST_ACCOUNT_PICKER = 2;
 
-    private View mProgressView;
-    private View mLoginFormView;
+    @InjectView(R.id.button_signin_administrator) Button mAdminSigningButton;
+    @InjectView(R.id.button_signin_user) Button mUserSigninButton;
+    @InjectView(R.id.button_signin_guest) Button mGuestSigningButton;
+    @InjectView(R.id.login_progress) View mProgressView;
+    @InjectView(R.id.login_form) View mLoginFormView;
     private SharedPreferences settings;
     private static String PREF_ACCOUNT_NAME = "ACCOUNT_NAME";
 
@@ -42,12 +48,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.inject(this);
         settings = getSharedPreferences(getResources().getString(R.string.app_name), 0);
         credential = GoogleAccountCredential.usingAudience(this, CommunicationManager.manager.WEB_CLIENT);
         getAccountName();
         setupLoginButtons();
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
     }
 
     private void getAccountName() {
@@ -88,23 +93,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setupLoginButtons() {
-        Button UserSigninButton = (Button) findViewById(R.id.button_signin_user);
-        UserSigninButton.setOnClickListener(new View.OnClickListener() {
+        mUserSigninButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptOauth2Login(true);
             }
         });
-        Button AdminSigningButton = (Button) findViewById(R.id.button_signin_administrator);
-        AdminSigningButton.setOnClickListener(new View.OnClickListener() {
+
+        mAdminSigningButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptOauth2Login(false);
             }
         });
 
-        Button GuestSigningButton = (Button) findViewById(R.id.button_signin_guest);
-        GuestSigningButton.setOnClickListener(new View.OnClickListener() {
+        mGuestSigningButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptGuestLogin();

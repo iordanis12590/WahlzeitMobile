@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import com.wahlzeit.mobile.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by iordanis on 10/03/16.
  */
@@ -17,10 +20,19 @@ public class CardsDataAdapter extends ArrayAdapter<CardModel> {
 
     @Override
     public View getView(int position, final View contentView, ViewGroup parent){
-        TextView titleText = (TextView)(contentView.findViewById(R.id.textView_title));
-        titleText.setText(getItem(position).getmTitle());
-        ImageView imageView = (ImageView) contentView.findViewById(R.id.imageView_photo);
-        imageView.setImageBitmap(getItem(position).getmPhotoImage());
+        ViewHolder holder = new ViewHolder(contentView);
+        holder.titleText.setText(getItem(position).getmTitle());
+        holder.imageView.setImageBitmap(getItem(position).getmPhotoImage());
         return contentView;
+    }
+
+    // Class that holds the views of each card_layout
+    static class ViewHolder {
+        @InjectView(R.id.textView_title) TextView titleText;
+        @InjectView(R.id.imageView_photo) ImageView imageView;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

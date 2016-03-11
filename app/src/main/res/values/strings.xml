@@ -14,6 +14,12 @@
         completions."
     </string>
 
+    <string name="done_text_en">"Done!\n
+        Wow!! You've seen all the photos we can currently show you. To see more, please either adjust your photo filter or come back later.\n
+        Please don't forget to tell your friends about this website! And we love feedback, so please comment on our blog.\n
+        Please continue viewing photos!"
+    </string>
+
     <!-- Strings related to main activity -->
 
     <string-array name="nav_drawer_items">

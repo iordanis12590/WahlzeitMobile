@@ -30,7 +30,6 @@ public class CardsDataAdapter extends ArrayAdapter<CardModel> {
     static class ViewHolder {
         @InjectView(R.id.textView_title) TextView titleText;
         @InjectView(R.id.imageView_photo) ImageView imageView;
-
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
         }

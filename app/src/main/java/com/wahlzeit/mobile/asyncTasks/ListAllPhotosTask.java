@@ -5,9 +5,8 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
+import android.widget.RelativeLayout;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Image;
@@ -16,6 +15,9 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
 import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.fragments.CardModel;
+import com.wahlzeit.mobile.fragments.CardsDataAdapter;
+import com.wenchao.cardstack.CardStack;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -25,13 +27,13 @@ import java.util.Map;
  * Created by iordanis on 28/02/16.
  */
 public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
-//    SimpleCardStackAdapter mAdapter;
-//    CardContainer mContainer;
+    CardsDataAdapter mAdapter;
+    CardStack mContainer;
     WahlzeitApi wahlzeitServiceHandle;
 
-    public ListAllPhotosTask(BaseAdapter adapter, AdapterView<ListAdapter> container) {
-//        mAdapter = (SimpleCardStackAdapter) adapter;
-//        mContainer = (CardContainer) container;
+    public ListAllPhotosTask(BaseAdapter adapter, RelativeLayout container) {
+        mAdapter = (CardsDataAdapter) adapter;
+        mContainer = (CardStack) container;
         wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
     }
 
@@ -62,10 +64,10 @@ public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
             Image image = WahlzeitModel.model.getImages().get(photoId).getItems().get(3);
             byte[] imageAsBytes = Base64.decode(image.getImageData().getBytes(), Base64.DEFAULT);
             Bitmap decodedImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
-//            mAdapter.add(new CardModel("Photo by "+ "Owner", "Description", decodedImage));
+            mAdapter.add(new CardModel(photoId, decodedImage));
         }
 
-//        mContainer.setAdapter(mAdapter);
+        mContainer.setAdapter(mAdapter);
     }
 
 

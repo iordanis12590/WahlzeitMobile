@@ -226,38 +226,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-//    public void onClickGetPhotosButton(View view) {
-//        AsyncTask<Void, Void, Void> getPhotosTask = new AsyncTask<Void,Void, Void>() {
-//
-//            @Override
-//            protected Void doInBackground(Void... params) {
-//                WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(credential);
-//                try {
-//                    WahlzeitApi.Photos.List getPhotosCommand = wahlzeitServiceHandle.photos().list();
-//                    PhotoCollection list = getPhotosCommand.execute();
-//                    List<Photo> photo = list.getItems();
-//
-//                    User user = new User();
-//                    user.setId("234123412421123412341234");
-//                    user.setNickName("ainte");
-//                    WahlzeitApi.Clients.Users postUserCommand = wahlzeitServiceHandle.clients().users(user);
-//
-//                    User responseUser = null;
-//                    responseUser = postUserCommand.execute();
-//
-//                    String randomPhotoId = photo.get(0).getIdAsString();
-//                    WahlzeitApi.Photos.Delete deletePhotoCommand = wahlzeitServiceHandle.photos().delete(randomPhotoId);
-//                    Photo deletedPhoto = deletePhotoCommand.execute();
-//                    Log.d("Deleted Photo: ", deletedPhoto.getStatus().toString());
-//
-//                } catch (IOException e) {
-//                    Log.e("Login", "" , e);
-//                }
-//                return null;
-//            }
-//        };
-//        getPhotosTask.execute();
-//    }
 }
 
 

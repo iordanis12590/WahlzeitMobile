@@ -11,12 +11,19 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by iordanis on 25/02/16.
  */
 public class NavDrawerListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<NavDrawerItem> navDrawerItems;
+
+    @InjectView(R.id.imageview_icon_drawer_list) ImageView imgIcon;
+    @InjectView(R.id.textview_title_drawer_list) TextView txtTitle;
+    @InjectView(R.id.textview_counter_drawer_list) TextView txtCount;
 
     public NavDrawerListAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems){
         this.context = context;
@@ -45,10 +52,10 @@ public class NavDrawerListAdapter extends BaseAdapter {
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.drawer_list_item, null);
         }
-
-        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
-        TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
-        TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
+        ButterKnife.inject(this, convertView);
+//        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.imageview_icon_drawer_list);
+//        TextView txtTitle = (TextView) convertView.findViewById(R.id.textview_title_drawer_list);
+//        TextView txtCount = (TextView) convertView.findViewById(R.id.textview_counter_drawer_list);
 
         imgIcon.setImageResource(navDrawerItems.get(position).getIcon());
         txtTitle.setText(navDrawerItems.get(position).getTitle());

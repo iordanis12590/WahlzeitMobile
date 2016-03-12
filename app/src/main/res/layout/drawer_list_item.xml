@@ -5,7 +5,7 @@
     android:background="@drawable/list_selector">
 
     <ImageView
-        android:id="@+id/icon"
+        android:id="@+id/imageview_icon_drawer_list"
         android:layout_width="25dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -16,17 +16,17 @@
         android:layout_centerVertical="true" />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/textview_title_drawer_list"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@id/icon"
+        android:layout_toRightOf="@id/imageview_icon_drawer_list"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:textColor="@color/list_item_title"
         android:gravity="center_vertical"
         android:paddingRight="40dp"/>
     
-    <TextView android:id="@+id/counter"
+    <TextView android:id="@+id/textview_counter_drawer_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/counter_bg"

@@ -12,7 +12,7 @@
 
 
         <TextView
-            android:id="@+id/textView_title"
+            android:id="@+id/textview_title_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="24sp"
@@ -27,31 +27,31 @@
             android:id="@+id/divider_title"
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:layout_below="@id/textView_title"
+            android:layout_below="@id/textview_title_card"
             android:background="@color/card_outline"
             />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/imageView_photo"
+            android:id="@+id/imageview_photo"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/textView_title"
-            android:layout_above="@+id/ratingBar" />
+            android:layout_below="@+id/textview_title_card"
+            android:layout_above="@+id/ratingbar" />
 
         <RatingBar
-            android:id="@+id/ratingBar"
+            android:id="@+id/ratingbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:numStars="10"
             android:stepSize="1.0"
             android:rating="2.0"
-            android:layout_above="@+id/imageButton_flag"
+            android:layout_above="@+id/imagebutton_flag"
             />
 
 
         <ImageButton
-            android:id="@+id/imageButton_flag"
+            android:id="@+id/imagebutton_flag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

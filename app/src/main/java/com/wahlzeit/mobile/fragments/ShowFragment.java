@@ -27,7 +27,7 @@ public class ShowFragment extends Fragment {
     private CardStack mCardStack;
     private CardsDataAdapter mCardAdapter;
     private int counter;
-    @InjectView(R.id.textView_done) TextView mTextViewDone;
+    @InjectView(R.id.textview_done_show) TextView mTextViewDone;
 
     public ShowFragment() {
     }
@@ -65,7 +65,7 @@ public class ShowFragment extends Fragment {
     private BroadcastReceiver discardPhotoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            // :) A hack to determine the card stack is left without cards
             if (mCardAdapter.getCount() == mCardStack.getCurrIndex()) {
                 mTextViewDone.setVisibility(View.VISIBLE);
             }

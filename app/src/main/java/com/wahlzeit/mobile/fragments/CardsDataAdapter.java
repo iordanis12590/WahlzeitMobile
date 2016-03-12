@@ -28,8 +28,8 @@ public class CardsDataAdapter extends ArrayAdapter<CardModel> {
 
     // Class that holds the views of each card_layout
     static class ViewHolder {
-        @InjectView(R.id.textView_title) TextView titleText;
-        @InjectView(R.id.imageView_photo) ImageView imageView;
+        @InjectView(R.id.textview_title_card) TextView titleText;
+        @InjectView(R.id.imageview_photo) ImageView imageView;
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
         }

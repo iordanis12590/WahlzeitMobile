@@ -19,10 +19,10 @@ import butterknife.InjectView;
 
 public class HomeFragment extends Fragment {
 
-    @InjectView(R.id.textViewNameValue) TextView textViewName;
-    @InjectView(R.id.textViewEmailValue) TextView textViewEmail;
-    @InjectView(R.id.textViewGenderValue) TextView textViewGender;
-    @InjectView(R.id.imageView1) ImageView imageViewProfilePicture;
+    @InjectView(R.id.textview_name_value_home) TextView textViewName;
+    @InjectView(R.id.textview_email_value_home) TextView textViewEmail;
+    @InjectView(R.id.textview_gender_value_home) TextView textViewGender;
+    @InjectView(R.id.imageview_profile_pic_home) ImageView imageViewProfilePicture;
     String textName, textEmail, textGender, userImageUrl;
 
     View rootView;

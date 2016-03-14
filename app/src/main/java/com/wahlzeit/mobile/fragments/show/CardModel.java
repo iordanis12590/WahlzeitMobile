@@ -1,4 +1,4 @@
-package com.wahlzeit.mobile.fragments;
+package com.wahlzeit.mobile.fragments.show;
 
 import android.graphics.Bitmap;
 

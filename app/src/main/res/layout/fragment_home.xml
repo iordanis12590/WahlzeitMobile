@@ -81,4 +81,18 @@
         android:fontFamily="sans-serif"
         android:textSize="16sp"/>
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/textview_gender_label_home"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/list_photos_home"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null" />
+
+    </LinearLayout>
 </RelativeLayout>

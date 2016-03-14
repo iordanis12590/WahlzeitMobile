@@ -1,25 +1,17 @@
 package com.wahlzeit.mobile.asyncTasks;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Base64;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Image;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.ImageCollection;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
 import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.WahlzeitModel;
-import com.wahlzeit.mobile.fragments.CardModel;
-import com.wahlzeit.mobile.fragments.CardStackEventListener;
-import com.wahlzeit.mobile.fragments.CardsDataAdapter;
-import com.wenchao.cardstack.CardStack;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,15 +21,15 @@ import java.util.Map;
  * Created by iordanis on 28/02/16.
  */
 public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
-    CardsDataAdapter mCardAdapter;
-    CardStack mCardStack;
+//    CardsDataAdapter mCardAdapter;
+//    CardStack mCardStack;
     WahlzeitApi wahlzeitServiceHandle;
     Context mContext;
 
-    public ListAllPhotosTask(Context context, BaseAdapter adapter, RelativeLayout container) {
+    public ListAllPhotosTask(Context context) {
         this.mContext = context;
-        this.mCardAdapter = (CardsDataAdapter) adapter;
-        this.mCardStack = (CardStack) container;
+//        this.mCardAdapter = (CardsDataAdapter) adapter;
+//        this.mCardStack = (CardStack) container;
         wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
     }
 
@@ -62,16 +54,10 @@ public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        for(Photo photo: WahlzeitModel.model.getPhotoCache().getItems()) {
-            String photoId = photo.getIdAsString();
-            Image image = WahlzeitModel.model.getImages().get(photoId).getItems().get(3);
-            byte[] imageAsBytes = Base64.decode(image.getImageData().getBytes(), Base64.DEFAULT);
-            Bitmap decodedImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
-            mCardAdapter.add(new CardModel(photoId, decodedImage));
-        }
-        mCardStack.setAdapter(mCardAdapter);
-        mCardStack.setListener(new CardStackEventListener(mContext));
-
+        Intent populateCardStack = new Intent("populate_photo_card_stack");
+        Intent populateUserPhotos = new Intent("populate_user_photos");
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(populateCardStack);
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(populateUserPhotos);
     }
 
     private ImageCollection downloadImages(String photoId) throws IOException{

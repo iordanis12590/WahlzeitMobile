@@ -1,4 +1,4 @@
-package com.wahlzeit.mobile.fragments;
+package com.wahlzeit.mobile.fragments.show;
 
 import android.content.Context;
 import android.view.View;
@@ -20,17 +20,17 @@ public class CardsDataAdapter extends ArrayAdapter<CardModel> {
 
     @Override
     public View getView(int position, final View contentView, ViewGroup parent){
-        ViewHolder holder = new ViewHolder(contentView);
+        CardViewHolder holder = new CardViewHolder(contentView);
         holder.titleText.setText(getItem(position).getmTitle());
         holder.imageView.setImageBitmap(getItem(position).getmPhotoImage());
         return contentView;
     }
 
     // Class that holds the views of each card_layout
-    static class ViewHolder {
+    static class CardViewHolder {
         @InjectView(R.id.textview_title_card) TextView titleText;
         @InjectView(R.id.imageview_photo) ImageView imageView;
-        public ViewHolder(View view) {
+        public CardViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
     }

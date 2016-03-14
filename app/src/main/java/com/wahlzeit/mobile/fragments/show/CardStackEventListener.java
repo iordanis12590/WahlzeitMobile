@@ -1,4 +1,4 @@
-package com.wahlzeit.mobile.fragments;
+package com.wahlzeit.mobile.fragments.show;
 
 import android.content.Context;
 import android.content.Intent;
@@ -49,10 +49,7 @@ public class CardStackEventListener implements CardStack.CardEventListener {
     @Override
     public void discarded(int id, int direction) {
         Log.i(TAG, "CardStack discarded triggered with id: " + id + ", direction: " + direction);
-
-
         Intent intent = new Intent("discard_photo");
-//        intent.putExtra("message", "this is my message");
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 

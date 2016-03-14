@@ -154,7 +154,6 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(this, about, Toast.LENGTH_LONG).show();
     }
 
-
     private Oauth2LoginTask getOauth2LoginTask(LoginActivity loginActivity, String email, String scope, Boolean performUserLogin) {
         return new Oauth2LoginTask(loginActivity, email, scope, performUserLogin);
     }
@@ -167,11 +166,10 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void attemptOauth2Login(Boolean performUserLogin) {
 
-        if(WahlzeitModel.model.getCredential().getSelectedAccountName() == null) {
-            chooseAccount();
-        }
-
         if(CommunicationManager.manager.isNetworkAvailable(this)) {
+            if(WahlzeitModel.model.getCredential().getSelectedAccountName() == null) {
+                chooseAccount();
+            }
             String userAccount = WahlzeitModel.model.getAccountName();
             if(userAccount != null && userAccount.length() > 0) {
                 showProgress(true);

@@ -12,6 +12,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
+import com.wahlzeit.mobile.asyncTasks.ListAllPhotosTask;
 
 /**
  * Created by iordanis on 23/02/16.
@@ -29,6 +30,10 @@ public class CommunicationManager {
         wahlzeitApiBuilder.setRootUrl(LOCAL_APP_ENGINE_SERVER_URL_FOR_ANDROID);
 
         return wahlzeitApiBuilder.build();
+    }
+
+    public ListAllPhotosTask getListAllPhotosTask(Context context) {
+        return new ListAllPhotosTask(context);
     }
 
     public boolean isNetworkAvailable(Context context) {

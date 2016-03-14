@@ -17,9 +17,9 @@ import android.widget.ListView;
 import com.wahlzeit.mobile.NavDrawerItem;
 import com.wahlzeit.mobile.NavDrawerListAdapter;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.fragments.HomeFragment;
-import com.wahlzeit.mobile.fragments.ProfileFragment;
-import com.wahlzeit.mobile.fragments.ShowFragment;
+import com.wahlzeit.mobile.fragments.home.HomeFragment;
+import com.wahlzeit.mobile.fragments.profile.ProfileFragment;
+import com.wahlzeit.mobile.fragments.show.ShowFragment;
 import com.wahlzeit.mobile.fragments.TellFragment;
 
 import java.util.ArrayList;

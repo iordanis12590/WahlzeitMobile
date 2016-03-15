@@ -87,31 +87,6 @@
         android:fontFamily="sans-serif-medium"
         android:textSize="16sp" />
 
-    <!--<ViewSwitcher-->
-        <!--android:id="@+id/switcher_language"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignLeft="@id/switcher_name"-->
-        <!--android:layout_below="@+id/textview_gender_label_profile"-->
-        <!--android:layout_marginTop="15dp">-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/textview_language_value_profile"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:fontFamily="sans-serif"-->
-            <!--android:textSize="16sp"-->
-            <!--android:clickable="true"/>-->
-        <!--<EditText-->
-            <!--android:id="@+id/edittext_language_value_profile"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@android:color/transparent"-->
-            <!--android:singleLine="true"-->
-            <!--android:inputType="textNoSuggestions"-->
-            <!--android:imeOptions="actionDone"/>-->
-    <!--</ViewSwitcher>-->
-
     <Spinner
         android:id="@+id/spinner_language"
         android:layout_width="wrap_content"

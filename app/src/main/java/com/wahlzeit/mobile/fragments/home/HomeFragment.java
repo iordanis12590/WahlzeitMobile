@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Image;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
+import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
@@ -53,6 +54,7 @@ public class HomeFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.inject(this, rootView);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(populateUserPhotosReceiver, new IntentFilter("populate_user_photos"));
+        CommunicationManager.manager.getListAllPhotosTask(getActivity()).execute();
         populateTextAndImage();
         setupPhotosList();
         return rootView;

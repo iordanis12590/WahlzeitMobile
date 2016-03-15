@@ -41,9 +41,11 @@ public class HomeFragment extends Fragment {
     @InjectView(R.id.imageview_profile_pic_home) ImageView imageViewProfilePicture;
     String textName, textEmail, textGender, userImageUrl;
 
-    @InjectView(R.id.list_photos_home) ListView listViewPhotos;
+//    @InjectView(R.id.list_photos_home)
+    ListView listViewPhotos;
     List<PhotoListItem> photoListItems;
     PhotoListAdapter photoListAdapter;
+    View header;
 
     public HomeFragment() {}
 
@@ -52,9 +54,13 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        ButterKnife.inject(this, rootView);
+//        ButterKnife.inject(this, rootView);
+        listViewPhotos = (ListView) rootView.findViewById(R.id.list_photos_home);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(populateUserPhotosReceiver, new IntentFilter("populate_user_photos"));
         CommunicationManager.manager.getListAllPhotosTask(getActivity()).execute();
+
+        header = inflater.inflate(R.layout.list_header, container ,false);
+        ButterKnife.inject(this, header);
         populateTextAndImage();
         setupPhotosList();
         return rootView;
@@ -62,6 +68,7 @@ public class HomeFragment extends Fragment {
 
     private void populateTextAndImage() {
         try {
+
             userImageUrl = WahlzeitModel.model.getGoogleUserValue("picture");
             new GetImageFromUrlTask(this.getActivity(), imageViewProfilePicture).execute(userImageUrl);
 
@@ -111,6 +118,7 @@ public class HomeFragment extends Fragment {
             }
             photoListAdapter = new PhotoListAdapter(getActivity(), photoListItems);
             listViewPhotos.setAdapter(photoListAdapter);
+            listViewPhotos.addHeaderView(header);
         }
     };
 

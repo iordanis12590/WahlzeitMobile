@@ -46,12 +46,19 @@ public class PhotoListAdapter extends BaseAdapter {
     }
 
     static class ListItemViewHolder {
+        // values
         @InjectView(R.id.textview_photo_praise) TextView textViewPraise;
         @InjectView(R.id.textview_status) TextView textViewStatus;
         @InjectView(R.id.textview_upload_date) TextView textViewUploadDate;
         @InjectView(R.id.textview_photo_tags) TextView textViewPhotoTags;
-        @InjectView(R.id.textview_photo_link) TextView textViewPhotoLink;
+        @InjectView(R.id.textview_name_link) TextView textViewPhotoLink;
         @InjectView(R.id.imageview_photo_home) ImageView imageView;
+        // labels
+        @InjectView(R.id.textview_photo_praise_label) TextView textViewPraiseLabel;
+        @InjectView(R.id.textview_status_label) TextView textViewStatusLabel;
+        @InjectView(R.id.textview_upload_date_label) TextView textViewUploadDateLabel;
+        @InjectView(R.id.textview_photo_tags_label) TextView textViewPhotoTagsLabel;
+        @InjectView(R.id.textview_photo_name_label) TextView textViewPhotoLinkLabel;
         public ListItemViewHolder(View view) {ButterKnife.inject(this, view);}
     }
 
@@ -66,92 +73,24 @@ public class PhotoListAdapter extends BaseAdapter {
         ListItemViewHolder holder = new ListItemViewHolder(convertView);
         PhotoListItem item = photoListItems.get(position);
 
+        setupLabels(holder);
+
         holder.textViewPraise.setText(item.getPraise());
         holder.textViewStatus.setText(item.getStatus());
         holder.textViewUploadDate.setText(item.getUploadDate());
         holder.textViewPhotoTags.setText(item.getPhotoTags());
-        holder.textViewPhotoLink.setText(item.getPhotoLink());
+        holder.textViewPhotoLink.setText(item.getPhotoName());
         holder.imageView.setImageBitmap(item.getImage());
 
         return convertView;
+    }
 
-//        if (inflater == null)
-//            inflater = (LayoutInflater) activity
-//                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        if (convertView == null)
-//            convertView = inflater.inflate(R.layout.photo_list_item, null);
-//
-//
-//        return convertView;
-
-//        if (imageLoader == null)
-//            imageLoader = new ImageLoader(Volley.newRequestQueue(new MainActivity().getApplicationContext()), null);
-//
-//        TextView name = (TextView) convertView.findViewById(R.id.name);
-//        TextView timestamp = (TextView) convertView
-//                .findViewById(R.id.timestamp);
-//        TextView statusMsg = (TextView) convertView
-//                .findViewById(R.id.txtStatusMsg);
-//        TextView url = (TextView) convertView.findViewById(R.id.txtUrl);
-//        NetworkImageView profilePic = (NetworkImageView) convertView
-//                .findViewById(R.id.profilePic);
-//        FeedImageView feedImageView = (FeedImageView) convertView
-//                .findViewById(R.id.feedImage1);
-//
-//        PhotoListItem item = photoListItems.get(position);
-//
-//        name.setText(item.getName());
-//
-//        // Converting timestamp into x ago format
-//        CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
-//                Long.parseLong(item.getTimeStamp()),
-//                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
-//        timestamp.setText(timeAgo);
-//
-//        // Chcek for empty status message
-//        if (!TextUtils.isEmpty(item.getStatus())) {
-//            statusMsg.setText(item.getStatus());
-//            statusMsg.setVisibility(View.VISIBLE);
-//        } else {
-//            // status is empty, remove from view
-//            statusMsg.setVisibility(View.GONE);
-//        }
-//
-//        // Checking for null feed url
-//        if (item.getUrl() != null) {
-//            url.setText(Html.fromHtml("<a href=\"" + item.getUrl() + "\">"
-//                    + item.getUrl() + "</a> "));
-//
-//            // Making url clickable
-//            url.setMovementMethod(LinkMovementMethod.getInstance());
-//            url.setVisibility(View.VISIBLE);
-//        } else {
-//            // url is null, remove from the view
-//            url.setVisibility(View.GONE);
-//        }
-//
-//        // user profile pic
-//        profilePic.setImageUrl(item.getProfilePic(), imageLoader);
-//
-//        // Feed image
-//        if (item.getImge() != null) {
-//            feedImageView.setImageUrl(item.getImge(), imageLoader);
-//            feedImageView.setVisibility(View.VISIBLE);
-//            feedImageView
-//                    .setResponseObserver(new FeedImageView.ResponseObserver() {
-//                        @Override
-//                        public void onError() {
-//                        }
-//
-//                        @Override
-//                        public void onSuccess() {
-//                        }
-//                    });
-//        } else {
-//            feedImageView.setVisibility(View.GONE);
-//        }
-//
-//        return convertView;
+    private void setupLabels(ListItemViewHolder holder) {
+        holder.textViewPraiseLabel.setText("Praise:");
+        holder.textViewStatusLabel.setText("Status:");
+        holder.textViewUploadDateLabel.setText("Uploaded on:");
+        holder.textViewPhotoTagsLabel.setText("Tags:");
+        holder.textViewPhotoLinkLabel.setText("Name:");
     }
 
 }

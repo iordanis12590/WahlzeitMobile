@@ -26,8 +26,11 @@ import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
 
 import org.json.JSONException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -104,16 +107,25 @@ public class HomeFragment extends Fragment {
                 // get photo values
                 String photoId = photo.getId().getStringValue();
                 String photoPraise = photo.getPraise().toString();
-                String photoStatus = photo.getStatus();
-                String photoCreationTime = photo.getCreationTime().toString();
-                String photoTags = photo.getTags().toString();
-                String photoLink = photo.getTags().toString();
+                String photoStatus = photo.getStatus().toLowerCase();
+
+                // date
+                long unixCreationTime = photo.getCreationTime().longValue();
+//                java.util.Date dateTime= new java.util.Date((long)unixCreationTime*1000);
+                Date date = new Date(unixCreationTime*1000L);
+                // Fix it
+                SimpleDateFormat sdf = new SimpleDateFormat("MM dd, yyyy");
+                sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+                String photoCreationTime = sdf.format(date);
+
+                String photoTags = photo.getTags().getSize() != 0 ? photo.getTags().toString() : "-";
+                String photoName = photo.getIdAsString();
                 Image image = WahlzeitModel.model.getImages().get(photo.getIdAsString()).getItems().get(3);
                 byte[] imageAsBytes = Base64.decode(image.getImageData().getBytes(), Base64.DEFAULT);
                 Bitmap decodedImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
                 // create list object
                 PhotoListItem photoItem = new PhotoListItem( photoId, photoPraise, photoStatus,
-                                                    photoCreationTime, photoTags, photoLink, decodedImage);
+                                                    photoCreationTime, photoTags, photoName, decodedImage);
                 photoListItems.add(photoItem);
             }
             photoListAdapter = new PhotoListAdapter(getActivity(), photoListItems);
@@ -121,26 +133,5 @@ public class HomeFragment extends Fragment {
             listViewPhotos.addHeaderView(header);
         }
     };
-
-//    private void mapPhotosToPhotoListItems() {
-//        if (photos != null) {
-//            photoListItems = new ArrayList<PhotoListItem>();
-//            for(Photo photo: photos.getItems()) {
-//                PhotoListItem photoItem = new PhotoListItem(
-//                                                    photo.getId().getStringValue(),
-//                                                    photo.getPraise().toString(),
-//                                                    photo.getStatus(),
-//                                                    photo.getCreationTime().toString(),
-//                                                    photo.getTags().toString(),
-//                                                    photo.getIdAsString(),
-//                                                    null);
-//                Image image = WahlzeitModel.model.getImages().get(photo.getIdAsString()).getItems().get(3);
-//                byte[] imageAsBytes = Base64.decode(image.getImageData().getBytes(), Base64.DEFAULT);
-//                Bitmap decodedImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
-//                photoItem.setImage(decodedImage);
-//                photoListItems.add(photoItem);
-//            }
-//        }
-//    }
 
 }

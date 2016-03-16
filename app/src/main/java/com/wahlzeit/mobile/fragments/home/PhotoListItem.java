@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
  */
 public class PhotoListItem {
     private String id;
-    private String praise, status, uploadDate, photoTags, photoLink;
+    private String praise, status, uploadDate, photoTags, photoName;
     private Bitmap image;
 
     public PhotoListItem() {
@@ -21,7 +21,7 @@ public class PhotoListItem {
         this.status = status;
         this.uploadDate = uploadDate;
         this.photoTags = photoTags;
-        this.photoLink = photoLink;
+        this.photoName = photoLink;
         this.image = image;
     }
 
@@ -65,12 +65,12 @@ public class PhotoListItem {
         this.photoTags = photoTags;
     }
 
-    public String getPhotoLink() {
-        return photoLink;
+    public String getPhotoName() {
+        return photoName;
     }
 
-    public void setPhotoLink(String photoLink) {
-        this.photoLink = photoLink;
+    public void setPhotoName(String photoLink) {
+        this.photoName = photoLink;
     }
 
     public Bitmap getImage() {

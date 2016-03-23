@@ -23,6 +23,7 @@ import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
+import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 
 import org.json.JSONException;
 
@@ -35,7 +36,7 @@ import java.util.TimeZone;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements WahlzeitFragment {
 
     View rootView;
     @InjectView(R.id.textview_name_value_home) TextView textViewName;
@@ -59,7 +60,7 @@ public class HomeFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
 //        ButterKnife.inject(this, rootView);
         listViewPhotos = (ListView) rootView.findViewById(R.id.list_photos_home);
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(populateUserPhotosReceiver, new IntentFilter("populate_user_photos"));
+        registerEvents();
         CommunicationManager.manager.getListAllPhotosTask(getActivity()).execute();
 
         header = inflater.inflate(R.layout.list_header, container ,false);
@@ -134,4 +135,24 @@ public class HomeFragment extends Fragment {
         }
     };
 
+
+    private void registerEvents() {
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(populateUserPhotosReceiver, new IntentFilter("populate_user_photos"));
+    }
+
+    private void unregisterEvents() {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(populateUserPhotosReceiver);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterEvents();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        unregisterEvents();
+    }
 }

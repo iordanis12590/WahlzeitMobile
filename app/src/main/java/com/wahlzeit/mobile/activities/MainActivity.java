@@ -17,43 +17,39 @@ import android.widget.ListView;
 import com.wahlzeit.mobile.NavDrawerItem;
 import com.wahlzeit.mobile.NavDrawerListAdapter;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.fragments.home.HomeFragment;
-import com.wahlzeit.mobile.fragments.profile.ProfileFragment;
-import com.wahlzeit.mobile.fragments.show.ShowFragment;
-import com.wahlzeit.mobile.fragments.TellFragment;
+import com.wahlzeit.mobile.fragments.FragmentFactory;
+import com.wahlzeit.mobile.fragments.Fragments;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class MainActivity extends AppCompatActivity {
 
-    private ListView mDrawerList;
     private NavDrawerListAdapter mAdapter;
-    private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private ArrayList<NavDrawerItem> navDrawerItems;
 
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
     private String mActivityTitle;
-    // nav drawer title
-    private CharSequence mDrawerTitle;
     // used to store app title
     private CharSequence mTitle;
 
+    @InjectView(R.id.nav_list) ListView mDrawerList;
+    @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    FragmentFactory mFragmentFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
 
         mActivityTitle = getTitle().toString();
-        mDrawerList = (ListView) findViewById(R.id.nav_list);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navDrawerItems = new ArrayList<NavDrawerItem>();
         loadResources();
-
         addNavigationDrawerItems();
-        setupDrawerList();
         setupDrawerToogle();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -91,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadResources() {
+        navDrawerItems = new ArrayList<NavDrawerItem>();
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
         navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
     }
@@ -101,10 +98,8 @@ public class MainActivity extends AppCompatActivity {
             navDrawerItems.add(new NavDrawerItem(navMenuTitles[i], navMenuIcons.getResourceId(i, -1)));
         }
         mAdapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
-    }
-
-    private void setupDrawerList() {
         mDrawerList.setAdapter(mAdapter);
+
     }
 
     private void setupDrawerToogle() {
@@ -145,16 +140,16 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new ShowFragment();
+                fragment = FragmentFactory.getFragment(Fragments.Show); //new ShowFragment();
                 break;
             case 1:
-                fragment = new TellFragment();
+                fragment = FragmentFactory.getFragment(Fragments.Tell); //new TellFragment();
                 break;
             case 2:
-                fragment = new HomeFragment();
+                fragment = FragmentFactory.getFragment(Fragments.Home); //new HomeFragment();
                 break;
             case 3:
-                fragment = new ProfileFragment();
+                fragment = FragmentFactory.getFragment(Fragments.Profile); //new ProfileFragment();
                 break;
             default:
                 break;
@@ -175,6 +170,5 @@ public class MainActivity extends AppCompatActivity {
             Log.e("MainActivity", "Error in creating fragment");
         }
     }
-
 
 }

@@ -20,13 +20,14 @@ import android.widget.ViewSwitcher;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
+import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 
 import org.json.JSONException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements WahlzeitFragment {
 
     View rootView;
     @InjectView(R.id.textview_name_value_profile) TextView textViewName;

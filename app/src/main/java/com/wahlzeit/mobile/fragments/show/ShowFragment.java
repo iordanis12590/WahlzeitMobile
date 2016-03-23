@@ -20,12 +20,13 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 import com.wenchao.cardstack.CardStack;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ShowFragment extends Fragment {
+public class ShowFragment extends Fragment implements WahlzeitFragment {
 
     View rootView;
     private CardsDataAdapter mCardAdapter;

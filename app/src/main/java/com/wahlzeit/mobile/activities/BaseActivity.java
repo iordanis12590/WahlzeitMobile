@@ -44,18 +44,27 @@ public class BaseActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                Configuration configuration = new Configuration();
-                Locale locale = new Locale("en");
-                switch (which) {
-                    case 1:
-                        locale = new Locale("de");
-                        break;
-                }
-                configuration.locale = locale;
-                getResources().updateConfiguration(configuration, null);
+                String lanuage = ((AlertDialog)dialog).getListView().getAdapter().getItem(which).toString();
+                setLocale(lanuage);
             }
         });
         builder.show();
     }
+
+    public void setLocale(String language) {
+        Configuration configuration = new Configuration();
+        Locale locale;
+        if(language.toLowerCase().equals("german")) {
+            locale = new Locale("de");
+        } else {
+            locale = new Locale("en");
+        }
+        configuration.locale = locale;
+        getResources().updateConfiguration(configuration, null);
+
+        finish();
+        startActivity(getIntent());
+    }
+
 
 }

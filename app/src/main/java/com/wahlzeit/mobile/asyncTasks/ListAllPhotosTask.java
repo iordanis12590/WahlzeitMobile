@@ -21,15 +21,11 @@ import java.util.Map;
  * Created by iordanis on 28/02/16.
  */
 public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
-//    CardsDataAdapter mCardAdapter;
-//    CardStack mCardStack;
     WahlzeitApi wahlzeitServiceHandle;
     Context mContext;
 
     public ListAllPhotosTask(Context context) {
         this.mContext = context;
-//        this.mCardAdapter = (CardsDataAdapter) adapter;
-//        this.mCardStack = (CardStack) container;
         wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
     }
 

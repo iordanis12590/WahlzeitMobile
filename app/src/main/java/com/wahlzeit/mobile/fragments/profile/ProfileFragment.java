@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -19,6 +20,7 @@ import android.widget.ViewSwitcher;
 
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.activities.BaseActivity;
 import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
 import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 
@@ -37,6 +39,7 @@ public class ProfileFragment extends Fragment implements WahlzeitFragment {
     @InjectView(R.id.switch_notify_value_profile) Switch switchNotify;
     @InjectView(R.id.spinner_gender) Spinner spinnerGender;
     @InjectView(R.id.spinner_language) Spinner spinnerLanguage;
+    @InjectView(R.id.button_update_profile) Button updateButton;
     String textName, textEmail, textGender, textLanguage, userImageUrl;
     boolean notify;
     ViewSwitcher viewSwitcher;
@@ -52,6 +55,7 @@ public class ProfileFragment extends Fragment implements WahlzeitFragment {
         ButterKnife.inject(this, rootView);
         setupSpinners();
         setupSwitchers();
+        setupUpdateButton();
         populateTextAndImage();
         return rootView;
     }
@@ -86,6 +90,11 @@ public class ProfileFragment extends Fragment implements WahlzeitFragment {
         } catch (AssertionError ae) {
             ae.printStackTrace();
         }
+    }
+
+    private void setupUpdateButton() {
+        MyUpdateProfileClickListener myUpdateProfileClickListener = new MyUpdateProfileClickListener();
+        updateButton.setOnClickListener(myUpdateProfileClickListener);
     }
 
     private void setupSwitchers() {
@@ -125,7 +134,6 @@ public class ProfileFragment extends Fragment implements WahlzeitFragment {
         public void onFocusChange(View v, boolean hasFocus){
             if(v instanceof EditText && !hasFocus) {
                 hideKeyboardAndCursor(v);
-                // view will always be an EditText
                 switchBackToTextView((EditText) v);
             }
         }
@@ -139,7 +147,21 @@ public class ProfileFragment extends Fragment implements WahlzeitFragment {
             switchBackToTextView(v);
             return false;
         }
+
     }
+
+    private class MyUpdateProfileClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            String name = textViewName.getText().toString();
+            String gender = spinnerGender.getSelectedItem().toString();
+            String language = spinnerLanguage.getSelectedItem().toString();
+            WahlzeitModel.model.getCurrentClient().setNickName(name);
+            WahlzeitModel.model.getCurrentClient().setLanguage(language);
+            ((BaseActivity)getActivity()).setLocale(language);
+
+        }
+    };
 
     private void switchToEditText(View v) {
         ViewSwitcher switcher = (ViewSwitcher) v.getParent();
@@ -172,5 +194,7 @@ public class ProfileFragment extends Fragment implements WahlzeitFragment {
         final InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
+
+
 
 }

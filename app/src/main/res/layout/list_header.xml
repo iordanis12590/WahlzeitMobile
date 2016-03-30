@@ -76,7 +76,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textview_email_label_home"
             android:layout_marginTop="15dp"
-            android:text="@string/email"
+            android:text="@string/gender"
             android:fontFamily="sans-serif-medium"
             android:textSize="16sp" />
 

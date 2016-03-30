@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,12 +30,12 @@ import butterknife.InjectView;
 /**
  * A login screen that offers login via myEmail/password.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private GoogleAccountCredential credential;
     static final int REQUEST_ACCOUNT_PICKER = 2;
 
-    @InjectView(R.id.button_signin_administrator) Button mAdminSigningButton;
+//    @InjectView(R.id.button_signin_administrator) Button mAdminSigningButton;
     @InjectView(R.id.button_signin_user) Button mUserSigninButton;
     @InjectView(R.id.button_signin_guest) Button mGuestSigningButton;
     @InjectView(R.id.login_progress) View mProgressView;
@@ -53,17 +52,6 @@ public class LoginActivity extends AppCompatActivity {
         credential = GoogleAccountCredential.usingAudience(this, CommunicationManager.manager.WEB_CLIENT);
         getAccountName();
         setupLoginButtons();
-    }
-
-    private void getAccountName() {
-        String accountName = settings.getString(PREF_ACCOUNT_NAME, null);
-        if(accountName == null || accountName.contentEquals("")) {
-            chooseAccount();
-        } else {
-            WahlzeitModel.model.setAccountName(accountName);
-            credential.setSelectedAccountName(accountName);
-            WahlzeitModel.model.setCredential(credential);
-        }
     }
 
     @Override
@@ -86,6 +74,17 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void getAccountName() {
+        String accountName = settings.getString(PREF_ACCOUNT_NAME, null);
+        if(accountName == null || accountName.contentEquals("")) {
+            chooseAccount();
+        } else {
+            WahlzeitModel.model.setAccountName(accountName);
+            credential.setSelectedAccountName(accountName);
+            WahlzeitModel.model.setCredential(credential);
+        }
+    }
+
     private void saveAccountName(String accountName) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(PREF_ACCOUNT_NAME, accountName);
@@ -100,12 +99,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mAdminSigningButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptOauth2Login(false);
-            }
-        });
+//        mAdminSigningButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                attemptOauth2Login(false);
+//            }
+//        });
 
         mGuestSigningButton.setOnClickListener(new View.OnClickListener() {
             @Override

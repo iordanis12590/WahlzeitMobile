@@ -17,7 +17,7 @@
             android:id="@+id/textview_done_show"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/done_text_en"
+            android:text="@string/done_text"
             android:fontFamily="sans-serif"
             android:textSize="16sp"
             android:textStyle="bold"

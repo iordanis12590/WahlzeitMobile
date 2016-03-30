@@ -17,7 +17,6 @@ public class FragmentFactory {
     static private Fragment administerFragment;
 
     public static Fragment getFragment(Fragments fragment) {
-
         switch (fragment) {
             case Show: return showFragment == null ? new ShowFragment() : showFragment;
             case Tell: return tellFragment == null ? new TellFragment() : tellFragment;
@@ -27,8 +26,7 @@ public class FragmentFactory {
             case Moderate: return moderateFragment == null ? new ModerateFragment() : moderateFragment;
             case Administer: return administerFragment == null ? new AdministerFragment() : administerFragment; //getAdministerFragment();
         }
-
         return null;
     }
-    
+
 }

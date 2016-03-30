@@ -2,25 +2,20 @@
     <string name="app_name">Wahlzeit</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This myEmail address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing myEmail
-        completions."
-    </string>
 
-    <string name="done_text_en">"Done!\n
+    <string name="done_text">"Done!\n
         Wow!! You've seen all the photos we can currently show you. To see more, please either adjust your photo filter or come back later.\n
         Please don't forget to tell your friends about this website! And we love feedback, so please comment on our blog.\n
         Please continue viewing photos!"
     </string>
 
     <!-- Strings related to main activity -->
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
     <string-array name="nav_drawer_items">
         <item>Show</item>
@@ -55,13 +50,24 @@
         <item>German</item>
     </string-array>
 
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_in">Sign in as user</string>
+    <string name="continue_as_guest">Continue as guest</string>
+    <string name="name">Name:</string>
+    <string name="gender">Gender:</string>
+    <string name="language">Language:</string>
+    <string name="email">Email:</string>
+    <string name="notify_about_praise">Notify abot praise:</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="edit">Edit</string>
+    <string name="tell">Tell</string>
+    <string name="select">Select</string>
+    <string name="delete">Delete</string>
+    <string name="choose_language">Choose language</string>
 
 </resources>

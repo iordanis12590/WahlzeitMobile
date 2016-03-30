@@ -163,7 +163,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Edit"
+                android:text="@string/edit"
                 android:textColor="#3f51b5"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-medium"
@@ -178,7 +178,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Tell"
+                android:text="@string/tell"
                 android:textColor="#3f51b5"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-medium"
@@ -193,7 +193,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Select"
+                android:text="@string/select"
                 android:textColor="#3f51b5"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-medium"
@@ -208,7 +208,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Delete"
+                android:text="@string/delete"
                 android:textColor="#3f51b5"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-medium"
@@ -216,8 +216,6 @@
                 android:background="@android:color/transparent"
                 />
         </LinearLayout>
-
-
 
     </LinearLayout>
 

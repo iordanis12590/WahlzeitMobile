@@ -66,7 +66,7 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
 
     private void setupDoneText() {
         mTextViewDone.setVisibility(View.GONE);
-        String doneText = getResources().getString(R.string.done_text_en);
+        String doneText = getResources().getString(R.string.done_text);
         mTextViewDone.setText(doneText);
     }
 

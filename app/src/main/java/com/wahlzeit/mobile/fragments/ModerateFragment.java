@@ -11,7 +11,7 @@ import com.wahlzeit.mobile.R;
 /**
  * Created by iordanis on 16/03/16.
  */
-public class ModerateFragment extends Fragment implements WahlzeitFragment {
+public class ModerateFragment extends Fragment {
     public ModerateFragment() {
         // Required empty public constructor
     }

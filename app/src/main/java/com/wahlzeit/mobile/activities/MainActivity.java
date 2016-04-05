@@ -150,6 +150,9 @@ public class MainActivity extends BaseActivity {
             case 3:
                 fragment = FragmentFactory.getFragment(Fragments.Profile); //new ProfileFragment();
                 break;
+            case 4:
+                fragment = FragmentFactory.getFragment(Fragments.Upload);
+                break;
             default:
                 break;
         }

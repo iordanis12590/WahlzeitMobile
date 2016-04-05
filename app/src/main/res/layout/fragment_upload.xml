@@ -4,10 +4,23 @@
     android:layout_height="match_parent"
     tools:context="com.wahlzeit.mobile.fragments.UploadFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="400dp"
+        android:id="@+id/imageview_upload_image"
+        android:layout_gravity="center_horizontal|top" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Photo"
+        android:id="@+id/button_choose_photo"
+        android:layout_gravity="right|bottom" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take Photo"
+        android:id="@+id/button_upload_image"
+        android:layout_gravity="left|bottom" />
 </FrameLayout>

@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="6dp"
+    card_view:cardElevation="10dp"
   >
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="200dp"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-
 
         <TextView
             android:id="@+id/textview_title_card"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -32,33 +34,23 @@
             />
 
         <ImageView
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:scaleType="fitStart"
             android:id="@+id/imageview_photo"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/textview_title_card"
-            android:layout_above="@+id/ratingbar" />
+            android:adjustViewBounds="true"
+             />
 
         <RatingBar
+            android:layout_marginTop="5dp"
             android:id="@+id/ratingbar"
-            android:layout_width="match_parent"
+            android:layout_width="327dp"
             android:layout_height="wrap_content"
             android:numStars="10"
-            android:stepSize="1.0"
-            android:rating="2.0"
-            android:layout_above="@+id/imagebutton_flag"
+            android:rating="7.0"
+            android:isIndicator="false"
+            style="@style/customRatingBar"
             />
 
-
-        <ImageButton
-            android:id="@+id/imagebutton_flag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:padding="10dp"
-            android:layout_centerHorizontal="true"
-            tools:src="@drawable/ic_moderate"/>
-
-
-    </RelativeLayout>
+    </LinearLayout>
 </android.support.v7.widget.CardView>

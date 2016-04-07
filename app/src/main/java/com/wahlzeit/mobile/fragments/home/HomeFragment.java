@@ -66,7 +66,6 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
         header = inflater.inflate(R.layout.list_header, container ,false);
         ButterKnife.inject(this, header);
         populateTextAndImage();
-        setupPhotosList();
         return rootView;
     }
 
@@ -88,16 +87,6 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
         } catch(JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    private void setupPhotosList() {
-//        photoListItems = new ArrayList<PhotoListItem>();
-//        photoListAdapter = new PhotoListAdapter(getActivity(), photoListItems);
-//        mapPhotosToPhotoListItems();
-//        if(photoListItems != null) {
-//            photoListAdapter.addAll(photoListItems);
-//        }
-//        listViewPhotos.setAdapter(photoListAdapter);
     }
 
     private BroadcastReceiver populateUserPhotosReceiver = new BroadcastReceiver() {
@@ -134,7 +123,6 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
             listViewPhotos.addHeaderView(header);
         }
     };
-
 
     private void registerEvents() {
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(populateUserPhotosReceiver, new IntentFilter("populate_user_photos"));

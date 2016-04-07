@@ -61,7 +61,7 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
     private void setupCardStack() {
         mCardStack.setContentResource(R.layout.card_content);
 //        mCardStack.setStackMargin(20);
-        mCardAdapter = new CardsDataAdapter(getActivity().getApplicationContext());
+        mCardAdapter = new CardsDataAdapter(getActivity().getApplicationContext(), mCardStack);
     }
 
     private void setupDoneText() {

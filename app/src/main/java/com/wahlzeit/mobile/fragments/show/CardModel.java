@@ -7,12 +7,13 @@ import android.graphics.Bitmap;
  */
 public class CardModel {
 
+    private String photoId;
     private String mTitle;
     private Bitmap mPhotoImage;
     private Bitmap mFlagImage;
 
-    public CardModel(String title, Bitmap photoImage) {
-        this.mTitle = title;
+    public CardModel(String photoId, Bitmap photoImage) {
+        this.photoId = photoId;
         this.mPhotoImage = photoImage;
     }
 
@@ -38,6 +39,14 @@ public class CardModel {
 
     public void setmFlagImage(Bitmap mFlagImage) {
         this.mFlagImage = mFlagImage;
+    }
+
+    public String getPhotoId() {
+        return photoId;
+    }
+
+    public void setPhotoId(String photoId) {
+        this.photoId = photoId;
     }
 
 }

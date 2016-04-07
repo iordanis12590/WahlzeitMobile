@@ -2,6 +2,7 @@ package com.wahlzeit.mobile;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Client;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.ImageCollection;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
@@ -36,6 +37,27 @@ public class WahlzeitModel {
 
     public PhotoCollection getPhotoCache() {
         return photoCache;
+    }
+
+    public Photo getPhotoFromId(String photoId) {
+        Photo result = null;
+        for(Photo photo: photoCache.getItems()) {
+            if (photo.getIdAsString().equals(photoId)) {
+                result = photo;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public void updatePhoto(Photo updatedPhoto) {
+        for (Photo photo: photoCache.getItems()) {
+            if(photo.getIdAsString().equals(updatedPhoto.getIdAsString())) {
+                photoCache.getItems().remove(photo);
+                photoCache.getItems().add(updatedPhoto);
+                break;
+            }
+        }
     }
 
     public void setPhotoCache(PhotoCollection photoCache) {

@@ -10,11 +10,11 @@ import com.wahlzeit.mobile.WahlzeitModel;
 /**
  * Created by iordanis on 30/03/16.
  */
-public class UpdateProfile extends AsyncTask<Void, Void, Void> {
+public class UpdateProfileTask extends AsyncTask<Void, Void, Void> {
     WahlzeitApi wahlzeitServiceHandle;
     Context mContext;
 
-    public UpdateProfile(Context context) {
+    public UpdateProfileTask(Context context) {
         this.mContext = context;
         wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
 

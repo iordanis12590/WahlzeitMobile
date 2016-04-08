@@ -95,9 +95,17 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         public void onReceive(Context context, Intent intent) {
             for(Photo photo: WahlzeitModel.model.getPhotoCache().getItems()) {
                 String photoId = photo.getIdAsString();
-                Image image = WahlzeitModel.model.getImages().get(photoId).getItems().get(3);
-                byte[] imageAsBytes = Base64.decode(image.getImageData().getBytes(), Base64.DEFAULT);
-                Bitmap decodedImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+                int i = 3;
+                Image image = WahlzeitModel.model.getImages().get(photoId).getItems().get(i);
+                Bitmap decodedImage = null;
+                while (image.isEmpty() && i >= 0) {
+                    --i;
+                    image = WahlzeitModel.model.getImages().get(photo.getIdAsString()).getItems().get(i);
+                }
+                if(!image.isEmpty()) {
+                    byte[] imageAsBytes = Base64.decode(image.getImageData().getBytes(), Base64.DEFAULT);
+                    decodedImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+                }
                 mCardAdapter.add(new CardModel(photoId, decodedImage));
             }
             mCardStack.setAdapter(mCardAdapter);

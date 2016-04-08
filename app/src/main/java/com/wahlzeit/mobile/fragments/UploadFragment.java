@@ -1,7 +1,6 @@
 package com.wahlzeit.mobile.fragments;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,12 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
+import android.widget.Toast;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.R;
@@ -43,12 +41,14 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
     private static final String TAG = "UploadActivity";
 
     Photo photoToUpload;
+    Bitmap mySelectedImage;
     View rootView;
-    @InjectView(R.id.button_upload_image) Button uploadButton;
+    @InjectView(R.id.button_upload_image) Button takePhotoButton;
     @InjectView(R.id.imageview_upload_image) ImageView uploadImageView;
     @InjectView(R.id.button_choose_photo) Button choosePhotoButton;
     @InjectView(R.id.textview_tags_upload) TextView textViewTags;
     @InjectView(R.id.edittext_tags_upload) EditText editTextTags;
+    @InjectView(R.id.button_upload_photo) Button uploadPhotoButton;
 
     public UploadFragment() {
         // Required empty public constructor
@@ -76,8 +76,9 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
 
 
     private void setupButtons() {
-        uploadButton.setOnClickListener(new MyUploadButtonClickListener());
+        takePhotoButton.setOnClickListener(new MyTakePhotoButtonClickListener());
         choosePhotoButton.setOnClickListener(new MyChoosePhotoButtonClickListener());
+        uploadPhotoButton.setOnClickListener(new MyUploadPhotoButtonClickListener());
     }
 
 
@@ -92,7 +93,7 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         }
     }
 
-    private class MyUploadButtonClickListener implements View.OnClickListener {
+    private class MyTakePhotoButtonClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
@@ -105,7 +106,6 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.v(TAG, "Calling onActivityResult after taking picture");
         if (resultCode == -1)  {
-            Bitmap mySelectedImage = null;
             if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
                 mySelectedImage = (Bitmap) data.getExtras().get("data");
                 Log.v(TAG, "set bitmap photo into ImageView");
@@ -124,14 +124,11 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
                 mySelectedImage = BitmapFactory.decodeStream(imageStream);
                 uploadImageView.setImageBitmap(mySelectedImage);
             }
-            uploadPhoto(mySelectedImage);
         }
     }
-    @Override
-    public void onStart() {
-        super.onStart();
 
-    }
+    @Override
+    public void onStart() { super.onStart(); }
 
     @Override
     public void onDetach() {
@@ -172,28 +169,15 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         new UploadPhotoTask(getActivity().getApplicationContext()).execute(photoToUpload);
     }
 
-    private class MyTextViewOnClickListener implements View.OnClickListener {
+    private class MyUploadPhotoButtonClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            switchToEditText(v);
+            if (mySelectedImage == null) {
+                Toast.makeText(getActivity(), "Please choose a photo from your gallery or take a photo with your camera", Toast.LENGTH_LONG).show();
+            } else {
+                uploadPhoto(mySelectedImage);
+            }
         }
-    }
-
-    private void switchToEditText(View v) {
-        ViewSwitcher switcher = (ViewSwitcher) v.getParent();
-        EditText editText = (EditText) switcher.getNextView();;
-        TextView textView = (TextView) v;
-        switcher.showNext();
-        String textViewText = textView.getText().toString();
-        editText.setText(textViewText);
-        editText.setFocusableInTouchMode(true);
-        editText.requestFocus();
-        showKeyboardAndCursor(editText);
-    }
-
-    private void showKeyboardAndCursor(EditText editText) {
-        final InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 }

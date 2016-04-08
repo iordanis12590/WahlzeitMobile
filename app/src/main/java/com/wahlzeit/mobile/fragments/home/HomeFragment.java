@@ -118,9 +118,7 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
                     --i;
                     image = WahlzeitModel.model.getImages().get(photo.getIdAsString()).getItems().get(i);
                 }
-
                 if(!image.isEmpty()) {
-
                     byte[] imageAsBytes = Base64.decode(image.getImageData().getBytes(), Base64.DEFAULT);
                     decodedImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
                 }

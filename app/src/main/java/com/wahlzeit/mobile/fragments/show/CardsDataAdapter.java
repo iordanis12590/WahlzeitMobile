@@ -21,7 +21,7 @@ public class CardsDataAdapter extends ArrayAdapter<CardModel> {
     CardStack myCardStack;
 
     public CardsDataAdapter(Context context, CardStack cardStack) {
-        super(context, R.layout.card_content);
+        super(context, R.layout.fragment_show_card_content);
         this.myCardStack = cardStack;
     }
 

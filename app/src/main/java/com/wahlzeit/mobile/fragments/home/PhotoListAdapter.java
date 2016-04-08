@@ -68,7 +68,7 @@ public class PhotoListAdapter extends BaseAdapter {
         if (inflater == null)
             inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-            convertView = inflater.inflate(R.layout.photo_list_item, null);
+            convertView = inflater.inflate(R.layout.fragment_home_photo_list_item, null);
 
         ListItemViewHolder holder = new ListItemViewHolder(convertView);
         PhotoListItem item = photoListItems.get(position);

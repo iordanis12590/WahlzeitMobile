@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Tags;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.asyncTasks.UploadPhotoTask;
@@ -29,6 +30,9 @@ import com.wahlzeit.mobile.components.textswitcher.TextViewClickListener;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -155,28 +159,45 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         super.onDestroy();
     }
 
-    private void uploadPhoto(Bitmap image) {
+    private void uploadPhoto() {
         photoToUpload = new Photo();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        String byteArrayString = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
         photoToUpload.setOwnerId(WahlzeitModel.model.getCurrentClient().getId());
         photoToUpload.setOwnerEmailAddress(WahlzeitModel.model.getCurrentClient().getEmailAddress());
-        photoToUpload.setBlobImage(byteArrayString);
-
+        photoToUpload.setBlobImage(getCompressedSelectedImage());
+        photoToUpload.setTags(getTagsFromTextView());
         new UploadPhotoTask(getActivity().getApplicationContext()).execute(photoToUpload);
     }
 
-    private class MyUploadPhotoButtonClickListener implements View.OnClickListener {
+    private Tags getTagsFromTextView() {
+        Tags result = new Tags();
+        String tagsText = textViewTags.getText().toString();
+        String tagsPlaceholder = getResources().getString(R.string.tags_placeholder);
+        if(tagsText.equals(tagsPlaceholder)) {
+            //do nothing
+            Log.i(getActivity().getTitle().toString(), "do nothing");
+        } else {
+            String[] tagsArray = tagsText.split(",");
+            List<String> tagsList = new ArrayList<String>(Arrays.asList(tagsArray));
+            result.setTags(tagsList);
+        }
+        return result;
+    }
 
+    private String getCompressedSelectedImage() {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        mySelectedImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        String byteArrayString = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        return byteArrayString;
+    }
+
+    private class MyUploadPhotoButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             if (mySelectedImage == null) {
                 Toast.makeText(getActivity(), "Please choose a photo from your gallery or take a photo with your camera", Toast.LENGTH_LONG).show();
             } else {
-                uploadPhoto(mySelectedImage);
+                uploadPhoto();
             }
         }
     }

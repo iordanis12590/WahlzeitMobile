@@ -73,7 +73,7 @@
                 android:textSize="14sp"
                 android:fontFamily="sans-serif"
                 android:clickable="true"
-                android:text="Write tags seperated by comma (eg.Tag1, Tag2)"
+                android:text="@string/tags_placeholder"
                 />
 
             <EditText

@@ -1,4 +1,4 @@
-package com.wahlzeit.mobile;
+package com.wahlzeit.mobile.components.navigation;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.wahlzeit.mobile.R;
 
 import java.util.ArrayList;
 

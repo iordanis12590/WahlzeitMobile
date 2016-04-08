@@ -1,4 +1,4 @@
-package com.wahlzeit.mobile;
+package com.wahlzeit.mobile.components.navigation;
 
 /**
  * Created by iordanis on 25/02/16.

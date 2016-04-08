@@ -8,21 +8,12 @@ import android.graphics.Bitmap;
 public class CardModel {
 
     private String photoId;
-    private String mTitle;
+    private String ownerName;
     private Bitmap mPhotoImage;
-    private Bitmap mFlagImage;
 
     public CardModel(String photoId, Bitmap photoImage) {
         this.photoId = photoId;
         this.mPhotoImage = photoImage;
-    }
-
-    public String getmTitle() {
-        return mTitle;
-    }
-
-    public void setmTitle(String mTitle) {
-        this.mTitle = mTitle;
     }
 
     public Bitmap getmPhotoImage() {
@@ -33,14 +24,6 @@ public class CardModel {
         this.mPhotoImage = mPhotoImage;
     }
 
-    public Bitmap getmFlagImage() {
-        return mFlagImage;
-    }
-
-    public void setmFlagImage(Bitmap mFlagImage) {
-        this.mFlagImage = mFlagImage;
-    }
-
     public String getPhotoId() {
         return photoId;
     }
@@ -49,4 +32,11 @@ public class CardModel {
         this.photoId = photoId;
     }
 
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
 }

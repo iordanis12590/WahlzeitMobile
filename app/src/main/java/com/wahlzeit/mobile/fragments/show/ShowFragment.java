@@ -20,6 +20,7 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.asyncTasks.SkipPhotoTask;
 import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 import com.wenchao.cardstack.CardStack;
 
@@ -73,12 +74,21 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
     private BroadcastReceiver discardPhotoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            // get discarded card and skip
+            CardModel card = mCardAdapter.getItem(mCardStack.getCurrIndex() - 1);
+            skipCard(card.getPhotoId());
             // :) A hack to determine the card stack is left without cards
             if (mCardAdapter.getCount() == mCardStack.getCurrIndex()) {
                 mTextViewDone.setVisibility(View.VISIBLE);
             }
         }
     };
+
+    private void skipCard(String photoId) {
+        Photo photoToSkip = WahlzeitModel.model.getPhotoFromId(photoId);
+        photoToSkip.setPraisingClientId(WahlzeitModel.model.getCurrentClient().getId());
+        new SkipPhotoTask(getActivity().getApplicationContext()).execute(photoToSkip);
+    }
 
     private BroadcastReceiver populatePhotoCardsReceiver = new BroadcastReceiver() {
         @Override

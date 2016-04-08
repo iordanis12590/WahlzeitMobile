@@ -1,12 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wahlzeit.mobile.fragments.UploadFragment">
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
+        android:src="@drawable/upload_placeholder"
         android:id="@+id/imageview_upload_image"
         android:layout_gravity="center_horizontal|top" />
 
@@ -14,13 +14,65 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Choose Photo"
+        android:fontFamily="sans-serif"
         android:id="@+id/button_choose_photo"
-        android:layout_gravity="right|bottom" />
+        android:layout_gravity="center_horizontal"
+        android:background="@android:color/transparent"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
         android:text="Take Photo"
         android:id="@+id/button_upload_image"
-        android:layout_gravity="left|bottom" />
-</FrameLayout>
+        android:layout_gravity="center_horizontal"
+        android:background="@android:color/transparent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Tags:"
+            android:id="@+id/textView" />
+
+
+        <ViewSwitcher
+            android:id="@+id/switcher_tags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/textview_name_label_profile"
+            android:layout_below="@+id/imageview_profile_pic_profile"
+            android:layout_marginLeft="10dp">
+
+            <TextView
+                android:id="@+id/textview_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"
+                android:clickable="true"
+                android:text="Tag1, Tag2"
+                />
+
+            <EditText
+                android:id="@+id/edittext_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:singleLine="true"
+                android:inputType="textNoSuggestions"
+                android:imeOptions="actionDone"/>
+        </ViewSwitcher>
+    </LinearLayout>
+
+
+
+</LinearLayout>

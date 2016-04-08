@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -14,19 +13,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
-import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.asyncTasks.UploadPhotoTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 
 import butterknife.ButterKnife;
@@ -44,10 +44,8 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
     @InjectView(R.id.button_upload_image) Button uploadButton;
     @InjectView(R.id.imageview_upload_image) ImageView uploadImageView;
     @InjectView(R.id.button_choose_photo) Button choosePhotoButton;
-
-    public UploadFragment() {
-        // Required empty public constructor
-    }
+    @InjectView(R.id.textview_photo_tags) TextView textViewTags;
+    @InjectView(R.id.edittext_tags) EditText editTextTags;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,41 +53,40 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_upload, container, false);
         ButterKnife.inject(this, rootView);
-        uploadButton.setOnClickListener(new MyUploadButtonClickListener());
-        choosePhotoButton.setOnClickListener(new MyChoosePhotoButtonClickListener());
+        setupButtons();
+        setupTagsText();
         return rootView;
     }
 
-    private class MyChoosePhotoButtonClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            choosePhoto();
-        }
+    private void setupTagsText() {
+        View.OnClickListener onClickListener = new MyTextViewOnClickListener();
     }
 
+
+    private void setupButtons() {
+        uploadButton.setOnClickListener(new MyUploadButtonClickListener());
+        choosePhotoButton.setOnClickListener(new MyChoosePhotoButtonClickListener());
+    }
+
+
+    private class MyChoosePhotoButtonClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent,
+                    "Select Picture"), CHOOSE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
+    }
 
     private class MyUploadButtonClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-//            uploadPhoto();
-            takePhoto();
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
-
-    }
-
-    private void choosePhoto() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,
-                "Select Picture"), CHOOSE_IMAGE_ACTIVITY_REQUEST_CODE);
-    }
-
-    private void takePhoto() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
     @Override
@@ -118,9 +115,6 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
             uploadPhoto(mySelectedImage);
         }
     }
-
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -163,66 +157,31 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         photoToUpload.setOwnerEmailAddress(WahlzeitModel.model.getCurrentClient().getEmailAddress());
         photoToUpload.setBlobImage(byteArrayString);
 
-//        uploadPhotoTask.cancel(true);
-//        AsyncTask.Status status = uploadPhotoTask.getStatus();
-//        if(uploadPhotoTask.getStatus() == AsyncTask.Status.FINISHED ){
-//            uploadPhotoTask.cancel(true);
-//
-//            return;
-//        }
-
-        new UploadPhotoTask().execute();
+        new UploadPhotoTask(getActivity().getApplicationContext()).execute(photoToUpload);
     }
 
-
-    AsyncTask<Void,Void,String> uploadPhotoTask = new AsyncTask<Void, Void, String>() {
-        @Override
-        protected String doInBackground(Void... params) {
-            WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(null);
-            try {
-
-                WahlzeitApi.Photos.Upload uploadCommand = wahlzeitServiceHandle.photos().upload(photoToUpload);
-                Photo photo = uploadCommand.execute();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return "Upload Complete";
-        }
-
-        protected void onPostExecute(String result) {
-//            Log.v(TAG, "Inside doInBackground - onPostExecute()");
-//            Context context = getActivity().getApplicationContext();
-//            CharSequence text = result;
-//            int duration = Toast.LENGTH_SHORT;
-//            Toast toast = Toast.makeText(context, text, duration);
-//            toast.show();
-        }
-    };
-
-    private class UploadPhotoTask extends AsyncTask<Photo, Void, String> {
+    private class MyTextViewOnClickListener implements View.OnClickListener {
 
         @Override
-        protected String doInBackground(Photo... photo) {
-            WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(null);
-            try {
-
-                WahlzeitApi.Photos.Upload uploadCommand = wahlzeitServiceHandle.photos().upload(photoToUpload);
-                Photo myPhoto = uploadCommand.execute();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return "Upload Complete";
+        public void onClick(View v) {
+            switchToEditText(v);
         }
+    }
 
-        protected void onPostExecute(String result) {
-            Log.v(TAG, "Inside doInBackground - onPostExecute()");
-            Context context = getActivity().getApplicationContext();
-            CharSequence text = result;
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        }
+    private void switchToEditText(View v) {
+        ViewSwitcher switcher = (ViewSwitcher) v.getParent();
+        EditText editText = (EditText) switcher.getNextView();;
+        TextView textView = (TextView) v;
+        switcher.showNext();
+        String textViewText = textView.getText().toString();
+        editText.setText(textViewText);
+        editText.setFocusableInTouchMode(true);
+        editText.requestFocus();
+        showKeyboardAndCursor(editText);
+    }
+
+    private void showKeyboardAndCursor(EditText editText) {
+        final InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 }

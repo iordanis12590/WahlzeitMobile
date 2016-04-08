@@ -13,8 +13,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.wahlzeit.mobile.NavDrawerItem;
-import com.wahlzeit.mobile.NavDrawerListAdapter;
+import com.wahlzeit.mobile.components.navigation.NavDrawerItem;
+import com.wahlzeit.mobile.components.navigation.NavDrawerListAdapter;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.fragments.FragmentFactory;
 import com.wahlzeit.mobile.fragments.Fragments;

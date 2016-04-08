@@ -1,14 +1,10 @@
 package com.wahlzeit.mobile.fragments.profile;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,12 +12,14 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.activities.BaseActivity;
 import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
+import com.wahlzeit.mobile.components.textswitcher.EditorActionListener;
+import com.wahlzeit.mobile.components.textswitcher.FocusChangeListener;
+import com.wahlzeit.mobile.components.textswitcher.TextViewClickListener;
 import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 
 import org.json.JSONException;
@@ -41,8 +39,6 @@ public class ProfileFragment extends Fragment implements WahlzeitFragment {
     @InjectView(R.id.spinner_language) Spinner spinnerLanguage;
     @InjectView(R.id.button_update_profile) Button updateButton;
     String textName, textEmail, textGender, textLanguage, userImageUrl;
-    boolean notify;
-    ViewSwitcher viewSwitcher;
     ArrayAdapter<CharSequence> genderAdapter, languageAdapter;
 
     public ProfileFragment() {}
@@ -98,9 +94,9 @@ public class ProfileFragment extends Fragment implements WahlzeitFragment {
     }
 
     private void setupSwitchers() {
-        View.OnClickListener onClickListener = new MyTextViewOnClickListener();
-        View.OnFocusChangeListener onFocusChangeListener = new MyFocusChangeListener();
-        TextView.OnEditorActionListener onEditorActionListener = new MyOnEditorActionListener();
+        View.OnClickListener onClickListener = new TextViewClickListener(getActivity());
+        View.OnFocusChangeListener onFocusChangeListener = new FocusChangeListener(getActivity());
+        TextView.OnEditorActionListener onEditorActionListener = new EditorActionListener(getActivity());
         textViewName.setOnClickListener(onClickListener);
         editTextName.setOnFocusChangeListener(onFocusChangeListener);
         editTextName.setOnEditorActionListener(onEditorActionListener);
@@ -123,33 +119,6 @@ public class ProfileFragment extends Fragment implements WahlzeitFragment {
         return 0;
     }
 
-    private class MyTextViewOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switchToEditText(v);
-        }
-    }
-
-    private class MyFocusChangeListener implements View.OnFocusChangeListener {
-        public void onFocusChange(View v, boolean hasFocus){
-            if(v instanceof EditText && !hasFocus) {
-                hideKeyboardAndCursor(v);
-                switchBackToTextView((EditText) v);
-            }
-        }
-    }
-
-    private class MyOnEditorActionListener implements TextView.OnEditorActionListener {
-        @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            Log.i("Main", "Oh there was some action");
-            hideKeyboardAndCursor(v);
-            switchBackToTextView(v);
-            return false;
-        }
-
-    }
-
     private class MyUpdateProfileClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -162,39 +131,5 @@ public class ProfileFragment extends Fragment implements WahlzeitFragment {
 
         }
     };
-
-    private void switchToEditText(View v) {
-        ViewSwitcher switcher = (ViewSwitcher) v.getParent();
-        EditText editText = (EditText) switcher.getNextView();;
-        TextView textView = (TextView) v;
-        switcher.showNext();
-        String textViewText = textView.getText().toString();
-        editText.setText(textViewText);
-        editText.setFocusableInTouchMode(true);
-        editText.requestFocus();
-        showKeyboardAndCursor(editText);
-    }
-
-    private void switchBackToTextView(View v) {
-        ViewSwitcher parentSwitcher = (ViewSwitcher) v.getParent();
-        EditText editText = (EditText) v;
-        TextView siblingTextView = (TextView) parentSwitcher.getChildAt(0);
-
-        String editedText = editText.getText().toString();
-        siblingTextView.setText(editedText);
-        parentSwitcher.showPrevious();
-    }
-
-    private void hideKeyboardAndCursor(View v) {
-        InputMethodManager imm =  (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-    }
-
-    private void showKeyboardAndCursor(EditText editText) {
-        final InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-    }
-
-
 
 }

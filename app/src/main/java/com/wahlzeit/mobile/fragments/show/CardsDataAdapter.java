@@ -28,7 +28,7 @@ public class CardsDataAdapter extends ArrayAdapter<CardModel> {
     @Override
     public View getView(int position, final View contentView, ViewGroup parent){
         CardViewHolder holder = new CardViewHolder(contentView);
-        holder.titleText.setText(getItem(position).getmTitle());
+//        holder.titleText.setText(getItem(position).getmTitle());
         holder.imageView.setImageBitmap(getItem(position).getmPhotoImage());
         holder.ratingBar.setOnRatingBarChangeListener(new RatingBarListener(this.getContext(), getItem(position).getPhotoId(), myCardStack));
         return contentView;

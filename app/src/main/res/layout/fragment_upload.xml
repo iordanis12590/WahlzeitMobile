@@ -1,9 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusableInTouchMode="true">
 
     <ImageView
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:src="@drawable/upload_placeholder"
@@ -12,16 +15,25 @@
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
         android:text="Choose Photo"
         android:fontFamily="sans-serif"
         android:id="@+id/button_choose_photo"
         android:layout_gravity="center_horizontal"
         android:background="@android:color/transparent"/>
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="OR"
+        android:fontFamily="sans-serif"
+        android:textSize="12sp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
         android:fontFamily="sans-serif"
         android:text="Take Photo"
         android:id="@+id/button_upload_image"
@@ -39,6 +51,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
+            android:fontFamily="sans-serif"
+            android:textSize="16sp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Tags:"
             android:id="@+id/textView" />
@@ -53,26 +67,41 @@
             android:layout_marginLeft="10dp">
 
             <TextView
-                android:id="@+id/textview_tags"
+                android:id="@+id/textview_tags_upload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:fontFamily="sans-serif"
                 android:clickable="true"
-                android:text="Tag1, Tag2"
+                android:text="Write tags seperated by comma (eg.Tag1, Tag2)"
                 />
 
             <EditText
-                android:id="@+id/edittext_tags"
+                android:id="@+id/edittext_tags_upload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:singleLine="true"
+                android:selectAllOnFocus="true"
                 android:inputType="textNoSuggestions"
                 android:imeOptions="actionDone"/>
         </ViewSwitcher>
     </LinearLayout>
 
+    <Button
+        android:id="@+id/button_update_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:text="UPLOAD!"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:layout_centerHorizontal="true"
+        android:background="#3f51b5"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" />
 
 
 </LinearLayout>

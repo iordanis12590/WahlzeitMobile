@@ -142,7 +142,7 @@
     <Button
         android:id="@+id/button_update_profile"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_below="@id/textview_notify_label_profile"
         android:layout_marginTop="35dp"
         android:text="@string/update_profile"

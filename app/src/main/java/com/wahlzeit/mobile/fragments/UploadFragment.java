@@ -24,6 +24,9 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.asyncTasks.UploadPhotoTask;
+import com.wahlzeit.mobile.components.textswitcher.EditorActionListener;
+import com.wahlzeit.mobile.components.textswitcher.FocusChangeListener;
+import com.wahlzeit.mobile.components.textswitcher.TextViewClickListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -44,8 +47,12 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
     @InjectView(R.id.button_upload_image) Button uploadButton;
     @InjectView(R.id.imageview_upload_image) ImageView uploadImageView;
     @InjectView(R.id.button_choose_photo) Button choosePhotoButton;
-    @InjectView(R.id.textview_photo_tags) TextView textViewTags;
-    @InjectView(R.id.edittext_tags) EditText editTextTags;
+    @InjectView(R.id.textview_tags_upload) TextView textViewTags;
+    @InjectView(R.id.edittext_tags_upload) EditText editTextTags;
+
+    public UploadFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,7 +66,12 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
     }
 
     private void setupTagsText() {
-        View.OnClickListener onClickListener = new MyTextViewOnClickListener();
+        View.OnClickListener onClickListener = new TextViewClickListener(getActivity());
+        View.OnFocusChangeListener onFocusChangeListener = new FocusChangeListener(getActivity());
+        TextView.OnEditorActionListener onEditorActionListener = new EditorActionListener(getActivity());
+        textViewTags.setOnClickListener(onClickListener);
+        editTextTags.setOnFocusChangeListener(onFocusChangeListener);
+        editTextTags.setOnEditorActionListener(onEditorActionListener);
     }
 
 

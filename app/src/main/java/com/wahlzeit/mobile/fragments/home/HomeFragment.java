@@ -110,9 +110,20 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
 
                 String photoTags = photo.getTags().getSize() != 0 ? photo.getTags().toString() : "-";
                 String photoName = photo.getIdAsString();
-                Image image = WahlzeitModel.model.getImages().get(photo.getIdAsString()).getItems().get(3);
-                byte[] imageAsBytes = Base64.decode(image.getImageData().getBytes(), Base64.DEFAULT);
-                Bitmap decodedImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+                int i = 3;
+                Image image = WahlzeitModel.model.getImages().get(photo.getIdAsString()).getItems().get(i);
+                Bitmap decodedImage = null;
+                //get a smaller image in case there is no bigger
+                while (image.isEmpty() && i >= 0) {
+                    --i;
+                    image = WahlzeitModel.model.getImages().get(photo.getIdAsString()).getItems().get(i);
+                }
+
+                if(!image.isEmpty()) {
+
+                    byte[] imageAsBytes = Base64.decode(image.getImageData().getBytes(), Base64.DEFAULT);
+                    decodedImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+                }
                 // create list object
                 PhotoListItem photoItem = new PhotoListItem( photoId, photoPraise, photoStatus,
                                                     photoCreationTime, photoTags, photoName, decodedImage);

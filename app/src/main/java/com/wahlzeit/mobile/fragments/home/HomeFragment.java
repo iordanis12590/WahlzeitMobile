@@ -1,8 +1,10 @@
 package com.wahlzeit.mobile.fragments.home;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -10,9 +12,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,6 +27,7 @@ import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
+import com.wahlzeit.mobile.activities.EditPhotoActivity;
 import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 
 import org.json.JSONException;
@@ -62,8 +67,7 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
         listViewPhotos = (ListView) rootView.findViewById(R.id.list_photos_home);
         registerEvents();
         CommunicationManager.manager.getListAllPhotosTask(getActivity()).execute();
-
-        header = inflater.inflate(R.layout.list_header, container ,false);
+        header = inflater.inflate(R.layout.fragment_home_list_header, container ,false);
         ButterKnife.inject(this, header);
         populateTextAndImage();
         return rootView;
@@ -129,9 +133,56 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
             }
             photoListAdapter = new PhotoListAdapter(getActivity(), photoListItems);
             listViewPhotos.setAdapter(photoListAdapter);
+            listViewPhotos.setOnItemClickListener(new ListItemClickListener());
             listViewPhotos.addHeaderView(header);
         }
     };
+
+    private class ListItemClickListener implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if(position == 0) {
+                return; // header was clicked
+            }
+            PhotoListItem item = (PhotoListItem) photoListAdapter.getItem(position -1);
+            createPopup();
+        }
+    }
+
+    private class OptionListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+            String selectedOption = ((AlertDialog)dialog).getListView().getAdapter().getItem(which).toString();
+            switch (selectedOption.toLowerCase()) {
+                case "edit":
+                    Log.d(getActivity().getTitle().toString(), selectedOption);
+                case "tell":
+                    Log.d(getActivity().getTitle().toString(), selectedOption);
+                case "select":
+                    Log.d(getActivity().getTitle().toString(), selectedOption);
+                case "delete":
+                    Log.d(getActivity().getTitle().toString(), selectedOption);
+
+                    lauchEditActivity();
+            }
+        }
+    }
+
+    private void lauchEditActivity() {
+//        EditPhotoActivity nextFragment = new EditPhotoActivity();
+//        this.getFragmentManager().beginTransaction().replace(this.getId(), nextFragment).addToBackStack(null).commit();
+        Intent intent = new Intent(getActivity(), EditPhotoActivity.class);
+        startActivity(intent);
+    }
+
+    private void createPopup() {
+        String options[] = getActivity().getResources().getStringArray(R.array.photo_item_options);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.photo_item_options_title);
+        builder.setItems(options, new OptionListener());
+        builder.show();
+    }
 
     private void registerEvents() {
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(populateUserPhotosReceiver, new IntentFilter("populate_user_photos"));

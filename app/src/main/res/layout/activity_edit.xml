@@ -10,35 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:src="@drawable/upload_placeholder"
-        android:id="@+id/imageview_upload_image"
+        android:id="@+id/imageview_image_edit"
         android:layout_gravity="center_horizontal|top" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginTop="10dp"
-        android:text="Choose Photo"
-        android:fontFamily="sans-serif"
-        android:id="@+id/button_choose_photo"
-        android:layout_gravity="center_horizontal"
-        android:background="@android:color/transparent"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="OR"
-        android:fontFamily="sans-serif"
-        android:textSize="12sp"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:fontFamily="sans-serif"
-        android:text="Take Photo"
-        android:id="@+id/button_upload_image"
-        android:layout_gravity="center_horizontal"
-        android:background="@android:color/transparent"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -65,17 +38,17 @@
             android:layout_marginLeft="10dp">
 
             <TextView
-                android:id="@+id/textview_tags_upload"
+                android:id="@+id/textview_tags_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:fontFamily="sans-serif"
                 android:clickable="true"
-                android:text="@string/tags_placeholder"
+                android:text="tag1, tag2"
                 />
 
             <EditText
-                android:id="@+id/edittext_tags_upload"
+                android:id="@+id/edittext_tags_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -87,12 +60,12 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_upload_photo"
+        android:id="@+id/button_update_photo"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:text="UPLOAD!"
+        android:text="UPDATE!"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:fontFamily="sans-serif-medium"

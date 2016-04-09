@@ -50,6 +50,12 @@
         <item>German</item>
     </string-array>
 
+    <string-array name="photo_item_options">
+        <item>Edit</item>
+        <item>Tell</item>
+        <item>Delete</item>
+        <item>Select</item>
+    </string-array>
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
@@ -69,5 +75,7 @@
     <string name="select">Select</string>
     <string name="delete">Delete</string>
     <string name="choose_language">Choose language</string>
+    <string name="tags_placeholder">Write tags seperated by comma (eg.Tag1, Tag2)</string>
+    <string name="photo_item_options_title">Select an action</string>
 
 </resources>

@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="260dp"
                 android:src="@drawable/upload_placeholder"
-                android:id="@+id/imageview_upload_image"
+                android:id="@+id/imageview_image_tell"
                 android:layout_gravity="center_horizontal|top" />
 
             <LinearLayout

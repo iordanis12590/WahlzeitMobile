@@ -26,9 +26,6 @@ import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.activities.EditPhotoActivity;
 import com.wahlzeit.mobile.activities.MainActivity;
 import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
-import com.wahlzeit.mobile.fragments.FragmentFactory;
-import com.wahlzeit.mobile.fragments.Fragments;
-import com.wahlzeit.mobile.fragments.TellFragment;
 import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 
 import org.json.JSONException;
@@ -104,7 +101,6 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
                 String photoId = photo.getId().getStringValue();
                 String photoPraise = photo.getPraise().toString();
                 String photoStatus = photo.getStatus().toLowerCase();
-
                 // date
                 long unixCreationTime = photo.getCreationTime().longValue();
 //                java.util.Date dateTime= new java.util.Date((long)unixCreationTime*1000);
@@ -113,10 +109,8 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
                 SimpleDateFormat sdf = new SimpleDateFormat("MM dd, yyyy");
                 sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
                 String photoCreationTime = sdf.format(date);
-
                 String photoTags = photo.getTags().getSize() != 0 ? photo.getTags().toString() : "-";
                 String photoName = photo.getIdAsString();
-
                 Bitmap decodedImage = WahlzeitModel.model.getImageBitmapOfSize(photo.getIdAsString(), 3);
                 // create list object
                 PhotoListItem photoItem = new PhotoListItem( photoId, photoPraise, photoStatus,
@@ -153,8 +147,11 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
                     lauchEditActivity();
                 case "tell":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
-                    ((MainActivity)getActivity()).displayView(1);
-                    ((TellFragment)FragmentFactory.getFragment(Fragments.Tell)).setSelectedPhoto(WahlzeitModel.model.getPhotoFromId(selectedPhotoId));
+                    int tellFragmentPosition = 1;
+                    Fragment fragment = ((MainActivity)getActivity()).getFragmentView(tellFragmentPosition);
+                    Bundle args = new Bundle();
+                    args.putString("photoId", selectedPhotoId);
+                    ((MainActivity)getActivity()).displayFragmentView(fragment, tellFragmentPosition, args);
                 case "select":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
                 case "delete":

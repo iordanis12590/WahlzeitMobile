@@ -59,7 +59,9 @@ public class MainActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
-            displayView(2);
+            int homeFragmentPosition = 2;
+            Fragment fragment = getFragmentView(homeFragmentPosition);
+            displayFragmentView(fragment, homeFragmentPosition, null);
         }
     }
 
@@ -129,13 +131,14 @@ public class MainActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 // display view for selected nav drawer item
-                displayView(position);
+                Fragment fragment = getFragmentView(position);
+                displayFragmentView(fragment, position, null);
             }
         });
     }
 
     // replace with an abstract factory in order to make the static
-    public void displayView(int position) {
+    public Fragment getFragmentView(int position) {
         Fragment fragment = null;
         switch (position) {
             case 0:
@@ -156,8 +159,14 @@ public class MainActivity extends BaseActivity {
             default:
                 break;
         }
+        return fragment;
+    }
 
+    public void displayFragmentView(Fragment fragment, int position, Bundle args) {
         if (fragment != null) {
+            if(args != null) {
+                fragment.setArguments(args);
+            }
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment).commit();
@@ -172,5 +181,7 @@ public class MainActivity extends BaseActivity {
             Log.e("MainActivity", "Error in creating fragment");
         }
     }
+
+
 
 }

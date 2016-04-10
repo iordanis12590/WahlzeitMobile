@@ -1,6 +1,11 @@
 package com.wahlzeit.mobile;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Client;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Image;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.ImageCollection;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
@@ -9,6 +14,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +35,22 @@ public class WahlzeitModel {
 
     public Map<String, ImageCollection> getImages() {
         return images;
+    }
+
+    public Bitmap getImageBitmapOfSize(String photoId, int size) {
+        Bitmap result = null;
+        List<Image> photoImages = images.get(photoId).getItems();
+        Image image = photoImages.get(size);
+        // get smaller image if chosen size is not available
+        while (image.isEmpty() && size >= 0) {
+            --size;
+            image = photoImages.get(size);
+        }
+        if(!image.isEmpty()) {
+            byte[] imageAsBytes = Base64.decode(image.getImageData().getBytes(), Base64.DEFAULT);
+            result = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        }
+        return result;
     }
 
     public void setImages(Map<String, ImageCollection> images) {

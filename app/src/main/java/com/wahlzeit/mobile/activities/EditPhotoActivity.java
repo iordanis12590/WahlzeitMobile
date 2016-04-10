@@ -2,9 +2,7 @@ package com.wahlzeit.mobile.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Image;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
@@ -47,19 +44,9 @@ public class EditPhotoActivity extends BaseActivity {
     }
 
     private void setupImageView() {
-        int i = 3;
-        Image image = WahlzeitModel.model.getImages().get(photoToUpdate.getIdAsString()).getItems().get(i);
-        Bitmap decodedImage = null;
-        //get a smaller image in case there is no bigger
-        while (image.isEmpty() && i >= 0) {
-            --i;
-            image = WahlzeitModel.model.getImages().get(photoToUpdate.getIdAsString()).getItems().get(i);
-        }
-        if(!image.isEmpty()) {
-            byte[] imageAsBytes = Base64.decode(image.getImageData().getBytes(), Base64.DEFAULT);
-            decodedImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
-            imageViewEdit.setImageBitmap(decodedImage);
-        }
+        Bitmap image = WahlzeitModel.model.getImageBitmapOfSize(photoToUpdate.getIdAsString(), 3);
+        imageViewEdit.setImageBitmap(image);
+
     }
 
     private void getPhoto() {

@@ -8,10 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,14 +19,16 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Image;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.activities.EditPhotoActivity;
 import com.wahlzeit.mobile.activities.MainActivity;
 import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
-import com.wahlzeit.mobile.activities.EditPhotoActivity;
+import com.wahlzeit.mobile.fragments.FragmentFactory;
+import com.wahlzeit.mobile.fragments.Fragments;
+import com.wahlzeit.mobile.fragments.TellFragment;
 import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 
 import org.json.JSONException;
@@ -116,18 +116,8 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
 
                 String photoTags = photo.getTags().getSize() != 0 ? photo.getTags().toString() : "-";
                 String photoName = photo.getIdAsString();
-                int i = 3;
-                Image image = WahlzeitModel.model.getImages().get(photo.getIdAsString()).getItems().get(i);
-                Bitmap decodedImage = null;
-                //get a smaller image in case there is no bigger
-                while (image.isEmpty() && i >= 0) {
-                    --i;
-                    image = WahlzeitModel.model.getImages().get(photo.getIdAsString()).getItems().get(i);
-                }
-                if(!image.isEmpty()) {
-                    byte[] imageAsBytes = Base64.decode(image.getImageData().getBytes(), Base64.DEFAULT);
-                    decodedImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
-                }
+
+                Bitmap decodedImage = WahlzeitModel.model.getImageBitmapOfSize(photo.getIdAsString(), 3);
                 // create list object
                 PhotoListItem photoItem = new PhotoListItem( photoId, photoPraise, photoStatus,
                                                     photoCreationTime, photoTags, photoName, decodedImage);
@@ -164,6 +154,7 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
                 case "tell":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
                     ((MainActivity)getActivity()).displayView(1);
+                    ((TellFragment)FragmentFactory.getFragment(Fragments.Tell)).setSelectedPhoto(WahlzeitModel.model.getPhotoFromId(selectedPhotoId));
                 case "select":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
                 case "delete":

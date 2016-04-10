@@ -6,16 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Image;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.R;
@@ -95,17 +92,7 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         public void onReceive(Context context, Intent intent) {
             for(Photo photo: WahlzeitModel.model.getPhotoCache().getItems()) {
                 String photoId = photo.getIdAsString();
-                int i = 3;
-                Image image = WahlzeitModel.model.getImages().get(photoId).getItems().get(i);
-                Bitmap decodedImage = null;
-                while (image.isEmpty() && i >= 0) {
-                    --i;
-                    image = WahlzeitModel.model.getImages().get(photo.getIdAsString()).getItems().get(i);
-                }
-                if(!image.isEmpty()) {
-                    byte[] imageAsBytes = Base64.decode(image.getImageData().getBytes(), Base64.DEFAULT);
-                    decodedImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
-                }
+                Bitmap decodedImage = WahlzeitModel.model.getImageBitmapOfSize(photoId, 3);
                 mCardAdapter.add(new CardModel(photoId, decodedImage));
             }
             mCardStack.setAdapter(mCardAdapter);

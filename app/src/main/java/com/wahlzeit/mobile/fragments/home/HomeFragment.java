@@ -26,6 +26,7 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.activities.MainActivity;
 import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
 import com.wahlzeit.mobile.activities.EditPhotoActivity;
 import com.wahlzeit.mobile.fragments.WahlzeitFragment;
@@ -49,6 +50,7 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
     @InjectView(R.id.textview_gender_value_home) TextView textViewGender;
     @InjectView(R.id.imageview_profile_pic_home) ImageView imageViewProfilePicture;
     String textName, textEmail, textGender, userImageUrl;
+    String selectedPhotoId;
 
 //    @InjectView(R.id.list_photos_home)
     ListView listViewPhotos;
@@ -145,6 +147,7 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
                 return; // header was clicked
             }
             PhotoListItem item = (PhotoListItem) photoListAdapter.getItem(position -1);
+            selectedPhotoId = item.getId();
             createPopup();
         }
     }
@@ -157,14 +160,16 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
             switch (selectedOption.toLowerCase()) {
                 case "edit":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
+                    lauchEditActivity();
                 case "tell":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
+                    ((MainActivity)getActivity()).displayView(1);
                 case "select":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
                 case "delete":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
 
-                    lauchEditActivity();
+
             }
         }
     }
@@ -173,6 +178,7 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
 //        EditPhotoActivity nextFragment = new EditPhotoActivity();
 //        this.getFragmentManager().beginTransaction().replace(this.getId(), nextFragment).addToBackStack(null).commit();
         Intent intent = new Intent(getActivity(), EditPhotoActivity.class);
+        intent.putExtra("selected_photo_id", selectedPhotoId);
         startActivity(intent);
     }
 

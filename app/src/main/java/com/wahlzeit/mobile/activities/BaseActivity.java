@@ -3,7 +3,7 @@ package com.wahlzeit.mobile.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * Created by iordanis on 30/03/16.
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

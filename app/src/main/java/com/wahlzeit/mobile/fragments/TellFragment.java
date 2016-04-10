@@ -10,6 +10,8 @@ import com.wahlzeit.mobile.R;
 
 public class TellFragment extends Fragment implements WahlzeitFragment {
 
+    View rootView;
+
     public TellFragment() {
     }
 
@@ -17,7 +19,8 @@ public class TellFragment extends Fragment implements WahlzeitFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tell, container, false);
+        rootView = inflater.inflate(R.layout.fragment_tell, container, false);
+        return rootView;
     }
 
 }

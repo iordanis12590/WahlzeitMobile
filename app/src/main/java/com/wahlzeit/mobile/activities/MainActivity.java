@@ -135,7 +135,7 @@ public class MainActivity extends BaseActivity {
     }
 
     // replace with an abstract factory in order to make the static
-    private void displayView(int position) {
+    public void displayView(int position) {
         Fragment fragment = null;
         switch (position) {
             case 0:

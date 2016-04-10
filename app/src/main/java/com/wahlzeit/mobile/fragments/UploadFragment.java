@@ -47,7 +47,7 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
     Photo photoToUpload;
     Bitmap mySelectedImage;
     View rootView;
-    @InjectView(R.id.button_upload_image) Button takePhotoButton;
+    @InjectView(R.id.button_take_photo) Button takePhotoButton;
     @InjectView(R.id.imageview_upload_image) ImageView uploadImageView;
     @InjectView(R.id.button_choose_photo) Button choosePhotoButton;
     @InjectView(R.id.textview_tags_upload) TextView textViewTags;

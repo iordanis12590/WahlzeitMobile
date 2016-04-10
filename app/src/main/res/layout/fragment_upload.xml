@@ -36,7 +36,7 @@
         android:layout_height="35dp"
         android:fontFamily="sans-serif"
         android:text="Take Photo"
-        android:id="@+id/button_upload_image"
+        android:id="@+id/button_take_photo"
         android:layout_gravity="center_horizontal"
         android:background="@android:color/transparent"/>
 

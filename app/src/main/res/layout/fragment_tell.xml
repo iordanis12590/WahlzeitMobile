@@ -1,22 +1,139 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusableInTouchMode="true">
 
-    <TextView
-        android:id="@+id/txtLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="16dp"
-        android:text="Tell View"/>
+    <ScrollView
+        android:id="@+id/tell_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.17"
+        android:background="#ffffff">
 
-    <ImageView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtLabel"
-        android:src="@drawable/ic_tell"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
 
-</RelativeLayout>
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:src="@drawable/upload_placeholder"
+                android:id="@+id/imageview_upload_image"
+                android:layout_gravity="center_horizontal|top" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Address:"
+                    />
+
+                <EditText
+                    android:id="@+id/edittext_address_tell"
+                    android:background="@drawable/edit_text_design"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="11dp"
+                    android:padding="3dp"
+                    android:fontFamily="sans-serif"
+                    android:textSize="14sp"
+                    android:text="example@example.com"
+                    android:inputType="text"
+                    android:ems="12"
+                    android:selectAllOnFocus="true"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Subject:"
+                    />
+
+                <EditText
+                    android:id="@+id/edittext_subject_tell"
+                    android:background="@drawable/edit_text_design"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="15dp"
+                    android:padding="3dp"
+                    android:fontFamily="sans-serif"
+                    android:textSize="14sp"
+                    android:text="Check this out!"
+                    android:inputType="text"
+                    android:ems="12"
+                    android:selectAllOnFocus="true"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Message:"
+                    />
+
+                <EditText
+                    android:id="@+id/edittext_message_tell"
+                    android:background="@drawable/edit_text_design"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:maxLines="3"
+                    android:padding="3dp"
+                    android:fontFamily="sans-serif"
+                    android:lineSpacingExtra="4dp"
+                    android:textSize="14sp"
+                    android:text="Hi,\n please visit Wahlzeit or \n download the mobile app"
+                    android:inputType="textMultiLine"
+                    android:ems="14"
+                    android:selectAllOnFocus="true"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button_tell_about_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:text="TELL!"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:layout_centerHorizontal="true"
+                android:background="#3f51b5"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

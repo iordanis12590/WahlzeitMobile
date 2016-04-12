@@ -25,10 +25,8 @@ public class UploadPhotoTask extends AsyncTask<Photo, Void, String> {
     protected String doInBackground(Photo... params) {
         WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(null);
         try {
-
             WahlzeitApi.Photos.Upload uploadCommand = wahlzeitServiceHandle.photos().upload(params[0]);
             Photo myPhoto = uploadCommand.execute();
-
         } catch (IOException e) {
             e.printStackTrace();
         }

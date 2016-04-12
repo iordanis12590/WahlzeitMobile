@@ -51,14 +51,12 @@ public class PhotoListAdapter extends BaseAdapter {
         @InjectView(R.id.textview_status) TextView textViewStatus;
         @InjectView(R.id.textview_upload_date) TextView textViewUploadDate;
         @InjectView(R.id.textview_photo_tags) TextView textViewPhotoTags;
-        @InjectView(R.id.textview_name_link) TextView textViewPhotoLink;
         @InjectView(R.id.imageview_photo_home) ImageView imageView;
         // labels
         @InjectView(R.id.textview_photo_praise_label) TextView textViewPraiseLabel;
         @InjectView(R.id.textview_status_label) TextView textViewStatusLabel;
         @InjectView(R.id.textview_upload_date_label) TextView textViewUploadDateLabel;
         @InjectView(R.id.textview_photo_tags_label) TextView textViewPhotoTagsLabel;
-        @InjectView(R.id.textview_photo_name_label) TextView textViewPhotoLinkLabel;
         public ListItemViewHolder(View view) {ButterKnife.inject(this, view);}
     }
 
@@ -79,7 +77,6 @@ public class PhotoListAdapter extends BaseAdapter {
         holder.textViewStatus.setText(item.getStatus());
         holder.textViewUploadDate.setText(item.getUploadDate());
         holder.textViewPhotoTags.setText(item.getPhotoTags());
-        holder.textViewPhotoLink.setText(item.getPhotoName());
         holder.imageView.setImageBitmap(item.getImage());
 
         return convertView;
@@ -90,7 +87,6 @@ public class PhotoListAdapter extends BaseAdapter {
         holder.textViewStatusLabel.setText("Status:");
         holder.textViewUploadDateLabel.setText("Uploaded on:");
         holder.textViewPhotoTagsLabel.setText("Tags:");
-        holder.textViewPhotoLinkLabel.setText("Name:");
     }
 
 }

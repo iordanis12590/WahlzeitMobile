@@ -14,6 +14,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -82,6 +83,26 @@ public class WahlzeitModel {
         }
     }
 
+    public String getPhotoTagsAsString(Photo photo) {
+        String result = "";
+        List<String> tagsList;
+        if(photo.getTags().getSize() != 0) {
+            tagsList = photo.getTags().getTags();
+            Iterator<String> tagsListIterator = tagsList.iterator();
+            while (tagsListIterator.hasNext()) {
+                result += tagsListIterator.next();
+                if(tagsListIterator.hasNext()) {
+                    result += ",";
+                } else {
+                    break;
+                }
+            }
+        } else {
+            result = "-";
+        }
+        return result;
+    }
+
     public void setPhotoCache(PhotoCollection photoCache) {
         this.photoCache = photoCache;
     }
@@ -109,7 +130,6 @@ public class WahlzeitModel {
     public void setCredential(GoogleAccountCredential credential) {
         this.credential = credential;
     }
-
 
     public JSONObject getProfileData() {
         return profileData;

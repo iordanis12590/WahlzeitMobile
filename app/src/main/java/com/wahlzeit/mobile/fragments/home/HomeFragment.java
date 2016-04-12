@@ -30,11 +30,10 @@ import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 
 import org.json.JSONException;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -95,34 +94,33 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
     private BroadcastReceiver populateUserPhotosReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            photoListItems = new ArrayList<PhotoListItem>();
-            for(Photo photo: WahlzeitModel.model.getPhotoCache().getItems()) {
-                // get photo values
-                String photoId = photo.getId().getStringValue();
-                String photoPraise = photo.getPraise().toString();
-                String photoStatus = photo.getStatus().toLowerCase();
-                // date
-                long unixCreationTime = photo.getCreationTime().longValue();
-//                java.util.Date dateTime= new java.util.Date((long)unixCreationTime*1000);
-                Date date = new Date(unixCreationTime*1000L);
-                // Fix it
-                SimpleDateFormat sdf = new SimpleDateFormat("MM dd, yyyy");
-                sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
-                String photoCreationTime = sdf.format(date);
-                String photoTags = photo.getTags().getSize() != 0 ? photo.getTags().toString() : "-";
-                String photoName = photo.getIdAsString();
-                Bitmap decodedImage = WahlzeitModel.model.getImageBitmapOfSize(photo.getIdAsString(), 3);
-                // create list object
-                PhotoListItem photoItem = new PhotoListItem( photoId, photoPraise, photoStatus,
-                                                    photoCreationTime, photoTags, photoName, decodedImage);
-                photoListItems.add(photoItem);
-            }
-            photoListAdapter = new PhotoListAdapter(getActivity(), photoListItems);
-            listViewPhotos.setAdapter(photoListAdapter);
-            listViewPhotos.setOnItemClickListener(new ListItemClickListener());
-            listViewPhotos.addHeaderView(header);
+            populatePhotoList();
         }
     };
+
+    private void populatePhotoList() {
+        photoListItems = new ArrayList<PhotoListItem>();
+        DateFormat dateFormater = new SimpleDateFormat("MMM d, yyyy");
+        for(Photo photo: WahlzeitModel.model.getPhotoCache().getItems()) {
+            // get photo values
+            String photoId = photo.getId().getStringValue();
+            String photoPraise = photo.getPraise().toString();
+            String photoStatus = photo.getStatus().toLowerCase();
+            // Date
+            String photoCreationTime = dateFormater.format(photo.getCreationTime().longValue());
+            // tags
+            String photoTags = WahlzeitModel.model.getPhotoTagsAsString(photo);
+            Bitmap decodedImage = WahlzeitModel.model.getImageBitmapOfSize(photo.getIdAsString(), 3);
+            // create list object
+            PhotoListItem photoItem = new PhotoListItem( photoId, photoPraise, photoStatus,
+                    photoCreationTime, photoTags, decodedImage);
+            photoListItems.add(photoItem);
+        }
+        photoListAdapter = new PhotoListAdapter(getActivity(), photoListItems);
+        listViewPhotos.setAdapter(photoListAdapter);
+        listViewPhotos.setOnItemClickListener(new ListItemClickListener());
+        listViewPhotos.addHeaderView(header);
+    }
 
     private class ListItemClickListener implements AdapterView.OnItemClickListener {
         @Override

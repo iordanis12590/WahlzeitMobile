@@ -14,14 +14,13 @@ public class PhotoListItem {
     }
 
     public PhotoListItem(String id, String praise, String status, String uploadDate,
-                         String photoTags, String photoLink, Bitmap image) {
+                         String photoTags, Bitmap image) {
         super();
         this.id = id;
         this.praise = praise;
         this.status = status;
         this.uploadDate = uploadDate;
         this.photoTags = photoTags;
-        this.photoName = photoLink;
         this.image = image;
     }
 
@@ -63,14 +62,6 @@ public class PhotoListItem {
 
     public void setPhotoTags(String photoTags) {
         this.photoTags = photoTags;
-    }
-
-    public String getPhotoName() {
-        return photoName;
-    }
-
-    public void setPhotoName(String photoLink) {
-        this.photoName = photoLink;
     }
 
     public Bitmap getImage() {

@@ -35,6 +35,8 @@ public class MainActivity extends BaseActivity {
     private String mActivityTitle;
     // used to store app title
     private CharSequence mTitle;
+    FragmentManager fragmentManager;
+
 
     @InjectView(R.id.nav_list) ListView mDrawerList;
     @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
@@ -51,6 +53,8 @@ public class MainActivity extends BaseActivity {
         addNavigationDrawerItems();
         setupDrawerToogle();
 
+        fragmentManager = getFragmentManager();
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         navMenuIcons.recycle();
@@ -61,7 +65,7 @@ public class MainActivity extends BaseActivity {
             // on first time display view for first nav item
             int homeFragmentPosition = 2;
             Fragment fragment = getFragmentView(homeFragmentPosition);
-            displayFragmentView(fragment, homeFragmentPosition, null);
+            displayFragmentView(fragment, homeFragmentPosition);
         }
     }
 
@@ -132,7 +136,7 @@ public class MainActivity extends BaseActivity {
                                     long id) {
                 // display view for selected nav drawer item
                 Fragment fragment = getFragmentView(position);
-                displayFragmentView(fragment, position, null);
+                displayFragmentView(fragment, position);
             }
         });
     }
@@ -163,14 +167,17 @@ public class MainActivity extends BaseActivity {
     }
 
     public void displayFragmentView(Fragment fragment, int position, Bundle args) {
+        fragment.setArguments(args);
+        displayFragmentView(fragment, position);
+    }
+
+    public void displayFragmentView(Fragment fragment, int position) {
         if (fragment != null) {
-            if(args != null) {
-                fragment.setArguments(args);
-            }
-            FragmentManager fragmentManager = getFragmentManager();
+
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment).commit();
 
+            fragmentManager.beginTransaction().addToBackStack(null);
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);

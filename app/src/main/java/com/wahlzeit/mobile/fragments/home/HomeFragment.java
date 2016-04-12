@@ -68,11 +68,11 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
         CommunicationManager.manager.getListAllPhotosTask(getActivity()).execute();
         header = inflater.inflate(R.layout.fragment_home_list_header, container ,false);
         ButterKnife.inject(this, header);
-        populateTextAndImage();
+        populateHeader();
         return rootView;
     }
 
-    private void populateTextAndImage() {
+    private void populateHeader() {
         try {
 
             userImageUrl = WahlzeitModel.model.getGoogleUserValue("picture");

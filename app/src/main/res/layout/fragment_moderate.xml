@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wahlzeit.mobile.fragments.UploadFragment">
+    tools:context=".fragments.upload.UploadFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

@@ -5,6 +5,7 @@ import android.app.Fragment;
 import com.wahlzeit.mobile.fragments.home.HomeFragment;
 import com.wahlzeit.mobile.fragments.profile.ProfileFragment;
 import com.wahlzeit.mobile.fragments.show.ShowFragment;
+import com.wahlzeit.mobile.fragments.upload.UploadFragment;
 
 public class FragmentFactory {
 
@@ -18,13 +19,13 @@ public class FragmentFactory {
 
     public static Fragment getFragment(Fragments fragment) {
         switch (fragment) {
-            case Show: return showFragment == null ? new ShowFragment() : showFragment;
-            case Tell: return tellFragment == null ? new TellFragment() : tellFragment;
-            case Home: return homeFragment == null ? new HomeFragment() : homeFragment;
-            case Profile: return profileFragment == null ? new ProfileFragment() : profileFragment;
-            case Upload: return uploadFragment == null ? new UploadFragment() : uploadFragment;
-            case Moderate: return moderateFragment == null ? new ModerateFragment() : moderateFragment;
-            case Administer: return administerFragment == null ? new AdministerFragment() : administerFragment; //getAdministerFragment();
+            case Show: return showFragment == null ? showFragment = new ShowFragment() : showFragment;
+            case Tell: return tellFragment == null ? tellFragment = new TellFragment() : tellFragment;
+            case Home: return homeFragment == null ? homeFragment = new HomeFragment() : homeFragment;
+            case Profile: return profileFragment == null ? profileFragment = new ProfileFragment() : profileFragment;
+            case Upload: return uploadFragment == null ? uploadFragment = new UploadFragment() : uploadFragment;
+            case Moderate: return moderateFragment == null ? moderateFragment = new ModerateFragment() : moderateFragment;
+            case Administer: return administerFragment == null ? administerFragment = new AdministerFragment() : administerFragment;
         }
         return null;
     }

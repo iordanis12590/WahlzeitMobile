@@ -77,5 +77,6 @@
     <string name="choose_language">Choose language</string>
     <string name="tags_placeholder">Write tags seperated by comma (eg.Tag1, Tag2)</string>
     <string name="photo_item_options_title">Select an action</string>
+    <string name="album_name">Wahlzeit Photos</string>
 
 </resources>

@@ -40,5 +40,7 @@ public class UploadPhotoTask extends AsyncTask<Photo, Void, String> {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(mContent, text, duration);
         toast.show();
+
+        // TODO: Update card stack and home list
     }
 }

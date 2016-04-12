@@ -47,6 +47,9 @@ public class ProfileFragment extends Fragment implements WahlzeitFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        if (rootView != null) {
+            return rootView;
+        }
         rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.inject(this, rootView);
         setupSpinners();

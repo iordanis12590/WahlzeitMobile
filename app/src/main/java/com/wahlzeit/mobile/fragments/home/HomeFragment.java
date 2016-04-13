@@ -143,6 +143,7 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
                 case "edit":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
                     lauchEditActivity();
+                    break;
                 case "tell":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
                     int tellFragmentPosition = 1;
@@ -150,10 +151,13 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
                     Bundle args = new Bundle();
                     args.putString("photoId", selectedPhotoId);
                     ((MainActivity)getActivity()).displayFragmentView(fragment, tellFragmentPosition, args);
+                    break;
                 case "select":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
+                    break;
                 case "delete":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
+                    break;
 
 
             }

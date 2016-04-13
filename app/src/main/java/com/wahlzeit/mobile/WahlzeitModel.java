@@ -98,7 +98,7 @@ public class WahlzeitModel {
                 }
             }
         } else {
-            result = "-";
+            result = "(none)";
         }
         return result;
     }

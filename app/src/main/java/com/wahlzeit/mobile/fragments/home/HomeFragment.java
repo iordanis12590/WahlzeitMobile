@@ -25,6 +25,7 @@ import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.activities.EditPhotoActivity;
 import com.wahlzeit.mobile.activities.MainActivity;
+import com.wahlzeit.mobile.asyncTasks.DeletePhotoTask;
 import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
 import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 
@@ -157,6 +158,8 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
                     break;
                 case "delete":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
+                    Photo photoToDelete = WahlzeitModel.model.getPhotoFromId(selectedPhotoId);
+                    new DeletePhotoTask(getActivity().getApplicationContext()).execute(photoToDelete);
                     break;
 
 
@@ -165,8 +168,6 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
     }
 
     private void lauchEditActivity() {
-//        EditPhotoActivity nextFragment = new EditPhotoActivity();
-//        this.getFragmentManager().beginTransaction().replace(this.getId(), nextFragment).addToBackStack(null).commit();
         Intent intent = new Intent(getActivity(), EditPhotoActivity.class);
         intent.putExtra("selected_photo_id", selectedPhotoId);
         startActivity(intent);

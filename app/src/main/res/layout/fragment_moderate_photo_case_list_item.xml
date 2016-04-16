@@ -20,14 +20,14 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingLeft="@dimen/feed_item_padding_left_right"
             android:paddingRight="@dimen/feed_item_padding_left_right" >
 
             <ImageView
                 android:id="@+id/imageview_photo_case_moderate"
-                android:layout_width="@dimen/feed_item_profile_pic_width"
-                android:layout_height="85dp"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
                 android:background="@color/white"
                 android:scaleType="fitCenter"
                 android:visibility="visible" />
@@ -36,8 +36,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/feed_item_padding_left_right"
-                android:paddingRight="@dimen/feed_item_padding_left_right" >
+                android:paddingLeft="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -52,8 +51,8 @@
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/textview_photo_case_tags"
-                        android:layout_marginLeft="5dp"
+                        android:id="@+id/textview_photo_case_description"
+                        android:layout_marginLeft="7dp"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
@@ -63,6 +62,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
@@ -73,8 +73,8 @@
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/textview_photo_case_description"
-                        android:layout_marginLeft="5dp"
+                        android:id="@+id/textview_photo_case_tags"
+                        android:layout_marginLeft="48dp"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
@@ -84,6 +84,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
@@ -95,7 +96,7 @@
 
                     <TextView
                         android:id="@+id/textview_photo_case_flagger"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="32dp"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/timestamp"
@@ -107,6 +108,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
@@ -118,7 +120,7 @@
 
                     <TextView
                         android:id="@+id/textview_photo_case_reason"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="32dp"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/timestamp"
@@ -129,6 +131,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"

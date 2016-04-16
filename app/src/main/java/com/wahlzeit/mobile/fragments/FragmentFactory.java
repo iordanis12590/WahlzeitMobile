@@ -3,8 +3,10 @@ package com.wahlzeit.mobile.fragments;
 import android.app.Fragment;
 
 import com.wahlzeit.mobile.fragments.home.HomeFragment;
+import com.wahlzeit.mobile.fragments.moderate.ModerateFragment;
 import com.wahlzeit.mobile.fragments.profile.ProfileFragment;
 import com.wahlzeit.mobile.fragments.show.ShowFragment;
+import com.wahlzeit.mobile.fragments.tell.TellFragment;
 import com.wahlzeit.mobile.fragments.upload.UploadFragment;
 
 public class FragmentFactory {

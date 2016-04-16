@@ -8,12 +8,15 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Client;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Image;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.ImageCollection;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCase;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCaseCollection;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +34,25 @@ public class WahlzeitModel {
     JSONObject profileData;
     Client currentClient;
     PhotoCollection photoCache;
+    PhotoCaseCollection photoCaseCache;
+    Map<String, PhotoCase> photoCaseCacheAsMap;
     Map<String, ImageCollection> images;
 
+    public PhotoCaseCollection getPhotoCaseCache() {
+        return photoCaseCache;
+    }
+
+    public Map<String, PhotoCase> getPhotoCaseCacheAsMap() {
+        return photoCaseCacheAsMap;
+    }
+
+    public void setPhotoCaseCacheAsMap(PhotoCaseCollection photoCaseCollection) {
+        this.photoCaseCache = photoCaseCollection;
+        this.photoCaseCacheAsMap = new HashMap<String, PhotoCase>();
+        for(PhotoCase photoCase: photoCaseCollection.getItems()) {
+            this.photoCaseCacheAsMap.put(photoCase.getIdAsString(), photoCase);
+        }
+    }
 
     public Map<String, ImageCollection> getImages() {
         return images;

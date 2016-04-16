@@ -1,4 +1,4 @@
-package com.wahlzeit.mobile.fragments;
+package com.wahlzeit.mobile.fragments.tell;
 
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

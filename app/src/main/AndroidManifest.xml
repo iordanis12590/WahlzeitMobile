@@ -35,6 +35,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.wahlzeit.mobile.activities.MainActivity" />
         </activity>
+        <activity android:name=".activities.FlagActivity"
+            android:parentActivityName=".activities.MainActivity"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.wahlzeit.mobile.activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

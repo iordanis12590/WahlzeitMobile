@@ -52,17 +52,11 @@ public class PhotoListAdapter extends BaseAdapter {
         @InjectView(R.id.textview_upload_date) TextView textViewUploadDate;
         @InjectView(R.id.textview_photo_tags) TextView textViewPhotoTags;
         @InjectView(R.id.imageview_photo_home) ImageView imageView;
-        // labels
-        @InjectView(R.id.textview_photo_praise_label) TextView textViewPraiseLabel;
-        @InjectView(R.id.textview_status_label) TextView textViewStatusLabel;
-        @InjectView(R.id.textview_upload_date_label) TextView textViewUploadDateLabel;
-        @InjectView(R.id.textview_photo_tags_label) TextView textViewPhotoTagsLabel;
         public ListItemViewHolder(View view) {ButterKnife.inject(this, view);}
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         if (inflater == null)
             inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
@@ -71,8 +65,6 @@ public class PhotoListAdapter extends BaseAdapter {
         ListItemViewHolder holder = new ListItemViewHolder(convertView);
         PhotoListItem item = photoListItems.get(position);
 
-        setupLabels(holder);
-
         holder.textViewPraise.setText(item.getPraise());
         holder.textViewStatus.setText(item.getStatus());
         holder.textViewUploadDate.setText(item.getUploadDate());
@@ -80,13 +72,6 @@ public class PhotoListAdapter extends BaseAdapter {
         holder.imageView.setImageBitmap(item.getImage());
 
         return convertView;
-    }
-
-    private void setupLabels(ListItemViewHolder holder) {
-        holder.textViewPraiseLabel.setText("Praise:");
-        holder.textViewStatusLabel.setText("Status:");
-        holder.textViewUploadDateLabel.setText("Uploaded on:");
-        holder.textViewPhotoTagsLabel.setText("Tags:");
     }
 
 }

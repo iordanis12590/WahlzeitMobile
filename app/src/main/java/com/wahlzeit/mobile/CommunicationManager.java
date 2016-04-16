@@ -12,6 +12,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
+import com.wahlzeit.mobile.asyncTasks.ListAllPhotoCasesTask;
 import com.wahlzeit.mobile.asyncTasks.ListAllPhotosTask;
 
 /**
@@ -34,6 +35,10 @@ public class CommunicationManager {
 
     public ListAllPhotosTask getListAllPhotosTask(Context context) {
         return new ListAllPhotosTask(context);
+    }
+
+    public ListAllPhotoCasesTask getListAllPhotoCasesTask(Context context) {
+        return new ListAllPhotoCasesTask(context);
     }
 
     public boolean isNetworkAvailable(Context context) {

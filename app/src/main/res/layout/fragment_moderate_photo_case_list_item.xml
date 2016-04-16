@@ -18,16 +18,16 @@
         android:paddingTop="@dimen/feed_item_padding_top_bottom" >
 
         <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/feed_item_padding_left_right"
-        android:paddingRight="@dimen/feed_item_padding_left_right" >
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/feed_item_padding_left_right"
+            android:paddingRight="@dimen/feed_item_padding_left_right" >
 
             <ImageView
-                android:id="@+id/imageview_photo_home"
+                android:id="@+id/imageview_photo_case_moderate"
                 android:layout_width="@dimen/feed_item_profile_pic_width"
-                android:layout_height="@dimen/feed_item_profile_pic_height"
+                android:layout_height="85dp"
                 android:background="@color/white"
                 android:scaleType="fitCenter"
                 android:visibility="visible" />
@@ -44,64 +44,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
-                        android:id="@+id/textview_photo_praise_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
                         android:textSize="14dp"
-                        android:text="Praise."
+                        android:text="Description:"
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/textview_photo_praise"
+                        android:id="@+id/textview_photo_case_tags"
                         android:layout_marginLeft="5dp"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
-                        android:textSize="14dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
-                        android:textSize="14dp"
-                        android:text="Status:"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:id="@+id/textview_status"
-                        android:layout_marginLeft="5dp"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/timestamp"
-                        android:fontFamily="sans-serif"
-                        android:textSize="14dp" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
-                        android:textSize="14dp"
-                        android:text="Uploaded on:"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:id="@+id/textview_upload_date"
-                        android:layout_marginLeft="5dp"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/timestamp"
                         android:fontFamily="sans-serif"
                         android:textSize="14dp" />
                 </LinearLayout>
@@ -119,7 +73,73 @@
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/textview_photo_tags"
+                        android:id="@+id/textview_photo_case_description"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:textSize="14dp"
+                        android:text="Flagger:"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/textview_photo_case_flagger"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/timestamp"
+                        android:fontFamily="sans-serif"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:textSize="14dp"
+                        android:text="Reason:"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/textview_photo_case_reason"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/timestamp"
+                        android:fontFamily="sans-serif"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:textSize="14dp"
+                        android:text="Explanation:"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/textview_photo_case_explanation"
                         android:layout_marginLeft="5dp"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"

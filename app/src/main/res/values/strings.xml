@@ -45,6 +45,13 @@
         <item>Other</item>
     </string-array>
 
+    <string-array name="flag_reason">
+        <item>Mismatch</item>
+        <item>Offensive photo</item>
+        <item>Copyright violation</item>
+        <item>Other reason</item>
+    </string-array>
+
     <string-array name="language">
         <item>English</item>
         <item>German</item>
@@ -55,6 +62,12 @@
         <item>Tell</item>
         <item>Delete</item>
         <item>Select</item>
+    </string-array>
+
+    <string-array name="card_item_options">
+        <item>Flag</item>
+        <item>Mail owner</item>
+        <item>Tell</item>
     </string-array>
 
     <!-- Content Description -->

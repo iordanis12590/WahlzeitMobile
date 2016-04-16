@@ -160,6 +160,9 @@ public class MainActivity extends BaseActivity {
             case 4:
                 fragment = FragmentFactory.getFragment(Fragments.Upload);
                 break;
+            case 6:
+                fragment = FragmentFactory.getFragment(Fragments.Moderate);
+                break;
             default:
                 break;
         }

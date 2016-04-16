@@ -74,7 +74,6 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
 
     private void populateHeader() {
         try {
-
             userImageUrl = WahlzeitModel.model.getGoogleUserValue("picture");
             new GetImageFromUrlTask(this.getActivity(), imageViewProfilePicture).execute(userImageUrl);
 
@@ -92,7 +91,7 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
         }
     }
 
-    private BroadcastReceiver populateUserPhotosReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver retrievedPhotos = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             populatePhotoList();
@@ -135,7 +134,7 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
         }
     }
 
-    private class OptionListener implements DialogInterface.OnClickListener {
+    private class PhotoItemOptionListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             dialog.dismiss();
@@ -161,8 +160,6 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
                     Photo photoToDelete = WahlzeitModel.model.getPhotoFromId(selectedPhotoId);
                     new DeletePhotoTask(getActivity().getApplicationContext()).execute(photoToDelete);
                     break;
-
-
             }
         }
     }
@@ -177,16 +174,16 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
         String options[] = getActivity().getResources().getStringArray(R.array.photo_item_options);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.photo_item_options_title);
-        builder.setItems(options, new OptionListener());
+        builder.setItems(options, new PhotoItemOptionListener());
         builder.show();
     }
 
     private void registerEvents() {
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(populateUserPhotosReceiver, new IntentFilter("populate_user_photos"));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(retrievedPhotos, new IntentFilter("populate_user_photos"));
     }
 
     private void unregisterEvents() {
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(populateUserPhotosReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(retrievedPhotos);
     }
 
     @Override

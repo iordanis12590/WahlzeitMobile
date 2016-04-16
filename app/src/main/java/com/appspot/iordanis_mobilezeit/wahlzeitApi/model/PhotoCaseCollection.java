@@ -19,7 +19,7 @@
 package com.appspot.iordanis_mobilezeit.wahlzeitApi.model;
 
 /**
- * Model definition for ImageCollection.
+ * Model definition for PhotoCaseCollection.
  *
  * <p> This is the Java data model class that specifies how to parse/serialize into the JSON that is
  * transmitted over HTTP when working with the wahlzeitApi. For a detailed explanation see:
@@ -29,43 +29,43 @@ package com.appspot.iordanis_mobilezeit.wahlzeitApi.model;
  * @author Google, Inc.
  */
 @SuppressWarnings("javadoc")
-public final class ImageCollection extends com.google.api.client.json.GenericJson {
+public final class PhotoCaseCollection extends com.google.api.client.json.GenericJson {
 
   /**
    * The value may be {@code null}.
    */
   @com.google.api.client.util.Key
-  private java.util.List<Image> items;
+  private java.util.List<PhotoCase> items;
 
   static {
-    // hack to force ProGuard to consider Image used, since otherwise it would be stripped out
+    // hack to force ProGuard to consider PhotoCase used, since otherwise it would be stripped out
     // see https://github.com/google/google-api-java-client/issues/543
-    com.google.api.client.util.Data.nullOf(Image.class);
+    com.google.api.client.util.Data.nullOf(PhotoCase.class);
   }
 
   /**
    * @return value or {@code null} for none
    */
-  public java.util.List<Image> getItems() {
+  public java.util.List<PhotoCase> getItems() {
     return items;
   }
 
   /**
    * @param items items or {@code null} for none
    */
-  public ImageCollection setItems(java.util.List<Image> items) {
+  public PhotoCaseCollection setItems(java.util.List<PhotoCase> items) {
     this.items = items;
     return this;
   }
 
   @Override
-  public ImageCollection set(String fieldName, Object value) {
-    return (ImageCollection) super.set(fieldName, value);
+  public PhotoCaseCollection set(String fieldName, Object value) {
+    return (PhotoCaseCollection) super.set(fieldName, value);
   }
 
   @Override
-  public ImageCollection clone() {
-    return (ImageCollection) super.clone();
+  public PhotoCaseCollection clone() {
+    return (PhotoCaseCollection) super.clone();
   }
 
 }

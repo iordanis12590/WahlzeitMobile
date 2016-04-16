@@ -56,5 +56,7 @@ public class CardStackEventListener implements CardStack.CardEventListener {
     @Override
     public void topCardTapped() {
         Log.i(TAG, "CardStack topCardTapped triggered");
+        Intent intent = new Intent("tapped_top_of_card_stack");
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 }

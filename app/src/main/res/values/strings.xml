@@ -64,6 +64,11 @@
         <item>Select</item>
     </string-array>
 
+    <string-array name="photo_case_item_options">
+        <item>Moderate</item>
+        <item>Unflag</item>
+    </string-array>
+
     <string-array name="card_item_options">
         <item>Flag</item>
         <item>Mail owner</item>

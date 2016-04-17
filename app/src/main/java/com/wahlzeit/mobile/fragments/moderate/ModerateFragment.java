@@ -1,22 +1,27 @@
 package com.wahlzeit.mobile.fragments.moderate;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCase;
 import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.asyncTasks.UpdatePhotoCaseTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +37,8 @@ public class ModerateFragment extends Fragment {
     View rootView;
     List<PhotoCaseListItem> photoCaseListItemList;
     PhotoCaseListAdapter photoCaseListAdapter;
+    String selectedPhotoCaseId;
+    PhotoCase selectedPhotoCase;
     @InjectView(R.id.list_photos_cases_moderate)ListView listViewPhotoCases;
 
     public ModerateFragment() {
@@ -60,7 +67,7 @@ public class ModerateFragment extends Fragment {
         photoCaseListItemList = getPhotoCaseListItems();
         photoCaseListAdapter = new PhotoCaseListAdapter(getActivity(), photoCaseListItemList);
         listViewPhotoCases.setAdapter(photoCaseListAdapter);
-//        listViewPhotoCases.setOnClickListener();
+        listViewPhotoCases.setOnItemClickListener(new PhotoCaseClickListener());
     }
 
     private List<PhotoCaseListItem> getPhotoCaseListItems() {
@@ -100,4 +107,44 @@ public class ModerateFragment extends Fragment {
         unregisterEvents();
     }
 
+    private class PhotoCaseClickListener implements AdapterView.OnItemClickListener {
+
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            PhotoCaseListItem item = (PhotoCaseListItem) photoCaseListAdapter.getItem(position);
+            selectedPhotoCaseId = item.getId();
+            selectedPhotoCase = WahlzeitModel.model.getPhotoCaseFromId(selectedPhotoCaseId);
+
+            createPopup();
+        }
+    }
+
+    private void createPopup() {
+        String options[] = getActivity().getResources().getStringArray(R.array.photo_case_item_options);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.photo_item_options_title);
+        builder.setItems(options, new PhotoItemOptionListener());
+        builder.show();
+    }
+
+    private class PhotoItemOptionListener implements DialogInterface.OnClickListener {
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+            String selectedOption = ((AlertDialog)dialog).getListView().getAdapter().getItem(which).toString();
+            switch (selectedOption.toLowerCase()) {
+                case "moderate":
+                    Log.d(getActivity().getTitle().toString(), selectedOption);
+                    selectedPhotoCase.getPhoto().setStatus("MODERATED");
+                    break;
+                case "unflag":
+                    Log.d(getActivity().getTitle().toString(), selectedOption);
+                    selectedPhotoCase.getPhoto().setStatus("FLAGGED2");
+                    break;
+            }
+            new UpdatePhotoCaseTask(getActivity().getApplicationContext()).execute(selectedPhotoCase);
+        }
+    }
 }

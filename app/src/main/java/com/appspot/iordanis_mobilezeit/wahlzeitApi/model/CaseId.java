@@ -19,7 +19,7 @@
 package com.appspot.iordanis_mobilezeit.wahlzeitApi.model;
 
 /**
- * Model definition for PhotoCollection.
+ * Model definition for CaseId.
  *
  * <p> This is the Java data model class that specifies how to parse/serialize into the JSON that is
  * transmitted over HTTP when working with the wahlzeitApi. For a detailed explanation see:
@@ -29,37 +29,37 @@ package com.appspot.iordanis_mobilezeit.wahlzeitApi.model;
  * @author Google, Inc.
  */
 @SuppressWarnings("javadoc")
-public final class PhotoCollection extends com.google.api.client.json.GenericJson {
+public final class CaseId extends com.google.api.client.json.GenericJson {
 
   /**
    * The value may be {@code null}.
    */
   @com.google.api.client.util.Key
-  private java.util.List<Photo> items;
+  private java.lang.Integer id;
 
   /**
    * @return value or {@code null} for none
    */
-  public java.util.List<Photo> getItems() {
-    return items;
+  public java.lang.Integer getId() {
+    return id;
   }
 
   /**
-   * @param items items or {@code null} for none
+   * @param id id or {@code null} for none
    */
-  public PhotoCollection setItems(java.util.List<Photo> items) {
-    this.items = items;
+  public CaseId setId(java.lang.Integer id) {
+    this.id = id;
     return this;
   }
 
   @Override
-  public PhotoCollection set(String fieldName, Object value) {
-    return (PhotoCollection) super.set(fieldName, value);
+  public CaseId set(String fieldName, Object value) {
+    return (CaseId) super.set(fieldName, value);
   }
 
   @Override
-  public PhotoCollection clone() {
-    return (PhotoCollection) super.clone();
+  public CaseId clone() {
+    return (CaseId) super.clone();
   }
 
 }

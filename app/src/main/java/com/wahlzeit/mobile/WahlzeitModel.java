@@ -54,6 +54,16 @@ public class WahlzeitModel {
         }
     }
 
+    public PhotoCase getPhotoCaseFromId(String id) {
+        PhotoCase result;
+        if (photoCaseCacheAsMap.containsKey(id)) {
+            result = photoCaseCacheAsMap.get(id);;
+        } else {
+            result = null;
+        }
+        return result;
+    }
+
     public Map<String, ImageCollection> getImages() {
         return images;
     }

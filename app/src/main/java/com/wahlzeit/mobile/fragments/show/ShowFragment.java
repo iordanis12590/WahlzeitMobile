@@ -21,6 +21,7 @@ import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.activities.FlagActivity;
+import com.wahlzeit.mobile.activities.MainActivity;
 import com.wahlzeit.mobile.asyncTasks.SkipPhotoTask;
 import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 import com.wenchao.cardstack.CardStack;
@@ -104,9 +105,18 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
                 case "mail owner":
                     break;
                 case "tell":
+                    launchTellFragment();
                     break;
             }
         }
+    }
+
+    private void launchTellFragment() {
+        int tellFragmentPosition = 1;
+        Fragment fragment = ((MainActivity)getActivity()).getFragmentView(tellFragmentPosition);
+        Bundle args = new Bundle();
+        args.putString("photoId", displayedPhotoId);
+        ((MainActivity)getActivity()).displayFragmentView(fragment, tellFragmentPosition, args);
     }
 
     private void lauchFlagActivity() {

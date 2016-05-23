@@ -13,11 +13,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.components.navigation.NavDrawerItem;
 import com.wahlzeit.mobile.components.navigation.NavDrawerListAdapter;
-import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.fragments.FragmentFactory;
 import com.wahlzeit.mobile.fragments.Fragments;
+import com.wahlzeit.mobile.fragments.tell.TellFragment;
 
 import java.util.ArrayList;
 
@@ -149,7 +150,7 @@ public class MainActivity extends BaseActivity {
                 fragment = FragmentFactory.getFragment(Fragments.Show); //new ShowFragment();
                 break;
             case 1:
-                fragment = FragmentFactory.getFragment(Fragments.Tell); //new TellFragment();
+                fragment = new TellFragment();
                 break;
             case 2:
                 fragment = FragmentFactory.getFragment(Fragments.Home); //new HomeFragment();

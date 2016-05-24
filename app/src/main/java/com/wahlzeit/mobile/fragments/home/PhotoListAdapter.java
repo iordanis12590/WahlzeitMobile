@@ -21,13 +21,30 @@ import butterknife.InjectView;
  */
 public class PhotoListAdapter extends BaseAdapter {
     private Activity activity;
-//    private Context mContext;
     private LayoutInflater inflater;
+
     private List<PhotoListItem> photoListItems;
 
     public PhotoListAdapter(Activity activity, List<PhotoListItem> photoListItems) {
         this.activity = activity;
         this.photoListItems = photoListItems;
+    }
+
+    public void addPhotoListItem(PhotoListItem photoListItem) {
+        this.getPhotoListItems().add(photoListItem);
+    }
+
+    public boolean containsPhotoListItem(String id) {
+        for(PhotoListItem item: photoListItems) {
+            if(item.getId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<PhotoListItem> getPhotoListItems() {
+        return photoListItems;
     }
 
     @Override
@@ -73,5 +90,4 @@ public class PhotoListAdapter extends BaseAdapter {
 
         return convertView;
     }
-
 }

@@ -36,7 +36,6 @@ import org.json.JSONException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -52,7 +51,7 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
     String selectedPhotoId;
 
     ListView listViewPhotos;
-    List<PhotoListItem> photoListItems;
+//    List<PhotoListItem> photoListItems;
     PhotoListAdapter photoListAdapter;
     View header;
     private SwipyRefreshLayout swipyRefreshLayout;
@@ -65,6 +64,9 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         listViewPhotos = (ListView) rootView.findViewById(R.id.list_photos_home);
+        photoListAdapter = new PhotoListAdapter(getActivity(), new ArrayList<PhotoListItem>());
+        listViewPhotos.setAdapter(photoListAdapter);
+        listViewPhotos.setOnItemClickListener(new ListItemClickListener());
         swipyRefreshLayout = (SwipyRefreshLayout) rootView.findViewById(R.id.swipy_refresh_layout_home);
         swipyRefreshLayout.setOnRefreshListener(this);
         registerEvents();
@@ -76,8 +78,6 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
         populateHeader();
         return rootView;
     }
-
-
 
     private void populateHeader() {
         try {
@@ -106,26 +106,26 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
     };
 
     private void populatePhotoList() {
-        photoListItems = new ArrayList<PhotoListItem>();
+//        List<PhotoListItem> photoListItems = photoListAdapter.getPhotoListItems();
         DateFormat dateFormater = new SimpleDateFormat("MMM d, yyyy");
         for(Photo photo: WahlzeitModel.model.getClientsPhotos().values()) {
             // get photo values
             String photoId = photo.getId().getStringValue();
-            String photoPraise = photo.getPraise().toString();
-            String photoStatus = photo.getStatus().toLowerCase();
-            // Date
-            String photoCreationTime = dateFormater.format(photo.getCreationTime().longValue());
-            // tags
-            String photoTags = WahlzeitModel.model.getPhotoTagsAsString(photo);
-            Bitmap decodedImage = WahlzeitModel.model.getImageBitmapOfSize(photo.getIdAsString(), 3);
-            // create list object
-            PhotoListItem photoItem = new PhotoListItem( photoId, photoPraise, photoStatus,
-                    photoCreationTime, photoTags, decodedImage);
-            photoListItems.add(photoItem);
+            if(!photoListAdapter.containsPhotoListItem(photoId)) {
+                String photoPraise = photo.getPraise().toString();
+                String photoStatus = photo.getStatus().toLowerCase();
+                // Date
+                String photoCreationTime = dateFormater.format(photo.getCreationTime().longValue());
+                // tags
+                String photoTags = WahlzeitModel.model.getPhotoTagsAsString(photo);
+                Bitmap decodedImage = WahlzeitModel.model.getImageBitmapOfSize(photo.getIdAsString(), 3);
+                // create list object
+                PhotoListItem photoItem = new PhotoListItem(photoId, photoPraise, photoStatus,
+                        photoCreationTime, photoTags, decodedImage);
+                photoListAdapter.addPhotoListItem(photoItem);
+                photoListAdapter.notifyDataSetChanged();
+            }
         }
-        photoListAdapter = new PhotoListAdapter(getActivity(), photoListItems);
-        listViewPhotos.setAdapter(photoListAdapter);
-        listViewPhotos.setOnItemClickListener(new ListItemClickListener());
     }
 
     @Override

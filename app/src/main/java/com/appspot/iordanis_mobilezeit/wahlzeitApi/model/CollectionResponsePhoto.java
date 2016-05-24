@@ -19,7 +19,7 @@
 package com.appspot.iordanis_mobilezeit.wahlzeitApi.model;
 
 /**
- * Model definition for PhotoCaseCollection.
+ * Model definition for CollectionResponsePhoto.
  *
  * <p> This is the Java data model class that specifies how to parse/serialize into the JSON that is
  * transmitted over HTTP when working with the wahlzeitApi. For a detailed explanation see:
@@ -29,37 +29,58 @@ package com.appspot.iordanis_mobilezeit.wahlzeitApi.model;
  * @author Google, Inc.
  */
 @SuppressWarnings("javadoc")
-public final class PhotoCaseCollection extends com.google.api.client.json.GenericJson {
+public final class CollectionResponsePhoto extends com.google.api.client.json.GenericJson {
 
   /**
    * The value may be {@code null}.
    */
   @com.google.api.client.util.Key
-  private java.util.List<PhotoCase> items;
+  private java.util.List<Photo> items;
+
+  /**
+   * The value may be {@code null}.
+   */
+  @com.google.api.client.util.Key
+  private java.lang.String nextPageToken;
 
   /**
    * @return value or {@code null} for none
    */
-  public java.util.List<PhotoCase> getItems() {
+  public java.util.List<Photo> getItems() {
     return items;
   }
 
   /**
    * @param items items or {@code null} for none
    */
-  public PhotoCaseCollection setItems(java.util.List<PhotoCase> items) {
+  public CollectionResponsePhoto setItems(java.util.List<Photo> items) {
     this.items = items;
     return this;
   }
 
-  @Override
-  public PhotoCaseCollection set(String fieldName, Object value) {
-    return (PhotoCaseCollection) super.set(fieldName, value);
+  /**
+   * @return value or {@code null} for none
+   */
+  public java.lang.String getNextPageToken() {
+    return nextPageToken;
+  }
+
+  /**
+   * @param nextPageToken nextPageToken or {@code null} for none
+   */
+  public CollectionResponsePhoto setNextPageToken(java.lang.String nextPageToken) {
+    this.nextPageToken = nextPageToken;
+    return this;
   }
 
   @Override
-  public PhotoCaseCollection clone() {
-    return (PhotoCaseCollection) super.clone();
+  public CollectionResponsePhoto set(String fieldName, Object value) {
+    return (CollectionResponsePhoto) super.set(fieldName, value);
+  }
+
+  @Override
+  public CollectionResponsePhoto clone() {
+    return (CollectionResponsePhoto) super.clone();
   }
 
 }

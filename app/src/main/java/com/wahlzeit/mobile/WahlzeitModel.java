@@ -33,10 +33,15 @@ public class WahlzeitModel {
     String accountName;
     JSONObject profileData;
     Client currentClient;
+    Map<String, Photo> clientsPhotos = new HashMap<String, Photo>();
     PhotoCollection photoCache;
     PhotoCaseCollection photoCaseCache;
     Map<String, PhotoCase> photoCaseCacheAsMap;
-    Map<String, ImageCollection> images;
+    Map<String, ImageCollection> images = new HashMap<String, ImageCollection>();
+
+    public Map<String, Photo> getClientsPhotos() {
+        return this.clientsPhotos;
+    }
 
     public PhotoCaseCollection getPhotoCaseCache() {
         return photoCaseCache;
@@ -85,7 +90,12 @@ public class WahlzeitModel {
     }
 
     public void setImages(Map<String, ImageCollection> images) {
-        this.images = images;
+        for(Map.Entry<String, ImageCollection> entry: images.entrySet()) {
+            if(!this.images.containsKey(entry.getKey())) {
+                this.images.put(entry.getKey(), entry.getValue());
+            }
+        }
+//        this.images = images;
     }
 
     public PhotoCollection getPhotoCache() {
@@ -131,6 +141,12 @@ public class WahlzeitModel {
             result = "(none)";
         }
         return result;
+    }
+
+    public void setClientsPhotos(List<Photo> photos) {
+        for(Photo photo: photos) {
+            clientsPhotos.put(photo.getIdAsString(), photo);
+        }
     }
 
     public void setPhotoCache(PhotoCollection photoCache) {

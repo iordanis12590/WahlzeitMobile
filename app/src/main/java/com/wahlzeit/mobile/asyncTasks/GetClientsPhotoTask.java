@@ -7,53 +7,59 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.CollectionResponsePhoto;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.ImageCollection;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
 import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.WahlzeitModel;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- * Created by iordanis on 28/02/16.
+ * Created by iordanis on 23/05/16.
  */
-public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
-    WahlzeitApi wahlzeitServiceHandle;
-    Context mContext;
+public class GetClientsPhotoTask extends AsyncTask<Void, Void, Void> {
 
-    public ListAllPhotosTask(Context context) {
+    Context mContext;
+    WahlzeitApi wahlzeitServiceHandle;
+
+
+    public GetClientsPhotoTask(Context context) {
         this.mContext = context;
         wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
-    }
 
+    }
 
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            PhotoCollection photoCache = downloadPhotos();
+            String clientId = WahlzeitModel.model.getCurrentClient().getId();
+            WahlzeitApi.Photos.Pagination.List getClientsPhotoCommand = wahlzeitServiceHandle.photos().pagination().list().setFromClient(clientId).setLimit(2);
+            CollectionResponsePhoto clientsPhotosCollectionResponse = getClientsPhotoCommand.execute();
+            String cursor = clientsPhotosCollectionResponse.getNextPageToken();
+            List<Photo> clientPhotos = clientsPhotosCollectionResponse.getItems();
             Map<String, ImageCollection> images = new HashMap<String, ImageCollection>();
-            for(Photo photo: photoCache.getItems()) {
+            for(Photo photo: clientPhotos) {
                 String photoId = photo.getIdAsString();
                 ImageCollection tempImages = downloadImages(photoId);
                 images.put(photoId, tempImages);
             }
-            WahlzeitModel.model.setPhotoCache(photoCache);
+            WahlzeitModel.model.setClientsPhotos(clientPhotos);
             WahlzeitModel.model.setImages(images);
         } catch (IOException ioe) {
-            Log.e(this.getClass().getName(), "Exception while fetching fotos/images", ioe);
+        Log.e(this.getClass().getName(), "Exception while fetching client's fotos/images", ioe);
         }
         return null;
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        Intent populateCardStack = new Intent("populate_photo_card_stack");
-//        Intent populateUserPhotos = new Intent("populate_user_photos");
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(populateCardStack);
-//        LocalBroadcastManager.getInstance(mContext).sendBroadcast(populateUserPhotos);
+        Intent populateUserPhotos = new Intent("populate_user_photos");
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(populateUserPhotos);
+
     }
 
     private ImageCollection downloadImages(String photoId) throws IOException{
@@ -63,11 +69,5 @@ public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
         return result;
     }
 
-    private PhotoCollection downloadPhotos() throws IOException {
-        PhotoCollection result = null;
-        WahlzeitApi.Photos.List getPhotosCommand = wahlzeitServiceHandle.photos().list();
-        result = getPhotosCommand.execute();
-//        PhotoCollection result = list.getItems();
-        return result;
-    }
+
 }

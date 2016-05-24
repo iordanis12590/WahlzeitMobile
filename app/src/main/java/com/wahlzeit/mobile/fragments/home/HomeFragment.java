@@ -20,12 +20,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
-import com.wahlzeit.mobile.CommunicationManager;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.activities.EditPhotoActivity;
 import com.wahlzeit.mobile.activities.MainActivity;
 import com.wahlzeit.mobile.asyncTasks.DeletePhotoTask;
+import com.wahlzeit.mobile.asyncTasks.GetClientsPhotoTask;
 import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
 import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 
@@ -39,7 +41,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class HomeFragment extends Fragment implements WahlzeitFragment {
+public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefreshListener, WahlzeitFragment {
 
     View rootView;
     @InjectView(R.id.textview_name_value_home) TextView textViewName;
@@ -54,6 +56,8 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
     List<PhotoListItem> photoListItems;
     PhotoListAdapter photoListAdapter;
     View header;
+//    private SwipeRefreshLayout swipeRefreshLayout;
+    private SwipyRefreshLayout swipyRefreshLayout;
 
     public HomeFragment() {}
 
@@ -62,15 +66,19 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
-//        ButterKnife.inject(this, rootView);
         listViewPhotos = (ListView) rootView.findViewById(R.id.list_photos_home);
+        swipyRefreshLayout = (SwipyRefreshLayout) rootView.findViewById(R.id.swipy_refresh_layout_home);
+        swipyRefreshLayout.setOnRefreshListener(this);
         registerEvents();
-        CommunicationManager.manager.getListAllPhotosTask(getActivity()).execute();
+        //CommunicationManager.manager.getListAllPhotosTask(getActivity()).execute();
+        new GetClientsPhotoTask(getActivity()).execute();
         header = inflater.inflate(R.layout.fragment_home_list_header, container ,false);
         ButterKnife.inject(this, header);
         populateHeader();
         return rootView;
     }
+
+
 
     private void populateHeader() {
         try {
@@ -101,7 +109,7 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
     private void populatePhotoList() {
         photoListItems = new ArrayList<PhotoListItem>();
         DateFormat dateFormater = new SimpleDateFormat("MMM d, yyyy");
-        for(Photo photo: WahlzeitModel.model.getPhotoCache().getItems()) {
+        for(Photo photo: WahlzeitModel.model.getClientsPhotos().values()) {
             // get photo values
             String photoId = photo.getId().getStringValue();
             String photoPraise = photo.getPraise().toString();
@@ -120,6 +128,14 @@ public class HomeFragment extends Fragment implements WahlzeitFragment {
         listViewPhotos.setAdapter(photoListAdapter);
         listViewPhotos.setOnItemClickListener(new ListItemClickListener());
         listViewPhotos.addHeaderView(header);
+    }
+
+    @Override
+    public void onRefresh(SwipyRefreshLayoutDirection direction) {
+        Log.d("MainActivity", "Refresh triggered at "
+                + (direction == SwipyRefreshLayoutDirection.TOP ? "top" : "bottom"));
+        swipyRefreshLayout.setRefreshing(false);
+
     }
 
     private class ListItemClickListener implements AdapterView.OnItemClickListener {

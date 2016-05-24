@@ -36,23 +36,34 @@ public class GetClientsPhotoTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            String clientId = WahlzeitModel.model.getCurrentClient().getId();
-            WahlzeitApi.Photos.Pagination.List getClientsPhotoCommand = wahlzeitServiceHandle.photos().pagination().list().setFromClient(clientId).setLimit(2);
-            CollectionResponsePhoto clientsPhotosCollectionResponse = getClientsPhotoCommand.execute();
-            String cursor = clientsPhotosCollectionResponse.getNextPageToken();
-            List<Photo> clientPhotos = clientsPhotosCollectionResponse.getItems();
-            Map<String, ImageCollection> images = new HashMap<String, ImageCollection>();
-            for(Photo photo: clientPhotos) {
-                String photoId = photo.getIdAsString();
-                ImageCollection tempImages = downloadImages(photoId);
-                images.put(photoId, tempImages);
+            List<Photo> clientPhotos = downloadClientsPhotos();
+            if(clientPhotos != null) {
+                Map<String, ImageCollection> images = new HashMap<String, ImageCollection>();
+                for(Photo photo: clientPhotos) {
+                    String photoId = photo.getIdAsString();
+                    ImageCollection tempImages = downloadImages(photoId);
+                    images.put(photoId, tempImages);
+                }
+                WahlzeitModel.model.setClientsPhotos(clientPhotos);
+                WahlzeitModel.model.setImages(images);
             }
-            WahlzeitModel.model.setClientsPhotos(clientPhotos);
-            WahlzeitModel.model.setImages(images);
         } catch (IOException ioe) {
         Log.e(this.getClass().getName(), "Exception while fetching client's fotos/images", ioe);
         }
         return null;
+    }
+
+    private List<Photo> downloadClientsPhotos() throws IOException {
+        String clientId = WahlzeitModel.model.getCurrentClient().getId();
+        WahlzeitApi.Photos.Pagination.List getClientsPhotoCommand = wahlzeitServiceHandle.photos().pagination().list().setFromClient(clientId).setLimit(WahlzeitModel.model.getClientsPhotosLimit());
+        String previousNextPageToken = WahlzeitModel.model.getNextPageToken();
+        if(previousNextPageToken != null && previousNextPageToken != "") {
+            getClientsPhotoCommand.setCursor(previousNextPageToken);
+        }
+        CollectionResponsePhoto clientsPhotosCollectionResponse = getClientsPhotoCommand.execute();
+        String nextPageToken = clientsPhotosCollectionResponse.getNextPageToken();
+        WahlzeitModel.model.setNextPageToken(nextPageToken);
+        return clientsPhotosCollectionResponse.getItems();
     }
 
     @Override

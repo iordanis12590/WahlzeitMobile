@@ -51,12 +51,10 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
     String textName, textEmail, textGender, userImageUrl;
     String selectedPhotoId;
 
-//    @InjectView(R.id.list_photos_home)
     ListView listViewPhotos;
     List<PhotoListItem> photoListItems;
     PhotoListAdapter photoListAdapter;
     View header;
-//    private SwipeRefreshLayout swipeRefreshLayout;
     private SwipyRefreshLayout swipyRefreshLayout;
 
     public HomeFragment() {}
@@ -72,8 +70,9 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
         registerEvents();
         //CommunicationManager.manager.getListAllPhotosTask(getActivity()).execute();
         new GetClientsPhotoTask(getActivity()).execute();
-        header = inflater.inflate(R.layout.fragment_home_list_header, container ,false);
+        header = inflater.inflate(R.layout.fragment_home_list_header, null ,false);
         ButterKnife.inject(this, header);
+        listViewPhotos.addHeaderView(header);
         populateHeader();
         return rootView;
     }
@@ -127,15 +126,14 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
         photoListAdapter = new PhotoListAdapter(getActivity(), photoListItems);
         listViewPhotos.setAdapter(photoListAdapter);
         listViewPhotos.setOnItemClickListener(new ListItemClickListener());
-        listViewPhotos.addHeaderView(header);
     }
 
     @Override
     public void onRefresh(SwipyRefreshLayoutDirection direction) {
         Log.d("MainActivity", "Refresh triggered at "
                 + (direction == SwipyRefreshLayoutDirection.TOP ? "top" : "bottom"));
+        new GetClientsPhotoTask(getActivity()).execute();
         swipyRefreshLayout.setRefreshing(false);
-
     }
 
     private class ListItemClickListener implements AdapterView.OnItemClickListener {

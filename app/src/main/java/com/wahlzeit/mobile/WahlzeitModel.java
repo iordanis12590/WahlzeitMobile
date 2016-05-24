@@ -29,6 +29,8 @@ public class WahlzeitModel {
     // Singleton
     public static WahlzeitModel model = new WahlzeitModel();
 
+    String nextPageToken;
+    int clientsPhotosLimit = 2;
     GoogleAccountCredential credential;
     String accountName;
     JSONObject profileData;
@@ -38,6 +40,18 @@ public class WahlzeitModel {
     PhotoCaseCollection photoCaseCache;
     Map<String, PhotoCase> photoCaseCacheAsMap;
     Map<String, ImageCollection> images = new HashMap<String, ImageCollection>();
+
+    public int getClientsPhotosLimit() {
+        return clientsPhotosLimit;
+    }
+
+    public String getNextPageToken() {
+        return nextPageToken;
+    }
+
+    public void setNextPageToken(String nextPageToken) {
+        this.nextPageToken = nextPageToken;
+    }
 
     public Map<String, Photo> getClientsPhotos() {
         return this.clientsPhotos;

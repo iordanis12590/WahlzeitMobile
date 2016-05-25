@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
@@ -36,6 +37,7 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
     private CardsDataAdapter mCardAdapter;
     @InjectView(R.id.textview_done_show) TextView mTextViewDone;
     @InjectView(R.id.container) CardStack mCardStack;
+    @InjectView(R.id.progress_bar_show) RelativeLayout progressBar;
 
     public ShowFragment() {
     }
@@ -148,13 +150,14 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
     private BroadcastReceiver populatePhotoCardsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            for(Photo photo: WahlzeitModel.model.getPhotoCache().getItems()) {
+            for(Photo photo: WahlzeitModel.model.getAllPhotos().values()) {
                 String photoId = photo.getIdAsString();
                 Bitmap decodedImage = WahlzeitModel.model.getImageBitmapOfSize(photoId, 3);
                 mCardAdapter.add(new CardModel(photoId, decodedImage));
             }
             mCardStack.setAdapter(mCardAdapter);
             mCardStack.setListener(new CardStackEventListener(getActivity().getApplicationContext()));
+            progressBar.setVisibility(View.GONE);
         }
     };
 

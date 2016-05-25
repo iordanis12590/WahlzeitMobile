@@ -56,13 +56,13 @@ public class GetClientsPhotoTask extends AsyncTask<Void, Void, Void> {
     private List<Photo> downloadClientsPhotos() throws IOException {
         String clientId = WahlzeitModel.model.getCurrentClient().getId();
         WahlzeitApi.Photos.Pagination.List getClientsPhotoCommand = wahlzeitServiceHandle.photos().pagination().list().setFromClient(clientId).setLimit(WahlzeitModel.model.getClientsPhotosLimit());
-        String previousNextPageToken = WahlzeitModel.model.getNextPageToken();
+        String previousNextPageToken = WahlzeitModel.model.getClientsPhotosNextPageToken();
         if(previousNextPageToken != null && previousNextPageToken != "") {
             getClientsPhotoCommand.setCursor(previousNextPageToken);
         }
         CollectionResponsePhoto clientsPhotosCollectionResponse = getClientsPhotoCommand.execute();
         String nextPageToken = clientsPhotosCollectionResponse.getNextPageToken();
-        WahlzeitModel.model.setNextPageToken(nextPageToken);
+        WahlzeitModel.model.setClientsPhotosNextPageToken(nextPageToken);
         return clientsPhotosCollectionResponse.getItems();
     }
 

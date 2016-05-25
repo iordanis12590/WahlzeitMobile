@@ -7,15 +7,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.CollectionResponsePhoto;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.ImageCollection;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
 import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.WahlzeitModel;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Created by iordanis on 28/02/16.
@@ -33,15 +32,21 @@ public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            PhotoCollection photoCache = downloadPhotos();
-            Map<String, ImageCollection> images = new HashMap<String, ImageCollection>();
-            for(Photo photo: photoCache.getItems()) {
-                String photoId = photo.getIdAsString();
-                ImageCollection tempImages = downloadImages(photoId);
-                images.put(photoId, tempImages);
+            List<Photo> downloadedPhotos = downloadAllPhotos();
+            if(downloadedPhotos != null) {
+                for(Photo photo: downloadedPhotos) {
+                    String photoId = photo.getIdAsString();
+                    if(WahlzeitModel.model.photoExists(photo)) {
+                        continue;
+                    }
+                    WahlzeitModel.model.addPhoto(photo);
+                    if(WahlzeitModel.model.imagesExist(photoId)){
+                        continue;
+                    }
+                    ImageCollection tempImages = downloadImages(photoId);
+                    WahlzeitModel.model.addImages(photoId, tempImages);
+                }
             }
-            WahlzeitModel.model.setPhotoCache(photoCache);
-            WahlzeitModel.model.setImages(images);
         } catch (IOException ioe) {
             Log.e(this.getClass().getName(), "Exception while fetching fotos/images", ioe);
         }
@@ -63,11 +68,16 @@ public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
         return result;
     }
 
-    private PhotoCollection downloadPhotos() throws IOException {
-        PhotoCollection result = null;
-        WahlzeitApi.Photos.List getPhotosCommand = wahlzeitServiceHandle.photos().list();
-        result = getPhotosCommand.execute();
-//        PhotoCollection result = list.getItems();
-        return result;
+    private List<Photo> downloadAllPhotos() throws IOException {
+        WahlzeitApi.Photos.Pagination.List getAllPhotosCommand = wahlzeitServiceHandle.photos().pagination().list().setLimit(WahlzeitModel.model.getAllPhotosLimit());
+        String previousNextPageToken = WahlzeitModel.model.getAllPhotosNextPageToken();
+        if(previousNextPageToken != null && previousNextPageToken != "") {
+            getAllPhotosCommand.setCursor(previousNextPageToken);
+        }
+        CollectionResponsePhoto allPhotosCollectionResponse = getAllPhotosCommand.execute();
+        String nextPageToken = allPhotosCollectionResponse.getNextPageToken();
+        WahlzeitModel.model.setAllPhotosNextPageToken(nextPageToken);
+        return allPhotosCollectionResponse.getItems();
     }
+
 }

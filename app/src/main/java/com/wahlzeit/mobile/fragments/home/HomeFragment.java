@@ -70,7 +70,6 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
         swipyRefreshLayout = (SwipyRefreshLayout) rootView.findViewById(R.id.swipy_refresh_layout_home);
         swipyRefreshLayout.setOnRefreshListener(this);
         registerEvents();
-        //CommunicationManager.manager.getListAllPhotosTask(getActivity()).execute();
         new GetClientsPhotoTask(getActivity()).execute();
         header = inflater.inflate(R.layout.fragment_home_list_header, null ,false);
         ButterKnife.inject(this, header);
@@ -123,9 +122,10 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
                 PhotoListItem photoItem = new PhotoListItem(photoId, photoPraise, photoStatus,
                         photoCreationTime, photoTags, decodedImage);
                 photoListAdapter.addPhotoListItem(photoItem);
-                photoListAdapter.notifyDataSetChanged();
             }
         }
+        photoListAdapter.notifyDataSetChanged();
+        swipyRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -133,7 +133,6 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
         Log.d("MainActivity", "Refresh triggered at "
                 + (direction == SwipyRefreshLayoutDirection.TOP ? "top" : "bottom"));
         new GetClientsPhotoTask(getActivity()).execute();
-        swipyRefreshLayout.setRefreshing(false);
     }
 
     private class ListItemClickListener implements AdapterView.OnItemClickListener {

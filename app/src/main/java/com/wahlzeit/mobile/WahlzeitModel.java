@@ -29,12 +29,15 @@ public class WahlzeitModel {
     // Singleton
     public static WahlzeitModel model = new WahlzeitModel();
 
-    String nextPageToken;
+    String clientsPhotosNextPageToken;
+    String allPhotosNextPageToken;
     int clientsPhotosLimit = 2;
+    int allPhotosLimit = 5;
     GoogleAccountCredential credential;
     String accountName;
     JSONObject profileData;
     Client currentClient;
+    Map<String, Photo> allPhotos = new HashMap<String, Photo>();
     Map<String, Photo> clientsPhotos = new HashMap<String, Photo>();
     PhotoCollection photoCache;
     PhotoCaseCollection photoCaseCache;
@@ -45,12 +48,28 @@ public class WahlzeitModel {
         return clientsPhotosLimit;
     }
 
-    public String getNextPageToken() {
-        return nextPageToken;
+    public int getAllPhotosLimit() {
+        return allPhotosLimit;
     }
 
-    public void setNextPageToken(String nextPageToken) {
-        this.nextPageToken = nextPageToken;
+    public String getClientsPhotosNextPageToken() {
+        return clientsPhotosNextPageToken;
+    }
+
+    public void setClientsPhotosNextPageToken(String clientsPhotosNextPageToken) {
+        this.clientsPhotosNextPageToken = clientsPhotosNextPageToken;
+    }
+
+    public String getAllPhotosNextPageToken() {
+        return allPhotosNextPageToken;
+    }
+
+    public void setAllPhotosNextPageToken(String allPhotosNextPageToken) {
+        this.allPhotosNextPageToken = allPhotosNextPageToken;
+    }
+
+    public Map<String, Photo> getAllPhotos() {
+        return this.allPhotos;
     }
 
     public Map<String, Photo> getClientsPhotos() {
@@ -105,7 +124,7 @@ public class WahlzeitModel {
 
     public void setImages(Map<String, ImageCollection> images) {
         for(Map.Entry<String, ImageCollection> entry: images.entrySet()) {
-            if(!this.images.containsKey(entry.getKey())) {
+            if(!imagesExist(entry.getKey())) {
                 this.images.put(entry.getKey(), entry.getValue());
             }
         }
@@ -117,24 +136,26 @@ public class WahlzeitModel {
     }
 
     public Photo getPhotoFromId(String photoId) {
-        Photo result = null;
-        for(Photo photo: photoCache.getItems()) {
-            if (photo.getIdAsString().equals(photoId)) {
-                result = photo;
-                break;
-            }
-        }
-        return result;
+        return allPhotos.get(photoId);
+//        Photo result = null;
+//        for(Photo photo: photoCache.getItems()) {
+//            if (photo.getIdAsString().equals(photoId)) {
+//                result = photo;
+//                break;
+//            }
+//        }
+//        return result;
     }
 
     public void updatePhoto(Photo updatedPhoto) {
-        for (Photo photo: photoCache.getItems()) {
-            if(photo.getIdAsString().equals(updatedPhoto.getIdAsString())) {
-                photoCache.getItems().remove(photo);
-                photoCache.getItems().add(updatedPhoto);
-                break;
-            }
-        }
+        allPhotos.put(updatedPhoto.getIdAsString(), updatedPhoto);
+//        for (Photo photo: photoCache.getItems()) {
+//            if(photo.getIdAsString().equals(updatedPhoto.getIdAsString())) {
+//                photoCache.getItems().remove(photo);
+//                photoCache.getItems().add(updatedPhoto);
+//                break;
+//            }
+//        }
     }
 
     public String getPhotoTagsAsString(Photo photo) {
@@ -161,6 +182,26 @@ public class WahlzeitModel {
         for(Photo photo: photos) {
             clientsPhotos.put(photo.getIdAsString(), photo);
         }
+    }
+
+    public void addPhoto(Photo photo) {
+        if(!photoExists(photo)) {
+            allPhotos.put(photo.getIdAsString(), photo);
+        }
+    }
+
+    public void addImages(String photoId, ImageCollection images) {
+        if(!imagesExist(photoId)){
+            this.images.put(photoId, images);
+        }
+    }
+
+    public boolean photoExists(Photo photo) {
+        return allPhotos.containsKey(photo.getIdAsString());
+    }
+
+    public boolean imagesExist(String photoId) {
+        return images.containsKey(photoId);
     }
 
     public void setPhotoCache(PhotoCollection photoCache) {

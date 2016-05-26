@@ -30,7 +30,7 @@ public class UpdatePhotoTask extends AsyncTask<Photo, Void, String> {
         try {
             WahlzeitApi.Photos.Update updateCommand = wahlzeitServiceHandle.photos().update(photoToUpdate);
             Photo updatedPhoto = updateCommand.execute();
-            WahlzeitModel.model.updatePhoto(photoToUpdate);
+            WahlzeitModel.model.updatePhoto(updatedPhoto);
         } catch (IOException e) {
             Log.e("UpdatePhotoTask", e.getMessage());
         }

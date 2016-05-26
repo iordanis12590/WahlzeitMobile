@@ -64,6 +64,9 @@ public class TellFragment extends Fragment implements WahlzeitFragment {
         if(args != null) {
             String photoId = args.getString("photoId");
             selectedPhoto = WahlzeitModel.model.getPhotoFromId(photoId);
+            if (selectedPhoto == null) {
+                selectedPhoto = WahlzeitModel.model.getClientsPhotoFromId(photoId);
+            }
         }
     }
 

@@ -27,6 +27,8 @@ import com.wahlzeit.mobile.asyncTasks.SkipPhotoTask;
 import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 import com.wenchao.cardstack.CardStack;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -80,6 +82,7 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
     private void skipCard(String photoId) {
         Photo photoToSkip = WahlzeitModel.model.getPhotoFromId(photoId);
         photoToSkip.setPraisingClientId(WahlzeitModel.model.getCurrentClient().getId());
+        WahlzeitModel.model.setSkippedPhoto(photoToSkip.getIdAsString());
         new SkipPhotoTask(getActivity().getApplicationContext()).execute(photoToSkip);
     }
 
@@ -135,7 +138,8 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
             skipCard(card.getPhotoId());
             // :) A hack to determine the card stack is left without cards
             if (mCardAdapter.getCount() == mCardStack.getCurrIndex()) {
-                mTextViewDone.setVisibility(View.VISIBLE);
+//                showDoneTextView();
+                CommunicationManager.manager.getListAllPhotoCasesTask(getActivity()).execute();
             }
         }
     };
@@ -150,16 +154,26 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
     private BroadcastReceiver populatePhotoCardsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            List<String> ratedPhotoIds = WahlzeitModel.model.getPraisedPhotoIds();
+            List<String> skippedPhotoIds = WahlzeitModel.model.getSkippedPhotoIds();
             for(Photo photo: WahlzeitModel.model.getAllPhotos().values()) {
                 String photoId = photo.getIdAsString();
+                if(ratedPhotoIds.contains(photoId)) {
+                    continue;
+                }
                 Bitmap decodedImage = WahlzeitModel.model.getImageBitmapOfSize(photoId, 3);
                 mCardAdapter.add(new CardModel(photoId, decodedImage));
             }
+            if(mCardAdapter.getCount() == 0) showDoneTextView();
             mCardStack.setAdapter(mCardAdapter);
             mCardStack.setListener(new CardStackEventListener(getActivity().getApplicationContext()));
             progressBar.setVisibility(View.GONE);
         }
     };
+
+    private void showDoneTextView() {
+        mTextViewDone.setVisibility(View.VISIBLE);
+    }
 
     @Override
     public void onDestroy() {

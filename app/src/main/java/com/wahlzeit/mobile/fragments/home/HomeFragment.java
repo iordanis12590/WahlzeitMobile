@@ -170,7 +170,7 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
                     break;
                 case "delete":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
-                    Photo photoToDelete = WahlzeitModel.model.getPhotoFromId(selectedPhotoId);
+                    Photo photoToDelete = WahlzeitModel.model.getClientsPhotoFromId(selectedPhotoId);
                     new DeletePhotoTask(getActivity().getApplicationContext()).execute(photoToDelete);
                     break;
             }

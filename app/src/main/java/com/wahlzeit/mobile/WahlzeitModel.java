@@ -11,11 +11,13 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCase;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCaseCollection;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
+import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoId;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -44,8 +46,74 @@ public class WahlzeitModel {
     Map<String, PhotoCase> photoCaseCacheAsMap;
     Map<String, ImageCollection> images = new HashMap<String, ImageCollection>();
 
+    public List<String> getPraisedPhotoIds() {
+        List<String> praisedPhotoIdsAsString = new ArrayList<>();
+        List<PhotoId> praisedPhotos = currentClient.getPraisedPhotoIds();
+        if(praisedPhotos != null) {
+            for(PhotoId photoId: praisedPhotos) {
+                praisedPhotoIdsAsString.add(photoId.getStringValue());
+            }
+        }
+        return praisedPhotoIdsAsString;
+    }
+
+    public List<String> getSkippedPhotoIds() {
+        List<String> skippedPhotoIdsAsString = new ArrayList<>();
+        List<PhotoId> skippedPhotos = currentClient.getSkippedPhotoIds();
+        if(skippedPhotos != null) {
+            for(PhotoId photoId: skippedPhotos) {
+                skippedPhotoIdsAsString.add(photoId.getStringValue());
+            }
+        }
+        return skippedPhotoIdsAsString;
+    }
+
+    public void setPraisedPhoto(String photoIdAsString) {
+        PhotoId photoId = new PhotoId().setStringValue(photoIdAsString);
+        List<PhotoId> alreadyPraisedPhotos = this.currentClient.getPraisedPhotoIds();
+        if(alreadyPraisedPhotos == null) {
+            alreadyPraisedPhotos = new ArrayList<PhotoId>();
+        }
+        alreadyPraisedPhotos.add(photoId);
+        currentClient.setPraisedPhotoIds(alreadyPraisedPhotos);
+    }
+
+    public void setSkippedPhoto(String photoIdAsString) {
+        final PhotoId photoId = new PhotoId().setStringValue(photoIdAsString);
+        List<PhotoId> alreadySkippedPhotos = currentClient.getSkippedPhotoIds();
+        if(alreadySkippedPhotos == null) {
+            alreadySkippedPhotos = new ArrayList<PhotoId>();
+        }
+        alreadySkippedPhotos.add(photoId);
+        currentClient.setSkippedPhotoIds(alreadySkippedPhotos);
+    }
+
+    public void deletePhoto(String photoId) {
+        if(photoExists(photoId)) {
+            allPhotos.remove(photoId);
+        }
+        if(clientsPhotosExists(photoId)) {
+            clientsPhotos.remove(photoId);
+        }
+        deleteImages(photoId);
+    }
+
+    public void deleteImages(String photoId) {
+        if(images.containsKey(photoId)) {
+            images.remove(photoId);
+        }
+    }
+
+    public void setClientsPhotosLimit(int clientsPhotosLimit) {
+        this.clientsPhotosLimit = clientsPhotosLimit;
+    }
+
     public int getClientsPhotosLimit() {
         return clientsPhotosLimit;
+    }
+
+    public void setAllPhotosLimit(int allPhotosLimit) {
+        this.allPhotosLimit = allPhotosLimit;
     }
 
     public int getAllPhotosLimit() {
@@ -147,8 +215,17 @@ public class WahlzeitModel {
 //        return result;
     }
 
+    public Photo getClientsPhotoFromId(String photoId) {
+        return clientsPhotos.get(photoId);
+    }
+
     public void updatePhoto(Photo updatedPhoto) {
-        allPhotos.put(updatedPhoto.getIdAsString(), updatedPhoto);
+        if(allPhotos.containsKey(updatedPhoto.getIdAsString())) {
+            allPhotos.put(updatedPhoto.getIdAsString(), updatedPhoto);
+        }
+        if (clientsPhotos.containsKey(updatedPhoto.getIdAsString())) {
+            clientsPhotos.put(updatedPhoto.getIdAsString(), updatedPhoto);
+        }
 //        for (Photo photo: photoCache.getItems()) {
 //            if(photo.getIdAsString().equals(updatedPhoto.getIdAsString())) {
 //                photoCache.getItems().remove(photo);
@@ -185,8 +262,14 @@ public class WahlzeitModel {
     }
 
     public void addPhoto(Photo photo) {
-        if(!photoExists(photo)) {
+        if(!photoExists(photo.getIdAsString())) {
             allPhotos.put(photo.getIdAsString(), photo);
+        }
+    }
+
+    public void addClientsPhoto(Photo photo) {
+        if(!clientsPhotosExists(photo.getIdAsString())) {
+            clientsPhotos.put(photo.getIdAsString(), photo);
         }
     }
 
@@ -196,8 +279,12 @@ public class WahlzeitModel {
         }
     }
 
-    public boolean photoExists(Photo photo) {
-        return allPhotos.containsKey(photo.getIdAsString());
+    public boolean photoExists(String photoId) {
+        return allPhotos.containsKey(photoId);
+    }
+
+    public boolean clientsPhotosExists(String photoId) {
+        return clientsPhotos.containsKey(photoId);
     }
 
     public boolean imagesExist(String photoId) {

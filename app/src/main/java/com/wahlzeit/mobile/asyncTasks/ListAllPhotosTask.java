@@ -36,7 +36,7 @@ public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
             if(downloadedPhotos != null) {
                 for(Photo photo: downloadedPhotos) {
                     String photoId = photo.getIdAsString();
-                    if(WahlzeitModel.model.photoExists(photo)) {
+                    if(WahlzeitModel.model.photoExists(photoId)) {
                         continue;
                     }
                     WahlzeitModel.model.addPhoto(photo);

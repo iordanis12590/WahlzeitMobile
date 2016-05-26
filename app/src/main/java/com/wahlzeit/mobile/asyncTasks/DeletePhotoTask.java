@@ -29,6 +29,7 @@ public class DeletePhotoTask extends AsyncTask<Photo, Void, String> {
         try {
             WahlzeitApi.Photos.SetStatusAsDeleted deleteCommand = wahlzeitServiceHandle.photos().setStatusAsDeleted(photoToDelete);
             Photo photo = deleteCommand.execute();
+            WahlzeitModel.model.deletePhoto(photo.getIdAsString());
             Log.d("deleted photo", photo.getStatus());
         } catch (IOException e) {
             Log.e("DeletePhotoTask", e.getMessage());

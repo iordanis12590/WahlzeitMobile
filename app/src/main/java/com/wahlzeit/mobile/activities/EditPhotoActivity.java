@@ -74,7 +74,7 @@ public class EditPhotoActivity extends BaseActivity {
     private void getPhoto() {
         Intent intent = getIntent();
         String photoId = intent.getStringExtra("selected_photo_id");
-        photoToUpdate = WahlzeitModel.model.getPhotoFromId(photoId);
+        photoToUpdate = WahlzeitModel.model.getClientsPhotoFromId(photoId);
 
     }
 

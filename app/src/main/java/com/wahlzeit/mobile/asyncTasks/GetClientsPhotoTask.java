@@ -14,9 +14,7 @@ import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.WahlzeitModel;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by iordanis on 23/05/16.
@@ -38,17 +36,21 @@ public class GetClientsPhotoTask extends AsyncTask<Void, Void, Void> {
         try {
             List<Photo> clientPhotos = downloadClientsPhotos();
             if(clientPhotos != null) {
-                Map<String, ImageCollection> images = new HashMap<String, ImageCollection>();
                 for(Photo photo: clientPhotos) {
                     String photoId = photo.getIdAsString();
+                    if(WahlzeitModel.model.clientsPhotosExists(photoId)){
+                        continue;
+                    }
+                    WahlzeitModel.model.addClientsPhoto(photo);
+                    if(WahlzeitModel.model.imagesExist(photoId)) {
+                        continue;
+                    }
                     ImageCollection tempImages = downloadImages(photoId);
-                    images.put(photoId, tempImages);
+                    WahlzeitModel.model.addImages(photoId, tempImages);
                 }
-                WahlzeitModel.model.setClientsPhotos(clientPhotos);
-                WahlzeitModel.model.setImages(images);
             }
         } catch (IOException ioe) {
-        Log.e(this.getClass().getName(), "Exception while fetching client's fotos/images", ioe);
+            Log.e(this.getClass().getName(), "Exception while fetching client's fotos/images", ioe);
         }
         return null;
     }
@@ -61,8 +63,16 @@ public class GetClientsPhotoTask extends AsyncTask<Void, Void, Void> {
             getClientsPhotoCommand.setCursor(previousNextPageToken);
         }
         CollectionResponsePhoto clientsPhotosCollectionResponse = getClientsPhotoCommand.execute();
-        String nextPageToken = clientsPhotosCollectionResponse.getNextPageToken();
-        WahlzeitModel.model.setClientsPhotosNextPageToken(nextPageToken);
+        // resend request and get all photos
+        if(clientsPhotosCollectionResponse.getItems() == null) {
+            WahlzeitModel.model.setClientsPhotosNextPageToken("");
+            WahlzeitModel.model.setClientsPhotosLimit(100);
+            getClientsPhotoCommand = wahlzeitServiceHandle.photos().pagination().list().setFromClient(clientId);
+            clientsPhotosCollectionResponse = getClientsPhotoCommand.execute();
+        } else {
+            String nextPageToken = clientsPhotosCollectionResponse.getNextPageToken();
+            WahlzeitModel.model.setClientsPhotosNextPageToken(nextPageToken);
+        }
         return clientsPhotosCollectionResponse.getItems();
     }
 

@@ -31,6 +31,7 @@ public class RatingBarListener implements RatingBar.OnRatingBarChangeListener {
 
         Photo photoToRate = WahlzeitModel.model.getPhotoFromId(ratedPhotoId);
         photoToRate.setPraisingClientId(WahlzeitModel.model.getCurrentClient().getId());
+        WahlzeitModel.model.setPraisedPhoto(ratedPhotoId);
         photoToRate.setRating((int) rating);
         new RatePhotoTask(myContext).execute(photoToRate);
 

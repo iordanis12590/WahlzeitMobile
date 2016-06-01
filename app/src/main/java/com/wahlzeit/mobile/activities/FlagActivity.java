@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCase;
+import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.asyncTasks.CreatePhotoCaseTask;
 
 import butterknife.ButterKnife;
@@ -49,7 +49,7 @@ public class FlagActivity extends BaseActivity {
     }
 
     private void setEmailAddress() {
-        userEmailAddress = WahlzeitModel.model.getCurrentClient().getEmailAddress().getValue();
+        userEmailAddress = ModelManager.manager.getCurrentClient().getEmailAddress().getValue();
         editTextAddress.setText(userEmailAddress);
     }
 
@@ -61,12 +61,12 @@ public class FlagActivity extends BaseActivity {
     private void getPhotoToFlag() {
         Intent intent = getIntent();
         String photoId = intent.getStringExtra("diplayed_photo_id");
-        photoToFlag = WahlzeitModel.model.getPhotoFromId(photoId);
+        photoToFlag = ModelManager.manager.getPhotoFromId(photoId);
     }
 
     private void setPhotoToFlag() {
         if(photoToFlag != null) {
-            Bitmap photoToFlagBitmap = WahlzeitModel.model.getImageBitmapOfSize(photoToFlag.getIdAsString(), 3);
+            Bitmap photoToFlagBitmap = ModelManager.manager.getImageBitmapOfSize(photoToFlag.getIdAsString(), 3);
             imageViewFlag.setImageBitmap(photoToFlagBitmap);
         }
     }

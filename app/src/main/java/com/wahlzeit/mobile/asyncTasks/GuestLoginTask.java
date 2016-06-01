@@ -7,7 +7,7 @@ import android.util.Log;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Client;
 import com.wahlzeit.mobile.CommunicationManager;
-import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.activities.LoginActivity;
 import com.wahlzeit.mobile.activities.MainActivity;
 
@@ -51,7 +51,7 @@ public class GuestLoginTask extends AsyncTask<Void, Void, Void> {
         Client guest = new Client();
         WahlzeitApi.Clients.Create postGuestCommand = wahlzeitServiceHandle.clients().create(guest);
         Client responseGuest = postGuestCommand.execute();
-        WahlzeitModel.model.setCurrentClient(responseGuest);
+        ModelManager.manager.setCurrentClient(responseGuest);
         Log.d("User logged in: ", responseGuest.getNickName() + " access rights: " + responseGuest.getAccessRights());
 
     }

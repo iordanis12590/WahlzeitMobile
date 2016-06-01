@@ -11,7 +11,7 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.CollectionResponsePhoto
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.ImageCollection;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.CommunicationManager;
-import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.ModelManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +27,7 @@ public class GetClientsPhotoTask extends AsyncTask<Void, Void, Void> {
 
     public GetClientsPhotoTask(Context context) {
         this.mContext = context;
-        wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
+        wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
 
     }
 
@@ -38,15 +38,15 @@ public class GetClientsPhotoTask extends AsyncTask<Void, Void, Void> {
             if(clientPhotos != null) {
                 for(Photo photo: clientPhotos) {
                     String photoId = photo.getIdAsString();
-                    if(WahlzeitModel.model.clientsPhotosExists(photoId)){
+                    if(ModelManager.manager.clientsPhotosExists(photoId)){
                         continue;
                     }
-                    WahlzeitModel.model.addClientsPhoto(photo);
-                    if(WahlzeitModel.model.imagesExist(photoId)) {
+                    ModelManager.manager.addClientsPhoto(photo);
+                    if(ModelManager.manager.imagesExist(photoId)) {
                         continue;
                     }
                     ImageCollection tempImages = downloadImages(photoId);
-                    WahlzeitModel.model.addImages(photoId, tempImages);
+                    ModelManager.manager.addImages(photoId, tempImages);
                 }
             }
         } catch (IOException ioe) {
@@ -56,22 +56,22 @@ public class GetClientsPhotoTask extends AsyncTask<Void, Void, Void> {
     }
 
     private List<Photo> downloadClientsPhotos() throws IOException {
-        String clientId = WahlzeitModel.model.getCurrentClient().getId();
-        WahlzeitApi.Photos.Pagination.List getClientsPhotoCommand = wahlzeitServiceHandle.photos().pagination().list().setFromClient(clientId).setLimit(WahlzeitModel.model.getClientsPhotosLimit());
-        String previousNextPageToken = WahlzeitModel.model.getClientsPhotosNextPageToken();
+        String clientId = ModelManager.manager.getCurrentClient().getId();
+        WahlzeitApi.Photos.Pagination.List getClientsPhotoCommand = wahlzeitServiceHandle.photos().pagination().list().setFromClient(clientId).setLimit(ModelManager.manager.getClientsPhotosLimit());
+        String previousNextPageToken = ModelManager.manager.getClientsPhotosNextPageToken();
         if(previousNextPageToken != null && previousNextPageToken != "") {
             getClientsPhotoCommand.setCursor(previousNextPageToken);
         }
         CollectionResponsePhoto clientsPhotosCollectionResponse = getClientsPhotoCommand.execute();
         // resend request and get all photos
         if(clientsPhotosCollectionResponse.getItems() == null) {
-            WahlzeitModel.model.setClientsPhotosNextPageToken("");
-            WahlzeitModel.model.setClientsPhotosLimit(100);
+            ModelManager.manager.setClientsPhotosNextPageToken("");
+            ModelManager.manager.setClientsPhotosLimit(100);
             getClientsPhotoCommand = wahlzeitServiceHandle.photos().pagination().list().setFromClient(clientId);
             clientsPhotosCollectionResponse = getClientsPhotoCommand.execute();
         } else {
             String nextPageToken = clientsPhotosCollectionResponse.getNextPageToken();
-            WahlzeitModel.model.setClientsPhotosNextPageToken(nextPageToken);
+            ModelManager.manager.setClientsPhotosNextPageToken(nextPageToken);
         }
         return clientsPhotosCollectionResponse.getItems();
     }

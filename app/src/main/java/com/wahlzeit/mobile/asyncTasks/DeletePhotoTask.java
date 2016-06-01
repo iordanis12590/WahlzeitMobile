@@ -7,7 +7,7 @@ import android.util.Log;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.CommunicationManager;
-import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.ModelManager;
 
 import java.io.IOException;
 
@@ -25,11 +25,11 @@ public class DeletePhotoTask extends AsyncTask<Photo, Void, String> {
     @Override
     protected String doInBackground(Photo... params) {
         Photo photoToDelete = params[0];
-        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
+        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
         try {
             WahlzeitApi.Photos.SetStatusAsDeleted deleteCommand = wahlzeitServiceHandle.photos().setStatusAsDeleted(photoToDelete);
             Photo photo = deleteCommand.execute();
-            WahlzeitModel.model.deletePhoto(photo.getIdAsString());
+            ModelManager.manager.deletePhoto(photo.getIdAsString());
             Log.d("deleted photo", photo.getStatus());
         } catch (IOException e) {
             Log.e("DeletePhotoTask", e.getMessage());

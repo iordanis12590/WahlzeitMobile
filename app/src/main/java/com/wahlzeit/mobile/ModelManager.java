@@ -26,10 +26,10 @@ import java.util.Map;
 /**
  * Created by iordanis on 24/02/16.
  */
-public class WahlzeitModel {
+public class ModelManager {
 
     // Singleton
-    public static WahlzeitModel model = new WahlzeitModel();
+    public static ModelManager manager = new ModelManager();
 
     String clientsPhotosNextPageToken;
     String allPhotosNextPageToken;

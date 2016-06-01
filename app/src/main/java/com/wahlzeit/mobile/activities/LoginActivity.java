@@ -17,8 +17,8 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.About;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.wahlzeit.mobile.CommunicationManager;
+import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.asyncTasks.GuestLoginTask;
 import com.wahlzeit.mobile.asyncTasks.Oauth2LoginTask;
 
@@ -65,9 +65,9 @@ public class LoginActivity extends BaseActivity {
                     if (accountName != null) {
                         // User is authorized.
                         credential.setSelectedAccountName(accountName);
-                        WahlzeitModel.model.setAccountName(accountName);
+                        ModelManager.manager.setAccountName(accountName);
                         saveAccountName(accountName);
-                        WahlzeitModel.model.setCredential(credential);
+                        ModelManager.manager.setCredential(credential);
                     }
                 }
                 break;
@@ -79,9 +79,9 @@ public class LoginActivity extends BaseActivity {
         if(accountName == null || accountName.contentEquals("")) {
             chooseAccount();
         } else {
-            WahlzeitModel.model.setAccountName(accountName);
+            ModelManager.manager.setAccountName(accountName);
             credential.setSelectedAccountName(accountName);
-            WahlzeitModel.model.setCredential(credential);
+            ModelManager.manager.setCredential(credential);
         }
     }
 
@@ -124,7 +124,7 @@ public class LoginActivity extends BaseActivity {
         AsyncTask<Integer, Void, About> getAboutTask = new AsyncTask<Integer,Void, About>() {
             protected About doInBackground(Integer... integers) {
 
-                WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
+                WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
                 try {
                     WahlzeitApi.GetAbout getAboutCommand = wahlzeitServiceHandle.getAbout();
 
@@ -142,7 +142,7 @@ public class LoginActivity extends BaseActivity {
                     Log.d("WahlzeitActivity", about.getDescription());
                     makeToast(about.getDescription());
                 } else {
-                    Log.e("WahlzeitModel", "No about was returned from the API");
+                    Log.e("ModelManager", "No about was returned from the API");
                 }
             }
         };
@@ -166,10 +166,10 @@ public class LoginActivity extends BaseActivity {
     private void attemptOauth2Login(Boolean performUserLogin) {
 
         if(CommunicationManager.manager.isNetworkAvailable(this)) {
-            if(WahlzeitModel.model.getCredential().getSelectedAccountName() == null) {
+            if(ModelManager.manager.getCredential().getSelectedAccountName() == null) {
                 chooseAccount();
             }
-            String userAccount = WahlzeitModel.model.getAccountName();
+            String userAccount = ModelManager.manager.getAccountName();
             if(userAccount != null && userAccount.length() > 0) {
                 showProgress(true);
                 getOauth2LoginTask(LoginActivity.this, userAccount, CommunicationManager.manager.SCOPE_LOGIN, performUserLogin).execute();

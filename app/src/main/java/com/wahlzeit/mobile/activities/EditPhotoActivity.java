@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Tags;
+import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.asyncTasks.UpdatePhotoTask;
 import com.wahlzeit.mobile.components.textswitcher.EditorActionListener;
 import com.wahlzeit.mobile.components.textswitcher.FocusChangeListener;
@@ -66,7 +66,7 @@ public class EditPhotoActivity extends BaseActivity {
     }
 
     private void setupImageView() {
-        Bitmap image = WahlzeitModel.model.getImageBitmapOfSize(photoToUpdate.getIdAsString(), 3);
+        Bitmap image = ModelManager.manager.getImageBitmapOfSize(photoToUpdate.getIdAsString(), 3);
         imageViewEdit.setImageBitmap(image);
 
     }
@@ -74,12 +74,12 @@ public class EditPhotoActivity extends BaseActivity {
     private void getPhoto() {
         Intent intent = getIntent();
         String photoId = intent.getStringExtra("selected_photo_id");
-        photoToUpdate = WahlzeitModel.model.getClientsPhotoFromId(photoId);
+        photoToUpdate = ModelManager.manager.getClientsPhotoFromId(photoId);
 
     }
 
     private void setupTagsText() {
-        String tags = WahlzeitModel.model.getPhotoTagsAsString(photoToUpdate);
+        String tags = ModelManager.manager.getPhotoTagsAsString(photoToUpdate);
         textViewTags.setText(tags);
         View.OnClickListener onClickListener = new TextViewClickListener(this);
         View.OnFocusChangeListener onFocusChangeListener = new FocusChangeListener(this);

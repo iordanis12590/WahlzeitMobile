@@ -19,8 +19,8 @@ import android.widget.TextView;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.CommunicationManager;
+import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.activities.FlagActivity;
 import com.wahlzeit.mobile.activities.MainActivity;
 import com.wahlzeit.mobile.asyncTasks.SkipPhotoTask;
@@ -80,9 +80,9 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
     }
 
     private void skipCard(String photoId) {
-        Photo photoToSkip = WahlzeitModel.model.getPhotoFromId(photoId);
-        photoToSkip.setPraisingClientId(WahlzeitModel.model.getCurrentClient().getId());
-        WahlzeitModel.model.setSkippedPhoto(photoToSkip.getIdAsString());
+        Photo photoToSkip = ModelManager.manager.getPhotoFromId(photoId);
+        photoToSkip.setPraisingClientId(ModelManager.manager.getCurrentClient().getId());
+        ModelManager.manager.setSkippedPhoto(photoToSkip.getIdAsString());
         new SkipPhotoTask(getActivity().getApplicationContext()).execute(photoToSkip);
     }
 
@@ -154,14 +154,14 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
     private BroadcastReceiver populatePhotoCardsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            List<String> ratedPhotoIds = WahlzeitModel.model.getPraisedPhotoIds();
-            List<String> skippedPhotoIds = WahlzeitModel.model.getSkippedPhotoIds();
-            for(Photo photo: WahlzeitModel.model.getAllPhotos().values()) {
+            List<String> ratedPhotoIds = ModelManager.manager.getPraisedPhotoIds();
+            List<String> skippedPhotoIds = ModelManager.manager.getSkippedPhotoIds();
+            for(Photo photo: ModelManager.manager.getAllPhotos().values()) {
                 String photoId = photo.getIdAsString();
                 if(ratedPhotoIds.contains(photoId)) {
                     continue;
                 }
-                Bitmap decodedImage = WahlzeitModel.model.getImageBitmapOfSize(photoId, 3);
+                Bitmap decodedImage = ModelManager.manager.getImageBitmapOfSize(photoId, 3);
                 mCardAdapter.add(new CardModel(photoId, decodedImage));
             }
             if(mCardAdapter.getCount() == 0) showDoneTextView();

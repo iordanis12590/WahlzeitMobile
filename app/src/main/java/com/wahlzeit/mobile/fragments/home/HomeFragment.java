@@ -22,8 +22,8 @@ import android.widget.TextView;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
+import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.activities.EditPhotoActivity;
 import com.wahlzeit.mobile.activities.MainActivity;
 import com.wahlzeit.mobile.asyncTasks.DeletePhotoTask;
@@ -80,17 +80,17 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
 
     private void populateHeader() {
         try {
-            userImageUrl = WahlzeitModel.model.getGoogleUserValue("picture");
+            userImageUrl = ModelManager.manager.getGoogleUserValue("picture");
             new GetImageFromUrlTask(this.getActivity(), imageViewProfilePicture).execute(userImageUrl);
 
-            textName = WahlzeitModel.model.getGoogleUserValue("name");
+            textName = ModelManager.manager.getGoogleUserValue("name");
             textViewName.setText(textName);
 
 
-            textEmail = WahlzeitModel.model.getGoogleUserValue("email");
+            textEmail = ModelManager.manager.getGoogleUserValue("email");
             textViewEmail.setText(textEmail);
 
-            textGender = WahlzeitModel.model.getGoogleUserValue("gender");
+            textGender = ModelManager.manager.getGoogleUserValue("gender");
             textViewGender.setText(textGender);
         } catch(JSONException e) {
             e.printStackTrace();
@@ -107,7 +107,7 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
     private void populatePhotoList() {
 //        List<PhotoListItem> photoListItems = photoListAdapter.getPhotoListItems();
         DateFormat dateFormater = new SimpleDateFormat("MMM d, yyyy");
-        for(Photo photo: WahlzeitModel.model.getClientsPhotos().values()) {
+        for(Photo photo: ModelManager.manager.getClientsPhotos().values()) {
             // get photo values
             String photoId = photo.getId().getStringValue();
             if(!photoListAdapter.containsPhotoListItem(photoId)) {
@@ -116,8 +116,8 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
                 // Date
                 String photoCreationTime = dateFormater.format(photo.getCreationTime().longValue());
                 // tags
-                String photoTags = WahlzeitModel.model.getPhotoTagsAsString(photo);
-                Bitmap decodedImage = WahlzeitModel.model.getImageBitmapOfSize(photo.getIdAsString(), 3);
+                String photoTags = ModelManager.manager.getPhotoTagsAsString(photo);
+                Bitmap decodedImage = ModelManager.manager.getImageBitmapOfSize(photo.getIdAsString(), 3);
                 // create list object
                 PhotoListItem photoItem = new PhotoListItem(photoId, photoPraise, photoStatus,
                         photoCreationTime, photoTags, decodedImage);
@@ -170,7 +170,7 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
                     break;
                 case "delete":
                     Log.d(getActivity().getTitle().toString(), selectedOption);
-                    Photo photoToDelete = WahlzeitModel.model.getClientsPhotoFromId(selectedPhotoId);
+                    Photo photoToDelete = ModelManager.manager.getClientsPhotoFromId(selectedPhotoId);
                     new DeletePhotoTask(getActivity().getApplicationContext()).execute(photoToDelete);
                     break;
             }

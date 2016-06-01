@@ -11,7 +11,7 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.CollectionResponsePhoto
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.ImageCollection;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.CommunicationManager;
-import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.ModelManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,7 +25,7 @@ public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
 
     public ListAllPhotosTask(Context context) {
         this.mContext = context;
-        wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
+        wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
     }
 
 
@@ -36,15 +36,15 @@ public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
             if(downloadedPhotos != null) {
                 for(Photo photo: downloadedPhotos) {
                     String photoId = photo.getIdAsString();
-                    if(WahlzeitModel.model.photoExists(photoId)) {
+                    if(ModelManager.manager.photoExists(photoId)) {
                         continue;
                     }
-                    WahlzeitModel.model.addPhoto(photo);
-                    if(WahlzeitModel.model.imagesExist(photoId)){
+                    ModelManager.manager.addPhoto(photo);
+                    if(ModelManager.manager.imagesExist(photoId)){
                         continue;
                     }
                     ImageCollection tempImages = downloadImages(photoId);
-                    WahlzeitModel.model.addImages(photoId, tempImages);
+                    ModelManager.manager.addImages(photoId, tempImages);
                 }
             }
         } catch (IOException ioe) {
@@ -69,14 +69,14 @@ public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
     }
 
     private List<Photo> downloadAllPhotos() throws IOException {
-        WahlzeitApi.Photos.Pagination.List getAllPhotosCommand = wahlzeitServiceHandle.photos().pagination().list().setLimit(WahlzeitModel.model.getAllPhotosLimit());
-        String previousNextPageToken = WahlzeitModel.model.getAllPhotosNextPageToken();
+        WahlzeitApi.Photos.Pagination.List getAllPhotosCommand = wahlzeitServiceHandle.photos().pagination().list().setLimit(ModelManager.manager.getAllPhotosLimit());
+        String previousNextPageToken = ModelManager.manager.getAllPhotosNextPageToken();
         if(previousNextPageToken != null && previousNextPageToken != "") {
             getAllPhotosCommand.setCursor(previousNextPageToken);
         }
         CollectionResponsePhoto allPhotosCollectionResponse = getAllPhotosCommand.execute();
         String nextPageToken = allPhotosCollectionResponse.getNextPageToken();
-        WahlzeitModel.model.setAllPhotosNextPageToken(nextPageToken);
+        ModelManager.manager.setAllPhotosNextPageToken(nextPageToken);
         return allPhotosCollectionResponse.getItems();
     }
 

@@ -10,7 +10,7 @@ import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.wahlzeit.mobile.CommunicationManager;
-import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.activities.LoginActivity;
 import com.wahlzeit.mobile.activities.MainActivity;
 
@@ -81,7 +81,7 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
             GOOGLE_USER_DATA = readResponse(is);
             is.close();
             JSONObject profileData = new JSONObject(GOOGLE_USER_DATA);
-            WahlzeitModel.model.setProfileData(profileData);
+            ModelManager.manager.setProfileData(profileData);
             return;
         } else if(sc == 401) {
             GoogleAuthUtil.invalidateToken(myLoginActivity, token);
@@ -117,11 +117,11 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
     }
 
     private void createWahlzeitUser() throws IOException, JSONException, SocketTimeoutException {
-        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
+        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
 
         Client client = new Client();
-        client.setId(WahlzeitModel.model.getGoogleUserValue("id"));
-        client.setNickName(WahlzeitModel.model.getGoogleUserValue("name"));
+        client.setId(ModelManager.manager.getGoogleUserValue("id"));
+        client.setNickName(ModelManager.manager.getGoogleUserValue("name"));
         if(performUserLogin) {
             client.setAccessRights("USER");
         } else {
@@ -130,7 +130,7 @@ public class Oauth2LoginTask extends AsyncTask<Void,Void,Void> {
         WahlzeitApi.Clients.Create postClientCommand = wahlzeitServiceHandle.clients().create(client);
         Client responseClient = postClientCommand.execute();
         Log.d("User logged in: ", responseClient.getNickName() + " access rights: " + responseClient.getAccessRights());
-        WahlzeitModel.model.setCurrentClient(responseClient);
+        ModelManager.manager.setCurrentClient(responseClient);
 
     }
 

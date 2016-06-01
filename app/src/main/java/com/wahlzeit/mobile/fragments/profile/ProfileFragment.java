@@ -14,7 +14,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.activities.BaseActivity;
 import com.wahlzeit.mobile.asyncTasks.GetImageFromUrlTask;
 import com.wahlzeit.mobile.components.textswitcher.EditorActionListener;
@@ -61,23 +61,23 @@ public class ProfileFragment extends Fragment implements WahlzeitFragment {
 
     private void populateTextAndImage() {
         try {
-            if (WahlzeitModel.model.getCurrentClient() == null) throw new AssertionError("Client is null");
+            if (ModelManager.manager.getCurrentClient() == null) throw new AssertionError("Client is null");
 
-            userImageUrl = WahlzeitModel.model.getGoogleUserValue("picture");
+            userImageUrl = ModelManager.manager.getGoogleUserValue("picture");
             new GetImageFromUrlTask(this.getActivity(), imageViewProfilePicture).execute(userImageUrl);
 
-            textName = WahlzeitModel.model.getGoogleUserValue("name");
+            textName = ModelManager.manager.getGoogleUserValue("name");
             textViewName.setText(textName);
 
-            textEmail = WahlzeitModel.model.getGoogleUserValue("email");
+            textEmail = ModelManager.manager.getGoogleUserValue("email");
             textViewEmail.setText(textEmail);
 
-            textGender = WahlzeitModel.model.getGoogleUserValue("gender");
+            textGender = ModelManager.manager.getGoogleUserValue("gender");
             if (textGender == null || textGender.isEmpty()) throw new AssertionError("Gender fetched from google profile is nil");
             int myGenderPosition = getStringPositionInAdapter(genderAdapter, textGender);
             spinnerGender.setSelection(myGenderPosition);
 
-            textLanguage = WahlzeitModel.model.getCurrentClient().getLanguage().toLowerCase();
+            textLanguage = ModelManager.manager.getCurrentClient().getLanguage().toLowerCase();
             int myLanguagePositinon = getStringPositionInAdapter(languageAdapter, textLanguage);
             spinnerLanguage.setSelection(myLanguagePositinon);
 
@@ -128,8 +128,8 @@ public class ProfileFragment extends Fragment implements WahlzeitFragment {
             String name = textViewName.getText().toString();
             String gender = spinnerGender.getSelectedItem().toString();
             String language = spinnerLanguage.getSelectedItem().toString();
-            WahlzeitModel.model.getCurrentClient().setNickName(name);
-            WahlzeitModel.model.getCurrentClient().setLanguage(language);
+            ModelManager.manager.getCurrentClient().setNickName(name);
+            ModelManager.manager.getCurrentClient().setLanguage(language);
             ((BaseActivity)getActivity()).setLocale(language);
 
         }

@@ -19,8 +19,8 @@ import android.widget.ListView;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCase;
 import com.wahlzeit.mobile.CommunicationManager;
+import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.asyncTasks.UpdatePhotoCaseTask;
 
 import java.util.ArrayList;
@@ -72,14 +72,14 @@ public class ModerateFragment extends Fragment {
 
     private List<PhotoCaseListItem> getPhotoCaseListItems() {
         List<PhotoCaseListItem> result = new ArrayList<PhotoCaseListItem>();
-        for (PhotoCase photoCase: WahlzeitModel.model.getPhotoCaseCache().getItems()) {
+        for (PhotoCase photoCase: ModelManager.manager.getPhotoCaseCache().getItems()) {
             String photoCaseId = photoCase.getIdAsString();
             String photoCaseDescription = "Photo by " + photoCase.getPhotoOwnerName();
             String photoCaseReason = photoCase.getReason();
-            String photoCaseTags = WahlzeitModel.model.getPhotoTagsAsString(photoCase.getPhoto());
+            String photoCaseTags = ModelManager.manager.getPhotoTagsAsString(photoCase.getPhoto());
             String photoCaseFlagger = photoCase.getFlagger();
             String photoCaseExplanation = photoCase.getExplanation();
-            Bitmap photoCaseImage = WahlzeitModel.model.getImageBitmapOfSize(photoCase.getPhoto().getIdAsString(), 2);
+            Bitmap photoCaseImage = ModelManager.manager.getImageBitmapOfSize(photoCase.getPhoto().getIdAsString(), 2);
             PhotoCaseListItem item = new PhotoCaseListItem(photoCaseId, photoCaseDescription, photoCaseTags, photoCaseFlagger, photoCaseReason, photoCaseExplanation, photoCaseImage);
             result.add(item);
         }
@@ -114,7 +114,7 @@ public class ModerateFragment extends Fragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             PhotoCaseListItem item = (PhotoCaseListItem) photoCaseListAdapter.getItem(position);
             selectedPhotoCaseId = item.getId();
-            selectedPhotoCase = WahlzeitModel.model.getPhotoCaseFromId(selectedPhotoCaseId);
+            selectedPhotoCase = ModelManager.manager.getPhotoCaseFromId(selectedPhotoCaseId);
 
             createPopup();
         }

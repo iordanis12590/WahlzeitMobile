@@ -9,7 +9,7 @@ import android.util.Log;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCaseCollection;
 import com.wahlzeit.mobile.CommunicationManager;
-import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.ModelManager;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ public class ListAllPhotoCasesTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
         try {
             PhotoCaseCollection photoCaseCache = downloaPhotoCases();
-            WahlzeitModel.model.setPhotoCaseCacheAsMap(photoCaseCache);
+            ModelManager.manager.setPhotoCaseCacheAsMap(photoCaseCache);
         } catch (IOException e) {
             Log.e(this.getClass().getName(), "Exception while fetching photo cases", e);
         }
@@ -44,7 +44,7 @@ public class ListAllPhotoCasesTask extends AsyncTask<Void, Void, Void> {
 
     private PhotoCaseCollection downloaPhotoCases() throws IOException{
         PhotoCaseCollection result = null;
-        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
+        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
         WahlzeitApi.Flags.List getPhotoCasesCommand = wahlzeitServiceHandle.flags().list();
         result = getPhotoCasesCommand.execute();
         return result;

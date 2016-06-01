@@ -16,8 +16,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
+import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.WahlzeitModel;
 import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 
 import butterknife.ButterKnife;
@@ -54,7 +54,7 @@ public class TellFragment extends Fragment implements WahlzeitFragment {
 
     private void setSelectedImage() {
         if(selectedPhoto != null) {
-            selectedPhotoBitmap = WahlzeitModel.model.getImageBitmapOfSize(selectedPhoto.getIdAsString(), 3);
+            selectedPhotoBitmap = ModelManager.manager.getImageBitmapOfSize(selectedPhoto.getIdAsString(), 3);
             imageViewTell.setImageBitmap(selectedPhotoBitmap);
         }
     }
@@ -63,9 +63,9 @@ public class TellFragment extends Fragment implements WahlzeitFragment {
         Bundle args = getArguments();
         if(args != null) {
             String photoId = args.getString("photoId");
-            selectedPhoto = WahlzeitModel.model.getPhotoFromId(photoId);
+            selectedPhoto = ModelManager.manager.getPhotoFromId(photoId);
             if (selectedPhoto == null) {
-                selectedPhoto = WahlzeitModel.model.getClientsPhotoFromId(photoId);
+                selectedPhoto = ModelManager.manager.getClientsPhotoFromId(photoId);
             }
         }
     }

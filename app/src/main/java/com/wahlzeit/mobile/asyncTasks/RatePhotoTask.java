@@ -7,7 +7,7 @@ import android.util.Log;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.CommunicationManager;
-import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.ModelManager;
 
 import java.io.IOException;
 
@@ -25,12 +25,12 @@ public class RatePhotoTask extends AsyncTask<Photo, Void, Void> {
     @Override
     protected Void doInBackground(Photo... params) {
         Photo photoToPraise = params[0];
-        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
+        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
         try {
             WahlzeitApi.Photos.Praise praiseCommand = wahlzeitServiceHandle.photos().praise(photoToPraise);
             Photo praisedPhoto = praiseCommand.execute();
             Log.i("Praising", Double.toString(praisedPhoto.getPraise()));
-            WahlzeitModel.model.updatePhoto(praisedPhoto);
+            ModelManager.manager.updatePhoto(praisedPhoto);
         } catch (IOException ioe ) {
             Log.e("RatePhotoTask", ioe.getMessage());
         }

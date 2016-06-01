@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.wahlzeit.mobile.CommunicationManager;
-import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.ModelManager;
 
 import java.io.IOException;
 
@@ -26,11 +26,11 @@ public class UpdatePhotoTask extends AsyncTask<Photo, Void, String> {
     @Override
     protected String doInBackground(Photo... params) {
         Photo photoToUpdate = params[0];
-        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(WahlzeitModel.model.getCredential());
+        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
         try {
             WahlzeitApi.Photos.Update updateCommand = wahlzeitServiceHandle.photos().update(photoToUpdate);
             Photo updatedPhoto = updateCommand.execute();
-            WahlzeitModel.model.updatePhoto(updatedPhoto);
+            ModelManager.manager.updatePhoto(updatedPhoto);
         } catch (IOException e) {
             Log.e("UpdatePhotoTask", e.getMessage());
         }

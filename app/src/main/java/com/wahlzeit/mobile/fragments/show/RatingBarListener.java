@@ -5,7 +5,7 @@ import android.util.Log;
 import android.widget.RatingBar;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
-import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.asyncTasks.RatePhotoTask;
 import com.wenchao.cardstack.CardStack;
 
@@ -29,9 +29,9 @@ public class RatingBarListener implements RatingBar.OnRatingBarChangeListener {
         Log.d("Rating", Float.toString(rating));
         Log.d("Rated photo id", ratedPhotoId);
 
-        Photo photoToRate = WahlzeitModel.model.getPhotoFromId(ratedPhotoId);
-        photoToRate.setPraisingClientId(WahlzeitModel.model.getCurrentClient().getId());
-        WahlzeitModel.model.setPraisedPhoto(ratedPhotoId);
+        Photo photoToRate = ModelManager.manager.getPhotoFromId(ratedPhotoId);
+        photoToRate.setPraisingClientId(ModelManager.manager.getCurrentClient().getId());
+        ModelManager.manager.setPraisedPhoto(ratedPhotoId);
         photoToRate.setRating((int) rating);
         new RatePhotoTask(myContext).execute(photoToRate);
 

@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Tags;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.WahlzeitModel;
+import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.asyncTasks.UploadPhotoTask;
 import com.wahlzeit.mobile.components.textswitcher.EditorActionListener;
 import com.wahlzeit.mobile.components.textswitcher.FocusChangeListener;
@@ -204,8 +204,8 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
 
     private void uploadPhoto() {
         photoToUpload = new Photo();
-        photoToUpload.setOwnerId(WahlzeitModel.model.getCurrentClient().getId());
-        photoToUpload.setOwnerEmailAddress(WahlzeitModel.model.getCurrentClient().getEmailAddress());
+        photoToUpload.setOwnerId(ModelManager.manager.getCurrentClient().getId());
+        photoToUpload.setOwnerEmailAddress(ModelManager.manager.getCurrentClient().getEmailAddress());
         photoToUpload.setBlobImage(getCompressedSelectedImage());
         photoToUpload.setTags(getTagsFromTextView());
         new UploadPhotoTask(getActivity().getApplicationContext()).execute(photoToUpload);

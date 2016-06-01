@@ -37,5 +37,14 @@
             android:gravity="center|center_horizontal" />
     </com.wenchao.cardstack.CardStack>
 
+    <EditText
+        android:layout_marginLeft="14dp"
+        android:id="@+id/edittext_filter"
+        android:layout_width="fill_parent"
+        android:layout_height="51dip"
+        android:hint="Filter"
+        android:inputType="text"
+        android:drawableLeft="@drawable/ic_search"
+        android:background="@android:color/transparent"/>
 
 </LinearLayout>

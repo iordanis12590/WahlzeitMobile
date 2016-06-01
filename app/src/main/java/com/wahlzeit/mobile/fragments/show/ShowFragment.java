@@ -11,18 +11,22 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
-import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.activities.FlagActivity;
 import com.wahlzeit.mobile.activities.MainActivity;
+import com.wahlzeit.mobile.asyncTasks.GetFilteredPhotosTask;
 import com.wahlzeit.mobile.asyncTasks.SkipPhotoTask;
 import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 import com.wenchao.cardstack.CardStack;
@@ -36,10 +40,12 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
 
     View rootView;
     String displayedPhotoId;
+    String filterTags;
     private CardsDataAdapter mCardAdapter;
     @InjectView(R.id.textview_done_show) TextView mTextViewDone;
     @InjectView(R.id.container) CardStack mCardStack;
     @InjectView(R.id.progress_bar_show) RelativeLayout progressBar;
+    @InjectView(R.id.edittext_filter) EditText editTextFilter;
 
     public ShowFragment() {
     }
@@ -52,9 +58,34 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         registerEvents();
         setupDoneText();
         setupCardStack();
-        CommunicationManager.manager.getListAllPhotosTask(getActivity()).execute();
+        setFilterText();
+//        CommunicationManager.manager.getListAllPhotosTask(getActivity()).execute();
+        new GetFilteredPhotosTask(getActivity()).execute();
         return rootView;
     }
+
+    private void setFilterText() {
+        editTextFilter.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    hideKeyboard(v);
+                    filterTags = editTextFilter.getText().toString();
+//                    new GetFilteredPhotosTask(getActivity()).execute(filterTags);
+                    refreshCardStack();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void hideKeyboard(TextView v) {
+        InputMethodManager imm =  (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+    }
+
 
     private void registerEvents() {
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(discardPhotoReceiver, new IntentFilter("discard_photo"));
@@ -138,8 +169,9 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
             skipCard(card.getPhotoId());
             // :) A hack to determine the card stack is left without cards
             if (mCardAdapter.getCount() == mCardStack.getCurrIndex()) {
-//                showDoneTextView();
-                CommunicationManager.manager.getListAllPhotoCasesTask(getActivity()).execute();
+                showDoneTextView(true);
+            } else {
+                showDoneTextView(false);
             }
         }
     };
@@ -154,25 +186,57 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
     private BroadcastReceiver populatePhotoCardsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            List<String> ratedPhotoIds = ModelManager.manager.getPraisedPhotoIds();
-            List<String> skippedPhotoIds = ModelManager.manager.getSkippedPhotoIds();
-            for(Photo photo: ModelManager.manager.getAllPhotos().values()) {
-                String photoId = photo.getIdAsString();
-                if(ratedPhotoIds.contains(photoId)) {
-                    continue;
-                }
-                Bitmap decodedImage = ModelManager.manager.getImageBitmapOfSize(photoId, 3);
-                mCardAdapter.add(new CardModel(photoId, decodedImage));
-            }
-            if(mCardAdapter.getCount() == 0) showDoneTextView();
-            mCardStack.setAdapter(mCardAdapter);
-            mCardStack.setListener(new CardStackEventListener(getActivity().getApplicationContext()));
-            progressBar.setVisibility(View.GONE);
+            refreshCardStack();
         }
     };
 
-    private void showDoneTextView() {
-        mTextViewDone.setVisibility(View.VISIBLE);
+    private void refreshCardStack() {
+        showDoneTextView(false);
+        mCardAdapter = new CardsDataAdapter(getActivity().getApplicationContext(), mCardStack);
+        List<String> ratedPhotoIds = ModelManager.manager.getPraisedPhotoIds();
+        List<String> skippedPhotoIds = ModelManager.manager.getSkippedPhotoIds();
+        for(Photo photo: ModelManager.manager.getAllPhotos().values()) {
+            String photoId = photo.getIdAsString();
+            if(ratedPhotoIds.contains(photoId)) {
+                continue;
+            }
+            if(!photoContainsTag(photo)) {
+                continue;
+            }
+            Bitmap decodedImage = ModelManager.manager.getImageBitmapOfSize(photoId, 3);
+            mCardAdapter.add(new CardModel(photoId, decodedImage));
+        }
+        if(mCardAdapter.getCount() == 0) {
+            showDoneTextView(true);
+        } else {
+
+        }
+        mCardStack.setAdapter(mCardAdapter);
+        mCardStack.setListener(new CardStackEventListener(getActivity().getApplicationContext()));
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private boolean photoContainsTag(Photo photo) {
+        boolean result = false;
+        if(filterTags == null || filterTags.toLowerCase().equals("filter")) {
+            return true;
+        }
+        String photoTags = ModelManager.manager.getPhotoTagsAsString(photo);
+        String[] filterTagsArray = ModelManager.manager.getTagsFromText(filterTags);
+        for(String tag: filterTagsArray) {
+            if(photoTags.contains(tag)) {
+                return true;
+            }
+        }
+        return result;
+    }
+
+    private void showDoneTextView(boolean show) {
+        if(show) {
+            mTextViewDone.setVisibility(View.VISIBLE);
+        } else {
+            mTextViewDone.setVisibility(View.GONE);
+        }
     }
 
     @Override

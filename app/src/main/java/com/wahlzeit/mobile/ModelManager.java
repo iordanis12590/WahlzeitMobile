@@ -10,7 +10,6 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.ImageCollection;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCase;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCaseCollection;
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoId;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
@@ -22,6 +21,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+//import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
 
 /**
  * Created by iordanis on 24/02/16.
@@ -41,7 +42,7 @@ public class ModelManager {
     Client currentClient;
     Map<String, Photo> allPhotos = new HashMap<String, Photo>();
     Map<String, Photo> clientsPhotos = new HashMap<String, Photo>();
-    PhotoCollection photoCache;
+//    PhotoCollection photoCache;
     PhotoCaseCollection photoCaseCache;
     Map<String, PhotoCase> photoCaseCacheAsMap;
     Map<String, ImageCollection> images = new HashMap<String, ImageCollection>();
@@ -199,9 +200,9 @@ public class ModelManager {
 //        this.images = images;
     }
 
-    public PhotoCollection getPhotoCache() {
-        return photoCache;
-    }
+//    public PhotoCollection getPhotoCache() {
+//        return photoCache;
+//    }
 
     public Photo getPhotoFromId(String photoId) {
         return allPhotos.get(photoId);
@@ -255,6 +256,13 @@ public class ModelManager {
         return result;
     }
 
+    public String[] getTagsFromText(String tagsText) {
+        String[] result;
+        String consistentTagsText = tagsText.replaceAll("\\s+","");
+        result = tagsText.split(",");
+        return result;
+    }
+
     public void setClientsPhotos(List<Photo> photos) {
         for(Photo photo: photos) {
             clientsPhotos.put(photo.getIdAsString(), photo);
@@ -291,9 +299,9 @@ public class ModelManager {
         return images.containsKey(photoId);
     }
 
-    public void setPhotoCache(PhotoCollection photoCache) {
-        this.photoCache = photoCache;
-    }
+//    public void setPhotoCache(PhotoCollection photoCache) {
+//        this.photoCache = photoCache;
+//    }
 
     public Client getCurrentClient() {
         return currentClient;

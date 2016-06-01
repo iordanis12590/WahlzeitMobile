@@ -2,6 +2,7 @@ package com.wahlzeit.mobile.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.components.navigation.NavDrawerItem;
 import com.wahlzeit.mobile.components.navigation.NavDrawerListAdapter;
@@ -64,7 +66,7 @@ public class MainActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
-            int homeFragmentPosition = 2;
+            int homeFragmentPosition = ModelManager.manager.getWelcomeFragmentPosition();
             Fragment fragment = getFragmentView(homeFragmentPosition);
             displayFragmentView(fragment, homeFragmentPosition);
         }
@@ -100,8 +102,16 @@ public class MainActivity extends BaseActivity {
 
     private void addNavigationDrawerItems() {
         // adding nav drawer items to array based on the order of the xml file
-        for(int i = 0; i < navMenuTitles.length; i++) {
-            navDrawerItems.add(new NavDrawerItem(navMenuTitles[i], navMenuIcons.getResourceId(i, -1)));
+        String accessRights = ModelManager.manager.getCurrentClient().getAccessRights();
+        if(accessRights.toLowerCase().equals("guest")) {
+            for(int i = 0; i < 2; i++) {
+                navDrawerItems.add(new NavDrawerItem(navMenuTitles[i], navMenuIcons.getResourceId(i, -1)));
+            }
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
+        } else {
+            for(int i = 0; i < navMenuTitles.length; i++) {
+                navDrawerItems.add(new NavDrawerItem(navMenuTitles[i], navMenuIcons.getResourceId(i, -1)));
+            }
         }
         mAdapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
         mDrawerList.setAdapter(mAdapter);
@@ -153,6 +163,10 @@ public class MainActivity extends BaseActivity {
                 fragment = new TellFragment();
                 break;
             case 2:
+                if(ModelManager.manager.getCurrentClient().getAccessRights().toLowerCase().equals("guest")){
+                    logout();
+                    break;
+                }
                 fragment = FragmentFactory.getFragment(Fragments.Home); //new HomeFragment();
                 break;
             case 3:
@@ -161,6 +175,8 @@ public class MainActivity extends BaseActivity {
             case 4:
                 fragment = FragmentFactory.getFragment(Fragments.Upload);
                 break;
+            case 5:
+                logout();
             case 6:
                 fragment = FragmentFactory.getFragment(Fragments.Moderate);
                 break;
@@ -168,6 +184,12 @@ public class MainActivity extends BaseActivity {
                 break;
         }
         return fragment;
+    }
+
+    private void logout() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        this.startActivity(intent);
+        this.finish();
     }
 
     public void displayFragmentView(Fragment fragment, int position, Bundle args) {

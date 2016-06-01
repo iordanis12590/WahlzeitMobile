@@ -25,7 +25,6 @@
         <item>Upload</item>
         <item>Logout</item>
         <item>Moderate</item>
-        <item>Administer</item>
     </string-array>
 
     <array name="nav_drawer_icons">
@@ -36,7 +35,6 @@
         <item>@drawable/ic_upload</item>
         <item>@drawable/ic_logout</item>
         <item>@drawable/ic_moderate</item>
-        <item>@drawable/ic_administer</item>
     </array>
 
     <string-array name="gender">

@@ -47,6 +47,14 @@ public class ModelManager {
     Map<String, PhotoCase> photoCaseCacheAsMap;
     Map<String, ImageCollection> images = new HashMap<String, ImageCollection>();
 
+    public int getWelcomeFragmentPosition() {
+        if (getCurrentClient().getAccessRights().toLowerCase().equals("guest")) {
+            return 0;
+        } else {
+            return 2;
+        }
+    }
+
     public List<String> getPraisedPhotoIds() {
         List<String> praisedPhotoIdsAsString = new ArrayList<>();
         List<PhotoId> praisedPhotos = currentClient.getPraisedPhotoIds();
@@ -258,7 +266,7 @@ public class ModelManager {
 
     public String[] getTagsFromText(String tagsText) {
         String[] result;
-        String consistentTagsText = tagsText.replaceAll("\\s+","");
+        String consistentTagsText = tagsText.replaceAll("\\s+", "");
         result = tagsText.split(",");
         return result;
     }

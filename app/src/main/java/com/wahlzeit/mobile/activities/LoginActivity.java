@@ -5,24 +5,18 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
-import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.About;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.wahlzeit.mobile.CommunicationManager;
 import com.wahlzeit.mobile.ModelManager;
 import com.wahlzeit.mobile.R;
 import com.wahlzeit.mobile.asyncTasks.GuestLoginTask;
 import com.wahlzeit.mobile.asyncTasks.Oauth2LoginTask;
-
-import java.io.IOException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -119,35 +113,35 @@ public class LoginActivity extends BaseActivity {
                 REQUEST_ACCOUNT_PICKER);
     }
 
-    public void onClickGetAboutButton(View view) {
-
-        AsyncTask<Integer, Void, About> getAboutTask = new AsyncTask<Integer,Void, About>() {
-            protected About doInBackground(Integer... integers) {
-
-                WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
-                try {
-                    WahlzeitApi.GetAbout getAboutCommand = wahlzeitServiceHandle.getAbout();
-
-                    About about = getAboutCommand.execute();
-                    return about;
-                } catch (IOException e) {
-                    Log.e("MainActivity", "Exception during API call", e);
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(About about) {
-                if (about != null) {
-                    Log.d("WahlzeitActivity", about.getDescription());
-                    makeToast(about.getDescription());
-                } else {
-                    Log.e("ModelManager", "No about was returned from the API");
-                }
-            }
-        };
-        getAboutTask.execute();
-    }
+//    public void onClickGetAboutButton(View view) {
+//
+//        AsyncTask<Integer, Void, About> getAboutTask = new AsyncTask<Integer,Void, About>() {
+//            protected About doInBackground(Integer... integers) {
+//
+//                WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
+//                try {
+//                    WahlzeitApi.GetAbout getAboutCommand = wahlzeitServiceHandle.getAbout();
+//
+//                    About about = getAboutCommand.execute();
+//                    return about;
+//                } catch (IOException e) {
+//                    Log.e("MainActivity", "Exception during API call", e);
+//                }
+//                return null;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(About about) {
+//                if (about != null) {
+//                    Log.d("WahlzeitActivity", about.getDescription());
+//                    makeToast(about.getDescription());
+//                } else {
+//                    Log.e("ModelManager", "No about was returned from the API");
+//                }
+//            }
+//        };
+//        getAboutTask.execute();
+//    }
 
     protected void makeToast(String about) {
         Toast.makeText(this, about, Toast.LENGTH_LONG).show();

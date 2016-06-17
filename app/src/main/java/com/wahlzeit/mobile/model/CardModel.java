@@ -3,6 +3,7 @@ package com.wahlzeit.mobile.model;
 import android.graphics.Bitmap;
 
 /**
+ * A POJO class holding  information for each card
  * Created by iordanis on 11/03/16.
  */
 public class CardModel {

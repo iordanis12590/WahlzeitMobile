@@ -16,13 +16,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
-import com.wahlzeit.mobile.model.ModelManager;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.fragments.WahlzeitFragment;
+import com.wahlzeit.mobile.model.ModelManager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+/**
+ * A fragment class that is used to write and send a message about a particular photo.
+ */
 public class TellFragment extends Fragment implements WahlzeitFragment {
 
     View rootView;
@@ -52,6 +54,9 @@ public class TellFragment extends Fragment implements WahlzeitFragment {
         return rootView;
     }
 
+    /**
+     * Sets the selected photo's bitmap to the image view
+     */
     private void setSelectedImage() {
         if(selectedPhoto != null) {
             selectedPhotoBitmap = ModelManager.manager.getImageBitmapOfSize(selectedPhoto.getIdAsString(), 3);
@@ -59,6 +64,9 @@ public class TellFragment extends Fragment implements WahlzeitFragment {
         }
     }
 
+    /**
+     * Retrieves the selected photo id from bundle
+     */
     private void getArgsFromBundle() {
         Bundle args = getArguments();
         if(args != null) {
@@ -70,6 +78,10 @@ public class TellFragment extends Fragment implements WahlzeitFragment {
         }
     }
 
+    /**
+     * Reacts on the tell button, and launches a new intent by triggering the email application
+     * and passes all relevant information(recipient, message text, subject, and photo attachment)
+     */
     private class TellClickListener implements View.OnClickListener {
 
         @Override

@@ -1,12 +1,16 @@
 package com.wahlzeit.mobile.model;
 
 /**
+ * A POJO class that holds the information for each navigation item on the navigation drawer
  * Created by iordanis on 25/02/16.
  */
 public class NavDrawerItem {
 
     private String title;
     private int icon;
+    /**
+     * Shall be used to indicate updates on a particular navigation item
+     */
     private String count = "0";
     // boolean to set visiblity of the counter
     private boolean isCounterVisible = false;

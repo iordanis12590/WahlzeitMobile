@@ -3,6 +3,7 @@ package com.wahlzeit.mobile.model;
 import android.graphics.Bitmap;
 
 /**
+ * A POJO class to hold information for each list entry of the photo case list, in the moderate fragment
  * Created by iordanis on 16/04/16.
  */
 public class PhotoCaseListItem  {

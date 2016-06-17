@@ -8,6 +8,7 @@ import android.util.Log;
 import com.wenchao.cardstack.CardStack;
 
 /**
+ * A custom implementation of the card event listener to react to actions related to the card stack
  * Created by iordanis on 11/03/16.
  */
 public class CardStackEventListener implements CardStack.CardEventListener {

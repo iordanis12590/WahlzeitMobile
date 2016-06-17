@@ -16,6 +16,7 @@ import com.wahlzeit.mobile.network.asyncTasks.ListAllPhotoCasesTask;
 import com.wahlzeit.mobile.network.asyncTasks.ListAllPhotosTask;
 
 /**
+ * A class used to manage and access connection details
  * Created by iordanis on 23/02/16.
  */
 public class CommunicationManager {

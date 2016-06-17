@@ -22,16 +22,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
+import com.wahlzeit.mobile.R;
+import com.wahlzeit.mobile.activities.FlagActivity;
+import com.wahlzeit.mobile.activities.MainActivity;
 import com.wahlzeit.mobile.adapters.CardsDataAdapter;
 import com.wahlzeit.mobile.listeners.CardStackEventListener;
 import com.wahlzeit.mobile.model.CardModel;
 import com.wahlzeit.mobile.model.ModelManager;
-import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.activities.FlagActivity;
-import com.wahlzeit.mobile.activities.MainActivity;
 import com.wahlzeit.mobile.network.asyncTasks.GetFilteredPhotosTask;
 import com.wahlzeit.mobile.network.asyncTasks.SkipPhotoTask;
-import com.wahlzeit.mobile.fragments.WahlzeitFragment;
 import com.wenchao.cardstack.CardStack;
 
 import java.util.List;
@@ -39,6 +38,9 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+/**
+ * A fragment class with a card stack that allows the user to view and rate photos one at a time
+ */
 public class ShowFragment extends Fragment implements WahlzeitFragment {
 
     View rootView;
@@ -62,11 +64,13 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         setupDoneText();
         setupCardStack();
         setFilterText();
-//        CommunicationManager.manager.getListAllPhotosTask(getActivity()).execute();
         new GetFilteredPhotosTask(getActivity()).execute();
         return rootView;
     }
 
+    /**
+     * Saves the tags of the editText to a class variable
+     */
     private void setFilterText() {
         editTextFilter.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -74,7 +78,6 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     hideKeyboard(v);
                     filterTags = editTextFilter.getText().toString();
-//                    new GetFilteredPhotosTask(getActivity()).execute(filterTags);
                     refreshCardStack();
                     return true;
                 }
@@ -83,36 +86,54 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         });
     }
 
+    /**
+     *
+     * @param v
+     */
     private void hideKeyboard(TextView v) {
         InputMethodManager imm =  (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
     }
 
-
+    /**
+     *
+     */
     private void registerEvents() {
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(discardPhotoReceiver, new IntentFilter("discard_photo"));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(populatePhotoCardsReceiver, new IntentFilter("populate_photo_card_stack"));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(cardTappedReceiver, new IntentFilter("tapped_top_of_card_stack"));
     }
 
+    /**
+     *
+     */
     private void unregisterEvents() {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(discardPhotoReceiver);
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(populatePhotoCardsReceiver);
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(cardTappedReceiver);
     }
 
+    /**
+     *
+     */
     private void setupCardStack() {
         mCardStack.setContentResource(R.layout.fragment_show_card_content);
         mCardAdapter = new CardsDataAdapter(getActivity().getApplicationContext(), mCardStack);
     }
 
+    /**
+     *
+     */
     private void setupDoneText() {
         mTextViewDone.setVisibility(View.GONE);
         String doneText = getResources().getString(R.string.done_text);
         mTextViewDone.setText(doneText);
     }
 
+    /**
+     * Skipps the photo and adds the skipped photo to the model
+     * @param photoId The photo to be skipped
+     */
     private void skipCard(String photoId) {
         Photo photoToSkip = ModelManager.manager.getPhotoFromId(photoId);
         photoToSkip.setPraisingClientId(ModelManager.manager.getCurrentClient().getId());
@@ -120,6 +141,9 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         new SkipPhotoTask(getActivity().getApplicationContext()).execute(photoToSkip);
     }
 
+    /**
+     * Creates a dialog when the user clicks on a card, and gives him the options flag & tell
+     */
     private void createPopupOnCard() {
         String options[] = getActivity().getResources().getStringArray(R.array.card_item_options);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -128,6 +152,9 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         builder.show();
     }
 
+    /**
+     * A listener class to react to the option the user selected
+     */
     private class CardItemOptionListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
@@ -141,8 +168,6 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
                     Log.d(getActivity().getTitle().toString(), selectedOption);
                     lauchFlagActivity();
                     break;
-                case "mail owner":
-                    break;
                 case "tell":
                     launchTellFragment();
                     break;
@@ -150,6 +175,9 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         }
     }
 
+    /**
+     * Launches the tell fragment and passes the relevant photo's id
+     */
     private void launchTellFragment() {
         int tellFragmentPosition = 1;
         Fragment fragment = ((MainActivity)getActivity()).getFragmentView(tellFragmentPosition);
@@ -158,12 +186,18 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         ((MainActivity)getActivity()).displayFragmentView(fragment, tellFragmentPosition, args);
     }
 
+    /**
+     * Launches the flag activity and passes the relevant photo's id
+     */
     private void lauchFlagActivity() {
         Intent launchFlagActivityIntent = new Intent(getActivity(), FlagActivity.class);
         launchFlagActivityIntent.putExtra("diplayed_photo_id", displayedPhotoId);
         startActivity(launchFlagActivityIntent);
     }
 
+    /**
+     * A receiver class to determine the actions to be performed when a card is discarded
+     */
     private BroadcastReceiver discardPhotoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -179,6 +213,9 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         }
     };
 
+    /**
+     * A receiver class to react when the user tapps on a card
+     */
     private BroadcastReceiver cardTappedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -186,6 +223,9 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         }
     };
 
+    /**
+     *
+     */
     private BroadcastReceiver populatePhotoCardsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -193,6 +233,9 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         }
     };
 
+    /**
+     * Refreshes the card stack using all photos the model manager holds, except those the user has already rated.
+     */
     private void refreshCardStack() {
         showDoneTextView(false);
         mCardAdapter = new CardsDataAdapter(getActivity().getApplicationContext(), mCardStack);
@@ -219,6 +262,11 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         progressBar.setVisibility(View.GONE);
     }
 
+    /**
+     * Uses the tags in the filter EditText, to determine whether a photo contains those tags or not
+     * @param photo The photo to check whether it contains the tags or not
+     * @return
+     */
     private boolean photoContainsTag(Photo photo) {
         boolean result = false;
         if(filterTags == null || filterTags.toLowerCase().equals("filter")) {
@@ -234,6 +282,10 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
         return result;
     }
 
+    /**
+     * Shows a placeholder informing the user that there are no photos left to rate
+     * @param show Determines whether to show the text or not
+     */
     private void showDoneTextView(boolean show) {
         if(show) {
             mTextViewDone.setVisibility(View.VISIBLE);

@@ -25,6 +25,7 @@ import java.util.Map;
 //import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCollection;
 
 /**
+ * A class that provides access, manages and temporary stores the applications content
  * Created by iordanis on 24/02/16.
  */
 public class ModelManager {

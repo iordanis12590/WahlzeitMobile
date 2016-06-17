@@ -22,12 +22,11 @@ import android.widget.Toast;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Tags;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.model.ModelManager;
-import com.wahlzeit.mobile.network.asyncTasks.UploadPhotoTask;
 import com.wahlzeit.mobile.listeners.EditorActionListener;
 import com.wahlzeit.mobile.listeners.FocusChangeListener;
 import com.wahlzeit.mobile.listeners.TextViewClickListener;
-import com.wahlzeit.mobile.fragments.WahlzeitFragment;
+import com.wahlzeit.mobile.model.ModelManager;
+import com.wahlzeit.mobile.network.asyncTasks.UploadPhotoTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -43,6 +42,9 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+/**
+ * A fragment that allows the user to take and upload photos or choose from his gallery
+ */
 public class UploadFragment extends Fragment implements WahlzeitFragment {
 
     public static final int MEDIA_TYPE_IMAGE = 1;
@@ -52,8 +54,6 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
     private static final String JPEG_FILE_PREFIX = "IMG_";
     private static final String JPEG_FILE_SUFFIX = ".jpg";
     private String mCurrentPhotoPath;
-
-
     Photo photoToUpload;
     Bitmap mySelectedImage;
     View rootView;
@@ -82,6 +82,9 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         return rootView;
     }
 
+    /**
+     *
+     */
     private void setupTagsText() {
         View.OnClickListener onClickListener = new TextViewClickListener(getActivity());
         View.OnFocusChangeListener onFocusChangeListener = new FocusChangeListener(getActivity());
@@ -92,13 +95,18 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
     }
 
 
+    /**
+     * Sets the click listeners to the upload, take and choose photo buttons
+     */
     private void setupButtons() {
         takePhotoButton.setOnClickListener(new MyTakePhotoButtonClickListener());
         choosePhotoButton.setOnClickListener(new MyChoosePhotoButtonClickListener());
         uploadPhotoButton.setOnClickListener(new MyUploadPhotoButtonClickListener());
     }
 
-
+    /**
+     *  Launches the gallery application to allow the user choose a photo to upload
+     */
     private class MyChoosePhotoButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -110,6 +118,9 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         }
     }
 
+    /**
+     *  Launches the camera application to allow the user take a picture
+     */
     private class MyTakePhotoButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -129,6 +140,11 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         }
     }
 
+    /**
+     * returns the image file saved in storage
+     * @return
+     * @throws IOException
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -138,6 +154,9 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         return imageF;
     }
 
+    /**
+     * @return returns the storage directory to save a photo
+     */
     private File getAlbumDir() {
         File storageDir = new File (
                 Environment.getExternalStorageDirectory()
@@ -180,6 +199,9 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         }
     }
 
+    /**
+     * Retrieves and decode the photo from its path, and set it to the image view
+     */
     private void setCapturedImage() {
         int targetW = uploadImageView.getWidth();
         int targetH = uploadImageView.getHeight();
@@ -202,6 +224,9 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         uploadImageView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Uploads the photo to the server
+     */
     private void uploadPhoto() {
         photoToUpload = new Photo();
         photoToUpload.setOwnerId(ModelManager.manager.getCurrentClient().getId());
@@ -211,6 +236,10 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         new UploadPhotoTask(getActivity().getApplicationContext()).execute(photoToUpload);
     }
 
+    /**
+     * Collects and splits the tags from the relevant text view
+     * @return
+     */
     private Tags getTagsFromTextView() {
         Tags result = new Tags();
         String tagsText = textViewTags.getText().toString();
@@ -226,6 +255,10 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     private String getCompressedSelectedImage() {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         mySelectedImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -234,6 +267,9 @@ public class UploadFragment extends Fragment implements WahlzeitFragment {
         return byteArrayString;
     }
 
+    /**
+     *
+     */
     private class MyUploadPhotoButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {

@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 /**
+ * A class to determine the actions to be performed when an editable text view looses focus
  * Created by iordanis on 08/04/16.
  */
 public class FocusChangeListener extends AbstractSwitcher implements View.OnFocusChangeListener  {

@@ -9,10 +9,10 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 /**
+ * A class to determines he actions to be performed when a user has finished writing on an editable text view
  * Created by iordanis on 08/04/16.
  */
 public class EditorActionListener extends AbstractSwitcher implements TextView.OnEditorActionListener {
-
 
     public EditorActionListener(Context mContext) {
         super(mContext);

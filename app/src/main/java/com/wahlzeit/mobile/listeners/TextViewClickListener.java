@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 /**
+ * A class to react when en editable text view is clicked
  * Created by iordanis on 08/04/16.
  */
 public class TextViewClickListener extends AbstractSwitcher implements View.OnClickListener {

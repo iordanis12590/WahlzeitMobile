@@ -10,6 +10,7 @@ import com.wahlzeit.mobile.network.asyncTasks.RatePhotoTask;
 import com.wenchao.cardstack.CardStack;
 
 /**
+ * A class that determines the action of the rating bar displayed in each card
  * Created by iordanis on 07/04/16.
  */
 public class RatingBarListener implements RatingBar.OnRatingBarChangeListener {

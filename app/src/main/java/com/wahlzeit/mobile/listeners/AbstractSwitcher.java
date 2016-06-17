@@ -6,6 +6,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 /**
+ * A superclass with actions used to create an editable text view UI component
  * Created by iordanis on 08/04/16.
  */
 public abstract class AbstractSwitcher  {
@@ -25,7 +26,6 @@ public abstract class AbstractSwitcher  {
     }
 
     public void hideKeyboardAndCursor(View v) {
-
         InputMethodManager imm =  (InputMethodManager) getmContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }

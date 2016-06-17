@@ -69,7 +69,6 @@
 
     <string-array name="card_item_options">
         <item>Flag</item>
-        <item>Mail owner</item>
         <item>Tell</item>
     </string-array>
 

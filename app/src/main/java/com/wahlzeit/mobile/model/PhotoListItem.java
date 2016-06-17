@@ -3,6 +3,7 @@ package com.wahlzeit.mobile.model;
 import android.graphics.Bitmap;
 
 /**
+ * A POJO class to hold information for each item of the photo list, in show fragment
  * Created by iordanis on 14/03/16.
  */
 public class PhotoListItem {

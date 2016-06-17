@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/feed_bg"
-    tools:context=".fragments.upload.UploadFragment">
+    tools:context=".fragments.UploadFragment">
 
     <ProgressBar
         android:id="@+id/login_progress"

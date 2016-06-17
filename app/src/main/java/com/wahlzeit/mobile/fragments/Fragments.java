@@ -5,5 +5,5 @@ package com.wahlzeit.mobile.fragments;
  */
 
 public enum Fragments {
-    Show, Tell, Home, Profile, Upload, Moderate, Administer
+    Show, Tell, Home, Profile, Upload, Moderate
 }

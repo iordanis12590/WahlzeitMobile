@@ -13,18 +13,18 @@ import android.widget.Toast;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.PhotoCase;
-import com.wahlzeit.mobile.ModelManager;
+import com.wahlzeit.mobile.model.ModelManager;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.asyncTasks.CreatePhotoCaseTask;
+import com.wahlzeit.mobile.network.asyncTasks.CreatePhotoCaseTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
+ * An independent activity launched when the user chooses to flag a photo
  * Created by iordanis on 14/04/16.
  */
 public class FlagActivity extends BaseActivity {
-
     PhotoCase photoCase;
     Photo photoToFlag;
     ArrayAdapter<CharSequence> flagReasonsStrings;
@@ -48,22 +48,34 @@ public class FlagActivity extends BaseActivity {
         setupReasonSpinner();
     }
 
+    /**
+     * Set the user's email address
+     */
     private void setEmailAddress() {
         userEmailAddress = ModelManager.manager.getCurrentClient().getEmailAddress().getValue();
         editTextAddress.setText(userEmailAddress);
     }
 
+    /**
+     * Set up the dropdown box which contains all flag reasons
+     */
     private void setupReasonSpinner() {
         flagReasonsStrings = ArrayAdapter.createFromResource(this, R.array.flag_reason, R.layout.spinner_item);
         spinnerFlagReasons.setAdapter(flagReasonsStrings);
     }
 
+    /**
+     * Retrieves the photo to be flagged by extracting the selected photo is from the intent
+     */
     private void getPhotoToFlag() {
         Intent intent = getIntent();
         String photoId = intent.getStringExtra("diplayed_photo_id");
         photoToFlag = ModelManager.manager.getPhotoFromId(photoId);
     }
 
+    /**
+     * Sets the image of the flagged photo
+     */
     private void setPhotoToFlag() {
         if(photoToFlag != null) {
             Bitmap photoToFlagBitmap = ModelManager.manager.getImageBitmapOfSize(photoToFlag.getIdAsString(), 3);
@@ -71,10 +83,10 @@ public class FlagActivity extends BaseActivity {
         }
     }
 
-
-
+    /**
+     * Creates a new photo case when the flag button is clicked
+     */
     private class FlagPhotoButtonListener implements View.OnClickListener {
-
         @Override
         public void onClick(View v) {
             getPhotoCaseDetails();
@@ -82,6 +94,9 @@ public class FlagActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Sets up a new photo case and uploads it to the server
+     */
     private void setupPhotoCase() {
         if (photoToFlag != null) {
             photoCase = new PhotoCase();
@@ -98,6 +113,9 @@ public class FlagActivity extends BaseActivity {
 
     }
 
+    /**
+     * Retrieves the details of the photo case from the UI
+     */
     private void getPhotoCaseDetails() {
         userEmailAddress = editTextAddress.getText().toString();
         explanation = editTextExplanation.getText().toString();

@@ -13,6 +13,7 @@ import java.util.Locale;
 
 /**
  * Created by iordanis on 30/03/16.
+ * A superclass managing the action bar options
  */
 public class BaseActivity extends ActionBarActivity {
 
@@ -36,6 +37,9 @@ public class BaseActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Launches the dialog with the language options
+     */
     private void lauchLanguageSelectionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.choose_language);
@@ -51,6 +55,10 @@ public class BaseActivity extends ActionBarActivity {
         builder.show();
     }
 
+    /**
+     * Saves a new configuration with the selected language and refreshes the app
+     * @param language the language the user has selected
+     */
     public void setLocale(String language) {
         Configuration configuration = new Configuration();
         Locale locale;

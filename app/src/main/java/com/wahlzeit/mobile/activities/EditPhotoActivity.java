@@ -14,12 +14,12 @@ import android.widget.TextView;
 
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Tags;
-import com.wahlzeit.mobile.ModelManager;
+import com.wahlzeit.mobile.model.ModelManager;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.asyncTasks.UpdatePhotoTask;
-import com.wahlzeit.mobile.components.textswitcher.EditorActionListener;
-import com.wahlzeit.mobile.components.textswitcher.FocusChangeListener;
-import com.wahlzeit.mobile.components.textswitcher.TextViewClickListener;
+import com.wahlzeit.mobile.network.asyncTasks.UpdatePhotoTask;
+import com.wahlzeit.mobile.listeners.EditorActionListener;
+import com.wahlzeit.mobile.listeners.FocusChangeListener;
+import com.wahlzeit.mobile.listeners.TextViewClickListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
+ * A new activity launched when the user chooses to edit a photo of his
  * Created by iordanis on 09/04/16.
  */
 public class EditPhotoActivity extends BaseActivity {
@@ -54,6 +55,9 @@ public class EditPhotoActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    /**
+     * Sets up the visibility switch
+     */
     private void setupSwitch() {
         switchVisibility.setChecked(photoToUpdate.getVisible());
         switchVisibility.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -65,12 +69,18 @@ public class EditPhotoActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Sets the image of the selected photo
+     */
     private void setupImageView() {
         Bitmap image = ModelManager.manager.getImageBitmapOfSize(photoToUpdate.getIdAsString(), 3);
         imageViewEdit.setImageBitmap(image);
 
     }
 
+    /**
+     * Retreives the photo to be updated by extracting the selected photo is from the intent
+     */
     private void getPhoto() {
         Intent intent = getIntent();
         String photoId = intent.getStringExtra("selected_photo_id");
@@ -78,6 +88,9 @@ public class EditPhotoActivity extends BaseActivity {
 
     }
 
+    /**
+     * Sets the tags of the photo in the text view and allocates the click listeners
+     */
     private void setupTagsText() {
         String tags = ModelManager.manager.getPhotoTagsAsString(photoToUpdate);
         textViewTags.setText(tags);
@@ -89,6 +102,10 @@ public class EditPhotoActivity extends BaseActivity {
         editTextTags.setOnEditorActionListener(onEditorActionListener);
     }
 
+    /**
+     * Retrieves the tags diplayed
+     * @return
+     */
     private Tags getTagsFromTextView() {
         Tags result = new Tags();
         String tagsText = textViewTags.getText().toString();
@@ -104,7 +121,14 @@ public class EditPhotoActivity extends BaseActivity {
         return result;
     }
 
+    /**
+     * Updates the photo when the update button is clicked
+     */
     private class UpdatePhotoButtonListener implements View.OnClickListener {
+        /**
+         *
+         * @param v
+         */
         @Override
         public void onClick(View v) {
             // update photo task call

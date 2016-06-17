@@ -12,11 +12,11 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.wahlzeit.mobile.CommunicationManager;
-import com.wahlzeit.mobile.ModelManager;
+import com.wahlzeit.mobile.network.CommunicationManager;
+import com.wahlzeit.mobile.model.ModelManager;
 import com.wahlzeit.mobile.R;
-import com.wahlzeit.mobile.asyncTasks.GuestLoginTask;
-import com.wahlzeit.mobile.asyncTasks.Oauth2LoginTask;
+import com.wahlzeit.mobile.network.asyncTasks.GuestLoginTask;
+import com.wahlzeit.mobile.network.asyncTasks.Oauth2LoginTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -28,8 +28,6 @@ public class LoginActivity extends BaseActivity {
 
     private GoogleAccountCredential credential;
     static final int REQUEST_ACCOUNT_PICKER = 2;
-
-//    @InjectView(R.id.button_signin_administrator) Button mAdminSigningButton;
     @InjectView(R.id.button_signin_user) Button mUserSigninButton;
     @InjectView(R.id.button_signin_guest) Button mGuestSigningButton;
     @InjectView(R.id.login_progress) View mProgressView;
@@ -48,6 +46,12 @@ public class LoginActivity extends BaseActivity {
         setupLoginButtons();
     }
 
+    /**
+     * Handles the result of the popup dialog launched to allow the user to choose one of his accounts
+     * @param requestCode
+     * @param resultCode
+     * @param data The intent which contains the user's choice
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -68,6 +72,10 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Retrieves the account name from the shared preferences of launches a new account picker
+     * if no account is found.
+     */
     private void getAccountName() {
         String accountName = settings.getString(PREF_ACCOUNT_NAME, null);
         if(accountName == null || accountName.contentEquals("")) {
@@ -79,12 +87,19 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    /**
+     *
+     * @param accountName
+     */
     private void saveAccountName(String accountName) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(PREF_ACCOUNT_NAME, accountName);
         editor.commit();
     }
 
+    /**
+     * Sets up the click listener for the user and guest login buttons.
+     */
     private void setupLoginButtons() {
         mUserSigninButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,40 +123,13 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Creates a popup dialog which allows the user to select one of his account in order to sign in
+     */
     void chooseAccount() {
         startActivityForResult(credential.newChooseAccountIntent(),
                 REQUEST_ACCOUNT_PICKER);
     }
-
-//    public void onClickGetAboutButton(View view) {
-//
-//        AsyncTask<Integer, Void, About> getAboutTask = new AsyncTask<Integer,Void, About>() {
-//            protected About doInBackground(Integer... integers) {
-//
-//                WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
-//                try {
-//                    WahlzeitApi.GetAbout getAboutCommand = wahlzeitServiceHandle.getAbout();
-//
-//                    About about = getAboutCommand.execute();
-//                    return about;
-//                } catch (IOException e) {
-//                    Log.e("MainActivity", "Exception during API call", e);
-//                }
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(About about) {
-//                if (about != null) {
-//                    Log.d("WahlzeitActivity", about.getDescription());
-//                    makeToast(about.getDescription());
-//                } else {
-//                    Log.e("ModelManager", "No about was returned from the API");
-//                }
-//            }
-//        };
-//        getAboutTask.execute();
-//    }
 
     protected void makeToast(String about) {
         Toast.makeText(this, about, Toast.LENGTH_LONG).show();

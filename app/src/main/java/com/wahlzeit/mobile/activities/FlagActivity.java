@@ -103,6 +103,7 @@ public class FlagActivity extends BaseActivity {
             photoCase.setFlagger(userEmailAddress);
             photoCase.setPhoto(photoToFlag);
             photoCase.setReason(reason.toUpperCase());
+            photoCase.setExplanation(explanation);
             new CreatePhotoCaseTask(this).execute(photoCase);
         } else {
             CharSequence text = "Please select a photo to flag and explain the reason of flagging";
@@ -110,7 +111,6 @@ public class FlagActivity extends BaseActivity {
             Toast toast = Toast.makeText(this, text, duration);
             toast.show();
         }
-
     }
 
     /**
@@ -118,7 +118,18 @@ public class FlagActivity extends BaseActivity {
      */
     private void getPhotoCaseDetails() {
         userEmailAddress = editTextAddress.getText().toString();
-        explanation = editTextExplanation.getText().toString();
+        String currentExplanation = editTextExplanation.getText().toString();
+        if(!getResources().getString(R.string.flag_explanation).toLowerCase().equals(currentExplanation)) {
+            explanation = currentExplanation;
+        }
         reason = spinnerFlagReasons.getSelectedItem().toString();
+        // give reasons to much the FlagReason enum
+        if(reason.toLowerCase().equals(flagReasonsStrings.getItem(1).toString().toLowerCase())) {
+            reason = "OFFENSIVE";
+        } else if(reason.toLowerCase().equals(flagReasonsStrings.getItem(2).toString().toLowerCase())) {
+            reason = "COPYRIGHT";
+        } else if(reason.toLowerCase().equals(flagReasonsStrings.getItem(3).toString().toLowerCase())) {
+            reason = "OTHER";
+        }
     }
 }

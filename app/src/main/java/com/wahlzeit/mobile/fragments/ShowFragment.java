@@ -249,6 +249,9 @@ public class ShowFragment extends Fragment implements WahlzeitFragment {
             if(!photoContainsTag(photo)) {
                 continue;
             }
+            if(!photo.getStatus().toLowerCase().equals("visible")) {
+                continue;
+            }
             Bitmap decodedImage = ModelManager.manager.getImageBitmapOfSize(photoId, 3);
             mCardAdapter.add(new CardModel(photoId, decodedImage));
         }

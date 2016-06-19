@@ -279,15 +279,15 @@ public class ModelManager {
     }
 
     public void addPhoto(Photo photo) {
-        if(!photoExists(photo.getIdAsString())) {
+//        if(!photoExists(photo.getIdAsString())) {
             allPhotos.put(photo.getIdAsString(), photo);
-        }
+//        }
     }
 
     public void addClientsPhoto(Photo photo) {
-        if(!clientsPhotosExists(photo.getIdAsString())) {
+//        if(!clientsPhotosExists(photo.getIdAsString())) {
             clientsPhotos.put(photo.getIdAsString(), photo);
-        }
+//        }
     }
 
     public void addImages(String photoId, ImageCollection images) {

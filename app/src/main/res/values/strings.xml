@@ -93,5 +93,6 @@
     <string name="tags_placeholder">Write tags seperated by comma (eg.Tag1, Tag2)</string>
     <string name="photo_item_options_title">Select an action</string>
     <string name="album_name">Wahlzeit Photos</string>
+    <string name="flag_explanation">Hey,\nplease explain a bit about \nwhat is wrong with this photo</string>
 
 </resources>

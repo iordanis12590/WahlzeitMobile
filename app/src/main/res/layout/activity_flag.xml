@@ -104,7 +104,7 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="4dp"
                     android:textSize="14sp"
-                    android:text="Hey,\nplease explain a bit about \nwhat is wrong with this photo"
+                    android:text="@string/flag_explanation"
                     android:inputType="textMultiLine"
                     android:ems="14"
                     android:selectAllOnFocus="true"/>

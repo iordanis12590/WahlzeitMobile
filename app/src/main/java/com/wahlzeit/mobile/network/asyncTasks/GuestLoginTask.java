@@ -45,7 +45,7 @@ public class GuestLoginTask extends AsyncTask<Void, Void, Void> {
     }
 
     private void postGuestUser() throws IOException {
-        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(null);
+        WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
         // have to send an initialized Guest instance to avoid EOFE Exception
         // Library bug!
         Client guest = new Client();

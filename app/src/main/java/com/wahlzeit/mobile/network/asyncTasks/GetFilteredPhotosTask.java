@@ -73,7 +73,7 @@ public class GetFilteredPhotosTask extends AsyncTask<String,Void,Void> {
     }
 
     private List<Photo> downloadAllPhotos() throws IOException {
-        WahlzeitApi.Photos.Pagination.List getFilteredPhotosCommand = wahlzeitServiceHandle.photos().pagination().list();
+        WahlzeitApi.Photos.List getFilteredPhotosCommand = wahlzeitServiceHandle.photos().list();
         if(filterTags != null) {
             getFilteredPhotosCommand.setFilter(filterTags);
         }

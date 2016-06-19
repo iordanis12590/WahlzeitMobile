@@ -69,7 +69,7 @@ public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
     }
 
     private List<Photo> downloadAllPhotos() throws IOException {
-        WahlzeitApi.Photos.Pagination.List getAllPhotosCommand = wahlzeitServiceHandle.photos().pagination().list().setLimit(ModelManager.manager.getAllPhotosLimit());
+        WahlzeitApi.Photos.List getAllPhotosCommand = wahlzeitServiceHandle.photos().list().setLimit(ModelManager.manager.getAllPhotosLimit());
         String previousNextPageToken = ModelManager.manager.getAllPhotosNextPageToken();
         if(previousNextPageToken != null && previousNextPageToken != "") {
             getAllPhotosCommand.setCursor(previousNextPageToken);

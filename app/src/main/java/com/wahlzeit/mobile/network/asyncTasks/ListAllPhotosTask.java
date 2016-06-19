@@ -10,10 +10,11 @@ import com.appspot.iordanis_mobilezeit.wahlzeitApi.WahlzeitApi;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.CollectionResponsePhoto;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.ImageCollection;
 import com.appspot.iordanis_mobilezeit.wahlzeitApi.model.Photo;
-import com.wahlzeit.mobile.network.CommunicationManager;
 import com.wahlzeit.mobile.model.ModelManager;
+import com.wahlzeit.mobile.network.CommunicationManager;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -63,7 +64,7 @@ public class ListAllPhotosTask extends AsyncTask<Void,Void, Void> {
 
     private ImageCollection downloadImages(String photoId) throws IOException{
         ImageCollection result = null;
-        WahlzeitApi.Images getImagesCommand = wahlzeitServiceHandle.images(photoId);
+        WahlzeitApi.Images getImagesCommand = wahlzeitServiceHandle.images(photoId).setImageSizes(Arrays.asList("LARGE","MEDIUM", "SMALL"));
         result = getImagesCommand.execute();
         return result;
     }

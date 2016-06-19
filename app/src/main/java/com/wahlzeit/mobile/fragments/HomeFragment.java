@@ -123,7 +123,7 @@ public class HomeFragment extends Fragment implements SwipyRefreshLayout.OnRefre
                 String photoCreationTime = dateFormater.format(photo.getCreationTime().longValue());
                 // tags
                 String photoTags = ModelManager.manager.getPhotoTagsAsString(photo);
-                Bitmap decodedImage = ModelManager.manager.getImageBitmapOfSize(photo.getIdAsString(), 3);
+                Bitmap decodedImage = ModelManager.manager.getImageBitmapOfSize(photo.getIdAsString(), 1);
                 // create list object
                 PhotoListItem photoItem = new PhotoListItem(photoId, photoPraise, photoStatus,
                         photoCreationTime, photoTags, decodedImage);

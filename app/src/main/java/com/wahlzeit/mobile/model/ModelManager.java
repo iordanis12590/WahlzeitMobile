@@ -187,7 +187,7 @@ public class ModelManager {
     public Bitmap getImageBitmapOfSize(String photoId, int size) {
         Bitmap result = null;
         List<Image> photoImages = images.get(photoId).getItems();
-        Image image = photoImages.get(size);
+        Image image = photoImages.get(photoImages.size() - 1);
         // get smaller image if chosen size is not available
         while (image.isEmpty() && size >= 0) {
             --size;
@@ -206,23 +206,12 @@ public class ModelManager {
                 this.images.put(entry.getKey(), entry.getValue());
             }
         }
-//        this.images = images;
     }
 
-//    public PhotoCollection getPhotoCache() {
-//        return photoCache;
-//    }
+
 
     public Photo getPhotoFromId(String photoId) {
         return allPhotos.get(photoId);
-//        Photo result = null;
-//        for(Photo photo: photoCache.getItems()) {
-//            if (photo.getIdAsString().equals(photoId)) {
-//                result = photo;
-//                break;
-//            }
-//        }
-//        return result;
     }
 
     public Photo getClientsPhotoFromId(String photoId) {
@@ -236,13 +225,6 @@ public class ModelManager {
         if (clientsPhotos.containsKey(updatedPhoto.getIdAsString())) {
             clientsPhotos.put(updatedPhoto.getIdAsString(), updatedPhoto);
         }
-//        for (Photo photo: photoCache.getItems()) {
-//            if(photo.getIdAsString().equals(updatedPhoto.getIdAsString())) {
-//                photoCache.getItems().remove(photo);
-//                photoCache.getItems().add(updatedPhoto);
-//                break;
-//            }
-//        }
     }
 
     public String getPhotoTagsAsString(Photo photo) {

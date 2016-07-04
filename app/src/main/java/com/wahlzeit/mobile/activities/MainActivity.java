@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+/**
+ * An activity to manage navigation (nav drawer) and fragments lifecycle
+ */
 public class MainActivity extends BaseActivity {
 
     private NavDrawerListAdapter mAdapter;

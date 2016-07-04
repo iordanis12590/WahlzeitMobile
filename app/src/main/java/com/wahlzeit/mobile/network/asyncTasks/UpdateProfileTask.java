@@ -28,7 +28,7 @@ public class UpdateProfileTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
         try {
 
-            WahlzeitApi.Clients.Update updateClientCommand = wahlzeitServiceHandle.clients().update(ModelManager.manager.getCurrentClient());
+            WahlzeitApi.Clients.Update updateClientCommand = wahlzeitServiceHandle.clients().update(ModelManager.manager.getCurrentClient().getId(), ModelManager.manager.getCurrentClient());
             Client result = updateClientCommand.execute();
             boolean notify = result.getNotifyAboutPraise();
             String name = result.getNickName();

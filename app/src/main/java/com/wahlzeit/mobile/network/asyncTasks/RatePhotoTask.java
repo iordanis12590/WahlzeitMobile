@@ -27,7 +27,7 @@ public class RatePhotoTask extends AsyncTask<Photo, Void, Void> {
         Photo photoToPraise = params[0];
         WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
         try {
-            WahlzeitApi.Photos.Praise praiseCommand = wahlzeitServiceHandle.photos().praise(photoToPraise);
+            WahlzeitApi.Photos.Praise praiseCommand = wahlzeitServiceHandle.photos().praise(photoToPraise.getIdAsString(), photoToPraise);
             Photo praisedPhoto = praiseCommand.execute();
             Log.i("Praising", Double.toString(praisedPhoto.getPraise()));
             ModelManager.manager.updatePhoto(praisedPhoto);

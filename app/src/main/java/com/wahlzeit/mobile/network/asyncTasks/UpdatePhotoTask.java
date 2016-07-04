@@ -28,7 +28,7 @@ public class UpdatePhotoTask extends AsyncTask<Photo, Void, String> {
         Photo photoToUpdate = params[0];
         WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
         try {
-            WahlzeitApi.Photos.Update updateCommand = wahlzeitServiceHandle.photos().update(photoToUpdate);
+            WahlzeitApi.Photos.Update updateCommand = wahlzeitServiceHandle.photos().update(photoToUpdate.getIdAsString(), photoToUpdate);
             Photo updatedPhoto = updateCommand.execute();
             ModelManager.manager.updatePhoto(updatedPhoto);
         } catch (IOException e) {

@@ -27,7 +27,7 @@ public class SkipPhotoTask extends AsyncTask<Photo, Void, Void> {
         Photo photoToSkip = params[0];
         WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
         try {
-            WahlzeitApi.Photos.Skip skipCommand = wahlzeitServiceHandle.photos().skip(photoToSkip);
+            WahlzeitApi.Photos.Skip skipCommand = wahlzeitServiceHandle.photos().skip(photoToSkip.getIdAsString(), photoToSkip);
             Photo skippedPhoto = skipCommand.execute();
             Log.i("Skipping", "");
         } catch (IOException ioe ) {

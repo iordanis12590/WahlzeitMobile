@@ -45,7 +45,7 @@ public class ListAllPhotoCasesTask extends AsyncTask<Void, Void, Void> {
     private PhotoCaseCollection downloaPhotoCases() throws IOException{
         PhotoCaseCollection result = null;
         WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
-        WahlzeitApi.Flags.List getPhotoCasesCommand = wahlzeitServiceHandle.flags().list();
+        WahlzeitApi.Photocases.List getPhotoCasesCommand = wahlzeitServiceHandle.photocases().list();
         result = getPhotoCasesCommand.execute();
         return result;
     }

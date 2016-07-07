@@ -29,7 +29,7 @@ public class CreatePhotoCaseTask extends AsyncTask<PhotoCase, Void, String> {
         PhotoCase  photoCase = params[0];
         WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
         try {
-            WahlzeitApi.Flags.Create createPhotoCaseCommand = wahlzeitServiceHandle.flags().create(photoCase);
+            WahlzeitApi.Photocases.Create createPhotoCaseCommand = wahlzeitServiceHandle.photocases().create(photoCase);
             PhotoCase createdPhotoCase = createPhotoCaseCommand.execute();
             Log.d("photo case", createdPhotoCase.getIdAsString());
             updatePhotoStatus(createdPhotoCase);

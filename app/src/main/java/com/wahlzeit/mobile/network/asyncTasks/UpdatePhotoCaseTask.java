@@ -28,7 +28,7 @@ public class UpdatePhotoCaseTask extends AsyncTask<PhotoCase, Void, String> {
         PhotoCase photoCase = params[0];
         WahlzeitApi wahlzeitServiceHandle = CommunicationManager.manager.getApiServiceHandler(ModelManager.manager.getCredential());
         try {
-            WahlzeitApi.Flags.Update moderateCommand = wahlzeitServiceHandle.flags().update(photoCase.getIdAsString(), photoCase);
+            WahlzeitApi.Photocases.Update moderateCommand = wahlzeitServiceHandle.photocases().update(photoCase.getIdAsString(), photoCase);
             PhotoCase moderatedPhotoCase = moderateCommand.execute();
             updatePhotoStatus(moderatedPhotoCase);
             Log.d("Praising", moderatedPhotoCase.getPhotoStatus());
